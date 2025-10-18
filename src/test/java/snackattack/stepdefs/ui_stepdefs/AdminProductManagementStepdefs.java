@@ -94,7 +94,14 @@ public class AdminProductManagementStepdefs {
 
     @Then("{string} mesaji görüntülenmeli")
     public void mesaj_görüntülenmeli(String expectedMessage) {
-        Assert.assertFalse("Arama sonucu mesajı görünmüyor!" + expectedMessage, productPage.noProductFoundMessage.isDisplayed());
+        List<WebElement> messages = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedMessage + "')]"));
+
+        // Eğer mesaj DOM'da yoksa
+        Assert.assertFalse("Beklenen mesaj DOM'da bulunamadı: " + expectedMessage, messages.isEmpty());
+
+        // Eğer varsa, ilk mesajın görünür ve doğru metin içerdiğini kontrol et
+        String actualMessage = messages.get(0).getText().trim();
+        Assert.assertTrue("Mesaj beklenen metni içermiyor!", actualMessage.contains(expectedMessage));
 
     }
 
