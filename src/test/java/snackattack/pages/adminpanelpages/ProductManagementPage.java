@@ -32,11 +32,6 @@ public class ProductManagementPage {
     @FindBy(xpath = "//button[.='Search']")
     public WebElement searchButton;
 
-    // "Ürün bulunamadı" mesajı
-    @FindBy(xpath = "//*[contains(text(),'Ürün bulunamadı')]")
-    public WebElement noProductFoundMessage;
-
-
     // Login error mesajı
     @FindBy(xpath = "//p[@class='text-red-500 text-sm']")
     public WebElement loginErrorMessage;
