@@ -12,6 +12,8 @@ public class AdminPanelPage {
     }
 
     //Admin Panel menü locates
+    @FindBy(xpath = "//h2[.='Admin Panel']")
+    public WebElement AdminPanelMenu;
 
     @FindBy(xpath = "//a[.='Customer Management']")
     public WebElement customerManagementMenu;
