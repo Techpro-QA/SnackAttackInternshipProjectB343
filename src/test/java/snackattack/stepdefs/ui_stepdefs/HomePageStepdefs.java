@@ -2,6 +2,8 @@ package snackattack.stepdefs.ui_stepdefs;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import org.junit.Assert;
+import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
 import snackattack.utilities.ConfigReader;
 import snackattack.utilities.Driver;
@@ -11,6 +13,7 @@ import snackattack.utilities.JSUtils;
 public class HomePageStepdefs {
 
     HomePage homePage = new HomePage();
+    AdminPanelPage adminPanelPage =new AdminPanelPage();
 
     @Given("Sayfaya gidilir")
     public void sayfayaGidilir() {
@@ -63,5 +66,7 @@ public class HomePageStepdefs {
         homePage.loginEmailTextBox.sendKeys(email);
         homePage.loginPasswordTextBox.sendKeys(password);
         homePage.loginButton.click();
+        Assert.assertTrue(adminPanelPage.wellcomeToAdminPanelText.isDisplayed());
+
     }
 }

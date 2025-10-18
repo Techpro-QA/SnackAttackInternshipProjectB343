@@ -16,26 +16,29 @@ public class AdminPanelPage {
     @FindBy(xpath = "//a[.='Customer Management']")
     public WebElement customerManagementMenu;
 
-     @FindBy(xpath = "//a[.='Admin Management']")
+    @FindBy(xpath = "//a[.='Admin Management']")
     public WebElement adminManagementMenu;
 
-     @FindBy(xpath = "//a[.='Order Management']")
+    @FindBy(xpath = "//a[.='Order Management']")
     public WebElement orderManagementMenu;
 
-     @FindBy(xpath = "//a[.='Product Management']")
+    @FindBy(xpath = "//a[.='Product Management']")
     public WebElement productManagementMenu;
 
-     @FindBy(xpath = "//a[.='Category Management']")
+    @FindBy(xpath = "//a[.='Category Management']")
     public WebElement categoryManagementMenu;
 
-     @FindBy(xpath = "//a[.='Payment Management']")
+    @FindBy(xpath = "//a[.='Payment Management']")
     public WebElement paymentManagementMenu;
 
-     @FindBy(xpath = "//a[.='Add. Cat. Management']")
+    @FindBy(xpath = "//a[.='Add. Cat. Management']")
     public WebElement addCatManagementMenu;
 
-     @FindBy(xpath = "//a[.='Support Requests']")
+    @FindBy(xpath = "//a[.='Support Requests']")
     public WebElement supportRequestsMenu;
+
+    @FindBy(tagName = "h1")
+    public WebElement wellcomeToAdminPanelText;
 
 
 
