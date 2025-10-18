@@ -36,6 +36,81 @@ public class ProductManagementPage {
     @FindBy(xpath = "//p[@class='text-red-500 text-sm']")
     public WebElement loginErrorMessage;
 
+    //Product güncelleme textbox locateleri
+
+    @FindBy(xpath = "//input[@accept='image/*']")
+    public WebElement updateSellectFile;
+
+    @FindBy(name = "name")
+    public WebElement updateProductNameTextbox;
+
+    @FindBy(name = "description")
+    public WebElement updateDescriptionTextbox;
+
+    @FindBy(name = "contents")
+    public WebElement updateContentsTextbox;
+
+    @FindBy(name = "price")
+    public WebElement updatePriceTextbox;
+
+    @FindBy(name = "discount")
+    public WebElement updateDiscountTextbox;
+
+    //Kategoriler checboxlari locateleri
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[1]")
+    public WebElement updatePIZZACheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[2]")
+    public WebElement updateIceceklerCheckbox;
+
+     @FindBy(xpath = "(//input[@type='checkbox'])[3]")
+    public WebElement updateAtistirmaliklarCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[4]")
+    public WebElement updatePİZZACheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[5]")
+    public WebElement updateTATLILARCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[6]")
+    public WebElement updatepizzaCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[7]")
+    public WebElement updateMEZELERCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[8]")
+    public WebElement updateSALATALARCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[9]")
+    public WebElement updateDenemeCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[10]")
+    public WebElement updateDONERCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[11]")
+    public WebElement updateHAMBURGERCheckbox;
+
+    //Ek Kategoriler locate
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[12]")
+    public WebElement updateSoslarCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[13]")
+    public WebElement updateSalataSoslariCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[14]")
+    public WebElement updateMezelerCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[15]")
+    public WebElement updatePopülerCheckbox;
+
+    @FindBy(xpath = "(//input[@type='checkbox'])[16]")
+    public WebElement updateMevcutCheckbox;
+
+
+
+
 
 
 }

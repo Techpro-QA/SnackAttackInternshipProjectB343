@@ -1,5 +1,5 @@
 Feature: asdasdas
-  Scenario: asdasd
+  Scenario: TC_01
     Given Sayfaya gidilir
     And Kullanici loginRegister'a tiklar
     And Kullanici "admin" olarak giriş yapar
