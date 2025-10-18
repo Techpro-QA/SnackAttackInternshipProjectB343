@@ -24,25 +24,48 @@ public class AdminProductManagementStepdefs {
     ProductManagementPage productPage = new ProductManagementPage();
     WebDriver driver = Driver.getDriver();
 
-    @Given("Sayfaya gidilir")
-    public void sayfayaGidilir() {
-        Driver.getDriver().get(ConfigReader.getProperty("snackUrl"));
+
+    @And("Admin Customer Management'a tiklar")
+    public void adminCustomerManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.customerManagementMenu);
+        adminPanelPage.customerManagementMenu.click();
     }
 
-    @And("Kullanici loginRegister'a tiklar")
-    public void kullaniciLoginRegisterATiklar() {
-        homePage.homeLoginRegisterButton.click();
+    @And("Admin Admin Management'a tiklar")
+    public void adminAdminManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.adminManagementMenu);
+        adminPanelPage.adminManagementMenu.click();
     }
 
-    @And("Kullanici {string} olarak giriş yapar")
-    public void kullaniciOlarakGirişYapar(String name) {
+    @And("Admin Order Management'a tiklar")
+    public void adminOrderManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.orderManagementMenu);
+        adminPanelPage.orderManagementMenu.click();
+    }
 
-        String email = name.equals("admin") ? ConfigReader.getProperty("adminEmail") : ConfigReader.getProperty("userEmail");
-        String password = name.equals("admin") ? ConfigReader.getProperty("adminPassword") : ConfigReader.getProperty("userPassword");
 
-        homePage.loginEmailTextBox.sendKeys(email);
-        homePage.loginPasswordTextBox.sendKeys(password);
-        homePage.loginButton.click();
+    @And("Admin Category Management'a tiklar")
+    public void adminCategoryManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.categoryManagementMenu);
+        adminPanelPage.categoryManagementMenu.click();
+    }
+
+    @And("Admin Payment Management'a tiklar")
+    public void adminPaymentManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.paymentManagementMenu);
+        adminPanelPage.paymentManagementMenu.click();
+    }
+
+    @And("Admin Add.Cat.Management'a tiklar")
+    public void adminAddCatManagementATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.addCatManagementMenu);
+        adminPanelPage.addCatManagementMenu.click();
+    }
+
+    @And("Admin Support Requests'a tiklar")
+    public void adminSupportRequestsATiklar() {
+        JSUtils.JSscrollIntoView(adminPanelPage.supportRequestsMenu);
+        adminPanelPage.supportRequestsMenu.click();
     }
 
     @When("Admin Product Management'a tiklar")
@@ -50,61 +73,6 @@ public class AdminProductManagementStepdefs {
         JSUtils.JSscrollIntoView(adminPanelPage.productManagementMenu);
         adminPanelPage.productManagementMenu.click();
     }
-
-    @Then("Admin Admin Panel'e yönlenmis olmali")
-    public void admin_panel_yonlendirme() {
-        String url = driver.getCurrentUrl().toLowerCase();
-        Assert.assertTrue(url.contains("admin"));
-    }
-
-    @Then("Ürün listesi görünmeli")
-    public void urun_listesi_gorunmeli() {
-        Assert.assertTrue(productPage.productTable.isDisplayed());
-    }
-
-    @Then("Ürünler listesinde en az bir ürün görünmeli")
-    public void urunler_listesinde_en_az_bir_urun_gorunmeli() {
-        Assert.assertTrue("Ürün listesi boş!", productPage.allProductRows.size() > 0);
-    }
-
-    @And("Arama kutusuna {string} girip search butonuna tiklar")
-    public void arama_kutusuna_urun_adi_girip_search_tiklar(String urunAdi) {
-        productPage.searchBox.clear();
-        productPage.searchBox.sendKeys(urunAdi);
-        productPage.searchButton.click();
-    }
-
-    @Then("Arama kriterine uygun ürün aramasi yapilabilmeli")
-    public void arama_kriterine_uygun_urun_arama_yapilabilmeli() {
-        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.productTable.isDisplayed());
-    }
-
-    @When("Gecersiz email {string} ve password {string} ile giris yapar")
-    public void gecersiz_admin_bilgileri_ile_giris_yapar(String email, String password) {
-
-        homePage.loginEmailTextBox.sendKeys(email);
-        homePage.loginPasswordTextBox.sendKeys(password);
-        homePage.loginButton.click();
-    }
-
-    @Then("Login hatasi mesaji görünmeli")
-    public void login_hatasi_mesaji_gorunmeli() {
-        Assert.assertTrue("Hata mesajı görünmüyor!", productPage.loginErrorMessage.isDisplayed());
-    }
-
-    @Then("{string} mesaji görüntülenmeli")
-    public void mesaj_görüntülenmeli(String expectedMessage) {
-        List<WebElement> messages = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedMessage + "')]"));
-
-        // Eğer mesaj DOM'da yoksa
-        Assert.assertFalse("Beklenen mesaj DOM'da bulunamadı: " + expectedMessage, messages.isEmpty());
-
-        // Eğer varsa, ilk mesajın görünür ve doğru metin içerdiğini kontrol et
-        String actualMessage = messages.get(0).getText().trim();
-        Assert.assertTrue("Mesaj beklenen metni içermiyor!", actualMessage.contains(expectedMessage));
-
-    }
-
 
 
 

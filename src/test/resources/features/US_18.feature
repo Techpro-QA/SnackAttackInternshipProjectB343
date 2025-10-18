@@ -1,7 +1,6 @@
 @US_18
   Feature: US_18 Payment Management Panel Testi
 
-    @US_18_TC01
     Scenario: TC01 Admin olarak siteye giris yapilabilmeli
 
       Given Sayfaya gidilir

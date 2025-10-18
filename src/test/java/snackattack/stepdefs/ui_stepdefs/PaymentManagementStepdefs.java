@@ -4,6 +4,8 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import snackattack.pages.AdminPanelPage;
+import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.PaymentManagementPage;
 import snackattack.utilities.ReusableMethods;
 
@@ -11,6 +13,8 @@ import static org.junit.Assert.assertTrue;
 
 public class PaymentManagementStepdefs {
     PaymentManagementPage paymentManagementPage = new PaymentManagementPage();
+    AdminPanelPage adminPanelPage = new AdminPanelPage();
+
 
     @Then("Payment ID, Order ID, User ID, Amount ve Payment Date sutunlarin altında veriler goruntulenir")
     public void paymentIDOrderIDUserIDAmountVePaymentDateSutunlarinAltındaVerilerGoruntulenir() {
@@ -38,5 +42,6 @@ public class PaymentManagementStepdefs {
 
         }
     }
+
 
 }
