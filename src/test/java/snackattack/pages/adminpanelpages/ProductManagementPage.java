@@ -39,7 +39,10 @@ public class ProductManagementPage {
     //Product güncelleme textbox locateleri
 
     @FindBy(xpath = "//input[@accept='image/*']")
-    public WebElement updateSellectFile;
+    public WebElement updateSelectFile;
+
+    @FindBy(id = "imgBase64")
+    public WebElement createProductSelectFile;
 
     @FindBy(name = "name")
     public WebElement updateProductNameTextbox;
@@ -55,6 +58,11 @@ public class ProductManagementPage {
 
     @FindBy(name = "discount")
     public WebElement updateDiscountTextbox;
+
+    @FindBy(xpath = "//tr/td[3]")
+    public WebElement searchedProductNameColumn;
+
+
 
     //Kategoriler checboxlari locateleri
 
@@ -107,6 +115,9 @@ public class ProductManagementPage {
 
     @FindBy(xpath = "(//input[@type='checkbox'])[16]")
     public WebElement updateMevcutCheckbox;
+
+    @FindBy(xpath = "//button[@type='submit']")
+    public WebElement updateGüncelleButton;
 
 
 

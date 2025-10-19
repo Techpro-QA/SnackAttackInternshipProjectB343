@@ -16,5 +16,6 @@ Feature: asdasdas
     And Admin Payment Management'a tiklar
     And Admin Add.Cat.Management'a tiklar
     And Admin Support Requests'a tiklar
+    And Sayfa kapatilir
 
 
