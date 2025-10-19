@@ -5,10 +5,7 @@ import io.cucumber.java.en.Given;
 import org.junit.Assert;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
-import snackattack.utilities.ActionsUtils;
-import snackattack.utilities.ConfigReader;
-import snackattack.utilities.Driver;
-import snackattack.utilities.JSUtils;
+import snackattack.utilities.*;
 
 
 public class HomePageStepdefs {
@@ -89,5 +86,10 @@ public class HomePageStepdefs {
     @And("Sayfanin yukarisina scroll yapılır")
     public void sayfaninYukarisinaScrollYapılır() {
         ActionsUtils.scrollDown();
+    }
+
+    @And("Kullanici {int} saniye bekler")
+    public void kullaniciSaniyeBekler(int süre) {
+        WaitUtils.waitFor(süre);
     }
 }
