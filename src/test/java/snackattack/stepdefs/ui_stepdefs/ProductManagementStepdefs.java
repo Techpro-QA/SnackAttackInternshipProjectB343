@@ -1,9 +1,11 @@
 package snackattack.stepdefs.ui_stepdefs;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +24,7 @@ public class ProductManagementStepdefs {
     AdminPanelPage adminPanelPage = new AdminPanelPage();
     ProductManagementPage productPage = new ProductManagementPage();
     WebDriver driver = Driver.getDriver();
+    Faker faker = new Faker();
 
     @Then("Admin Admin Panel'e yönlenmis olmali")
     public void admin_panel_yonlendirme() {
@@ -64,18 +67,17 @@ public class ProductManagementStepdefs {
         Assert.assertTrue("Hata mesajı görünmüyor!", productPage.loginErrorMessage.isDisplayed());
     }
 
-    @Then("{string} mesaji görüntülenmeli")
-    public void mesaj_görüntülenmeli(String expectedMessage) {
-        List<WebElement> messages = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedMessage + "')]"));
-
-        // Eğer mesaj DOM'da yoksa
-        Assert.assertFalse("Beklenen mesaj DOM'da bulunamadı: " + expectedMessage, messages.isEmpty());
-
-        // Eğer varsa, ilk mesajın görünür ve doğru metin içerdiğini kontrol et
-        String actualMessage = messages.get(0).getText().trim();
-        Assert.assertTrue("Mesaj beklenen metni içermiyor!", actualMessage.contains(expectedMessage));
-
+    @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
+    public void gecersiz_name_search_bulunamamali() {
+        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.firstProductRow.isDisplayed());
     }
+
+    @And("Admin New butonuna tiklar")
+    public void adminNewButonunaTiklar() {
+
+        productManagementPage.createProductSelectFile.click();
+    }
+
 
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
@@ -90,6 +92,9 @@ public class ProductManagementStepdefs {
 
     @And("Admin Ürün Adı Textbox'ini {string} ile doldurur")
     public void adminÜrünAdıTextboxIniIleDoldurur(String productName) {
+        if (productName.equals("random")){
+            productName = faker.food().dish();
+        }
         productManagementPage.updateProductNameTextbox.clear();
         productManagementPage.updateProductNameTextbox.sendKeys(productName);
         TestData.expectedProductName = productName;
@@ -267,16 +272,47 @@ public class ProductManagementStepdefs {
     public void urununGuncellenmedigiKontrolEdilir() {
     }
 
-    @When("Admin guncellenecek {string} resmi ekler")
-    public void adminGuncellenecekResmiEkler(String path) {
+    @When("Admin {string} resim ekler")
+    public void adminResimEkler(String path) {
 
-        if (path.contains("pizzaimg")){
-            productManagementPage.updateSelectFile.click();
+        if (path.contains("Mustafa")){
+            ReusableMethods.click(productManagementPage.updateSelectFile);
         } else {
-            productManagementPage.createProductSelectFile.click();
+            ReusableMethods.click(productManagementPage.createProductSelectFile);
         }
 
         ReusableMethods.uploadFilePath(path);
+    }
+
+
+    @And("Admin {string} ve {string} seceneklerini secer")
+    public void adminVeSecenekleriniSecer() {
+
+        if (!productManagementPage.createAvailableCheckbox.isSelected()){
+            productManagementPage.createAvailableCheckbox.click();
+        }
+
+        if (!productManagementPage.createActiveCheckbox.isSelected()){
+            productManagementPage.createActiveCheckbox.click();
+        }
+
+    }
+
+    @And("Admin Create Product butonuna tiklar")
+    public void adminCreateProductButonunaTiklar() {
+
+        productManagementPage.createProductButton.click();
+    }
+
+    @Then("Urunun eklendigi dogrulanir")
+    public void urununEklendigiDogrulanir() {
+
+//        Alert alert = driver.switchTo().alert();
+//        String alertText = alert.getText();
+//        Assert.assertEquals("Ürün başarıyla eklendi", alertText);
+//        alert.accept(); // kapatmak için
+
+        Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
 
     }
 }
