@@ -8,6 +8,9 @@ Feature: asdasdas
     And Kullanici About'a tiklar
     And Kullanici Contact'a tiklar
     And Kullanici Cart'a tiklar
+    And Kullanici user panelden My Cart'a tiklar
+    And Kullanici user panelden My Orders'a tiklar
+    And Kullanici user panelden Settings'a tiklar
     And Admin Customer Management'a tiklar
     And Admin Admin Management'a tiklar
     And Admin Order Management'a tiklar
@@ -21,5 +24,7 @@ Feature: asdasdas
     And Sayfanin en üstüne gidilir
     And Sayfanin asagisina scroll yapılır
     And Sayfanin yukarisina scroll yapılır
+    And Kullanici 2 saniye bekler
+
 
 
