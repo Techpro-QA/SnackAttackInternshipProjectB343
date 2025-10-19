@@ -17,5 +17,9 @@ Feature: asdasdas
     And Admin Add.Cat.Management'a tiklar
     And Admin Support Requests'a tiklar
     And Sayfa kapatilir
+    And Sayfanin en sonuna gidilir
+    And Sayfanin en üstüne gidilir
+    And Sayfanin asagisina scroll yapılır
+    And Sayfanin yukarisina scroll yapılır
 
 
