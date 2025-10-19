@@ -16,6 +16,12 @@ public class PaymentManagementStepdefs {
     AdminPanelPage adminPanelPage = new AdminPanelPage();
 
 
+
+    @Then("Payment Management görüntülenir")
+    public void paymentManagementGörüntülenir() {
+        assertTrue(paymentManagementPage.allPaymentsText.isDisplayed());
+    }
+
     @Then("Payment ID, Order ID, User ID, Amount ve Payment Date sutunlarin altında veriler goruntulenir")
     public void paymentIDOrderIDUserIDAmountVePaymentDateSutunlarinAltındaVerilerGoruntulenir() {
 
@@ -31,17 +37,19 @@ public class PaymentManagementStepdefs {
         for (WebElement row1 : paymentManagementPage.tableRows) {
 
             row1.click();
+            ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
             assertTrue(paymentManagementPage.orderCodeText.isDisplayed());
+            ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
             assertTrue(paymentManagementPage.addressText.isDisplayed());
+            ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
             assertTrue(paymentManagementPage.paymentMethodText.isDisplayed());
+            ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
             assertTrue(paymentManagementPage.statusText.isDisplayed());
             ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-            assertTrue(paymentManagementPage.orderDetailsText.isDisplayed());
             paymentManagementPage.closeButton.click();
 
 
         }
     }
-
 
 }
