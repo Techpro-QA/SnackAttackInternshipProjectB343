@@ -275,8 +275,6 @@ public class ProductManagementStepdefs {
         } else {
             productManagementPage.createProductSelectFile.click();
         }
-
         ReusableMethods.uploadFilePath(path);
-
     }
 }
