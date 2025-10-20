@@ -349,14 +349,14 @@ public class ProductManagementStepdefs {
         String actualProductName = productManagementPage.searchedProductNameColumn.getText().trim();
         String expectedProductName = TestData.expectedProductName.trim();
 
+        Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
+
         System.out.println("Expected: " + expectedProductName);
         System.out.println("Actual  : " + actualProductName);
 
         Assert.assertEquals(expectedProductName, actualProductName);
 
     }
-
-
     @Then("Urunun eklenemedigi dogrulanir")
     public void urununEklenemedigiDogrulanir() {
     }

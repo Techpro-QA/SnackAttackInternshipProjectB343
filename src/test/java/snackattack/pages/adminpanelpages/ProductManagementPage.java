@@ -79,7 +79,7 @@ public class ProductManagementPage {
     @FindBy(xpath = "(//input[@type='checkbox'])[2]")
     public WebElement updateIceceklerCheckbox;
 
-     @FindBy(xpath = "(//input[@type='checkbox'])[3]")
+    @FindBy(xpath = "(//input[@type='checkbox'])[3]")
     public WebElement updateAtistirmaliklarCheckbox;
 
     @FindBy(xpath = "(//input[@type='checkbox'])[4]")
