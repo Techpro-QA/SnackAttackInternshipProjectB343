@@ -42,7 +42,7 @@ Feature: Admin herhangi bir üründe güncelleme yapabilmeli
 
   @US15_TC03
   Scenario: Admin herhangi bir urunun fiyat bilgisini ve indirim bilgisini negatif veriler ile güncelleyememeli
-    When Admin "C:\Users\Mustafa\Downloads\pizzaimg.jpg" resim ekler
+    When Admin guncellenecek "C:\Users\Mustafa\Downloads\pizzaimg.jpg" resmi ekler
     And Admin Ürün Adı Textbox'ini "PIZZA06" ile doldurur
     And Admin Açıklama Textbox'ini "Margarita" ile doldurur
     And Admin İçerik Textbox'ini "sos,mozarella" ile doldurur

@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,26 +25,6 @@ public class ProductManagementStepdefs {
     ProductManagementPage productPage = new ProductManagementPage();
     WebDriver driver = Driver.getDriver();
     Faker faker = new Faker();
-
-    List<WebElement> tumUpdateCheckboxlari = Arrays.asList(
-            productManagementPage.updatePIZZACheckbox,
-            productManagementPage.updateIceceklerCheckbox,
-            productManagementPage.updateAtistirmaliklarCheckbox,
-            productManagementPage.updatePİZZACheckbox,
-            productManagementPage.updateTATLILARCheckbox,
-            productManagementPage.updatepizzaCheckbox,
-            productManagementPage.updateMEZELERCheckbox,
-            productManagementPage.updateSALATALARCheckbox,
-            productManagementPage.updateDenemeCheckbox,
-            productManagementPage.updateDONERCheckbox,
-            productManagementPage.updateHAMBURGERCheckbox
-    );
-
-    List<WebElement> tumEkKategoriCheckboxlari = Arrays.asList(
-            productManagementPage.updateSoslarCheckbox,
-            productManagementPage.updateSalataSoslariCheckbox,
-            productManagementPage.updateMezelerCheckbox
-    );
 
     @Then("Admin Admin Panel'e yönlenmis olmali")
     public void admin_panel_yonlendirme() {
@@ -86,18 +67,17 @@ public class ProductManagementStepdefs {
         Assert.assertTrue("Hata mesajı görünmüyor!", productPage.loginErrorMessage.isDisplayed());
     }
 
-    @Then("{string} mesaji görüntülenmeli")
-    public void mesaj_görüntülenmeli(String expectedMessage) {
-        List<WebElement> messages = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedMessage + "')]"));
-
-        // Eğer mesaj DOM'da yoksa
-        Assert.assertFalse("Beklenen mesaj DOM'da bulunamadı: " + expectedMessage, messages.isEmpty());
-
-        // Eğer varsa, ilk mesajın görünür ve doğru metin içerdiğini kontrol et
-        String actualMessage = messages.get(0).getText().trim();
-        Assert.assertTrue("Mesaj beklenen metni içermiyor!", actualMessage.contains(expectedMessage));
-
+    @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
+    public void gecersiz_name_search_bulunamamali() {
+        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.firstProductRow.isDisplayed());
     }
+
+    @And("Admin New butonuna tiklar")
+    public void adminNewButonunaTiklar() {
+
+        productManagementPage.createProductSelectFile.click();
+    }
+
 
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
@@ -112,11 +92,9 @@ public class ProductManagementStepdefs {
 
     @And("Admin Ürün Adı Textbox'ini {string} ile doldurur")
     public void adminÜrünAdıTextboxIniIleDoldurur(String productName) {
-
         if (productName.equals("random")){
             productName = faker.food().dish();
         }
-
         productManagementPage.updateProductNameTextbox.clear();
         productManagementPage.updateProductNameTextbox.sendKeys(productName);
         TestData.expectedProductName = productName;
@@ -150,12 +128,6 @@ public class ProductManagementStepdefs {
 
     @And("Admin {string} kategorisini secer")
     public void adminKategorisiniSecer(String kategorilerCheckboxName) {
-
-        for (WebElement checkbox : tumUpdateCheckboxlari) {
-            if (checkbox.isSelected()) {
-                checkbox.click();
-            }
-        }
 
         switch (kategorilerCheckboxName){
             case "PIZZA":
@@ -219,14 +191,6 @@ public class ProductManagementStepdefs {
 
     @And("Admin {string} Ek Kategorisini secer")
     public void adminEkKategorisiniSecer(String ekKategorilerCheckboxName) {
-
-
-        for (WebElement checkbox : tumEkKategoriCheckboxlari) {
-            if (checkbox.isSelected()) {
-                checkbox.click();
-            }
-        }
-
 
         switch (ekKategorilerCheckboxName) {
             case "Soslar":
@@ -298,23 +262,6 @@ public class ProductManagementStepdefs {
         ReusableMethods.uploadFilePath(path);
     }
 
-    @And("Admin submit butonuna scroll yapar")
-    public void adminSubmitButonunaScrollYapar() {
-        JSUtils.JSscrollIntoView(productManagementPage.moveToButton);
-        WaitUtils.waitFor(1);
-    }
-
-    @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
-    public void gecersiz_name_search_bulunamamali() {
-        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.firstProductRow.isDisplayed());
-    }
-
-    @And("Admin New butonuna tiklar")
-    public void adminNewButonunaTiklar() {
-
-        productManagementPage.createProductSelectFile.click();
-    }
-
     @And("Admin {string} ve {string} seceneklerini secer")
     public void adminVeSecenekleriniSecer() {
 
@@ -336,17 +283,7 @@ public class ProductManagementStepdefs {
 
     @Then("Urunun eklendigi dogrulanir")
     public void urununEklendigiDogrulanir() {
-
-//        Alert alert = driver.switchTo().alert();
-//        String alertText = alert.getText();
-//        Assert.assertEquals("Ürün başarıyla eklendi", alertText);
-//        alert.accept(); // kapatmak için
-
         Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
-
     }
-
-
-
 
 }
