@@ -5,10 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.ProductManagementPage;
@@ -359,9 +356,63 @@ public class ProductManagementStepdefs {
     }
     @Then("Urunun eklenemedigi dogrulanir")
     public void urununEklenemedigiDogrulanir() {
+
+        String validationMessage = productManagementPage.updateProductNameTextbox.getAttribute("validationMessage");
+        Assert.assertEquals("Lütfen bu alanı doldurun.",validationMessage);
+
     }
 
-    @Then("Urun eklenememeli ama eklendi")
+    @Then("Urun eklenememeli ama eklendi - BUG")
     public void urunEklenememeliAmaEklendi() {
+
+        // Önce eklenen ürün adını al (random'du)
+        String expectedProductName = TestData.expectedProductName;
+        System.out.println("Kontrol edilecek ürün adı: " + expectedProductName);
+
+        // Ürün arama işlemi
+        productManagementPage.searchBox.clear();
+        productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
+        productManagementPage.searchButton.click();
+        WaitUtils.waitFor(2);
+
+        // searchedProductNameColumn tek bir WebElement'se:
+        boolean isProductFound;
+
+        try {
+            isProductFound = productManagementPage.searchedProductNameColumn.isDisplayed() &&
+                    productManagementPage.searchedProductNameColumn.getText().equals(TestData.expectedProductName);
+        } catch (NoSuchElementException e) {
+            isProductFound = false;
+        }
+
+        Assert.assertFalse("Ürün eklenmemeliydi ama listede bulundu!", isProductFound);
+
+    }
+
+    @Then("Zorunlu alanlari doldurma dogrulanir")
+    public void zorunluAlanlariDoldurmaDogrulanir() {
+
+        WaitUtils.waitFor(2);
+
+            Alert alert = Driver.getDriver().switchTo().alert();  // Alert'e geç
+            String alertText = alert.getText();                   // Alert mesajını al
+            System.out.println("Alert mesajı: " + alertText);
+
+            // Assert: Alert mesajı beklendiği gibi mi?
+            Assert.assertTrue(alertText.contains("zorunlu") || alertText.contains("doldurun"));
+
+            alert.accept(); // Alert'i kapat
+
+        WaitUtils.waitFor(2);
+
+
+    }
+
+    @And("Admin Available ve Active seceneklerini secmez")
+    public void adminAvailableVeActiveSecenekleriniSecmez() {
+
+            ReusableMethods.click(productManagementPage.createAvailableCheckbox);
+            ReusableMethods.click(productManagementPage.createActiveCheckbox);
+
     }
 }

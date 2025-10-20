@@ -39,7 +39,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
+    And Admin İndirim Textbox'ini "" ile doldurur
     And Admin Create Product butonuna tiklar
     Then Urunun eklendigi dogrulanir
     And Sayfa kapatilir
@@ -73,13 +73,11 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
-    Then Urunun eklenemedigi dogrulanir
+    Then Zorunlu alanlari doldurma dogrulanir
     And Sayfa kapatilir
 
   @US14_TC05
-  Scenario: TC05 - Admin, Discount değeri Price'dan büyükse ürün ekleyememeli (Negative Scenario)
+  Scenario: TC05 - Admin, Discount değeri Price'dan büyükse ürün ekleyememeli -BUG (Negative Scenario)
     And Admin Ürün Adı Textbox'ini "random" ile doldurur
     And Admin Açıklama Textbox'ini "Cheeseburger" ile doldurur
     And Admin İçerik Textbox'ini "Et" ile doldurur
@@ -90,13 +88,11 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi
+    Then Urun eklenememeli ama eklendi - BUG
     And Sayfa kapatilir
 
   @US14_TC06
-  Scenario: TC06 - Admin Categories seçmeden ürün ekleyememeli (Negative Scenario)
+  Scenario: TC06 - Admin Categories seçmeden ürün ekleyememeli -BUG  (Negative Scenario)
     And Admin Ürün Adı Textbox'ini "random" ile doldurur
     And Admin Açıklama Textbox'ini "Cheeseburger" ile doldurur
     And Admin İçerik Textbox'ini "Et" ile doldurur
@@ -107,13 +103,11 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi
+    Then Urun eklenememeli ama eklendi - BUG
     And Sayfa kapatilir
 
   @US14_TC07
-  Scenario: TC07 - Admin Image yüklemeden ürün ekleyememeli (Negative Scenario)
+  Scenario: TC07 - Admin Image yüklemeden ürün ekleyememeli -BUG  (Negative Scenario)
     And Admin Ürün Adı Textbox'ini "random" ile doldurur
     And Admin Açıklama Textbox'ini "Cheeseburger" ile doldurur
     And Admin İçerik Textbox'ini "Et" ile doldurur
@@ -125,13 +119,11 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     # Image yükleme adımı atlandı
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi
+    Then Urun eklenememeli ama eklendi - BUG
     And Sayfa kapatilir
 
   @US14_TC08
-  Scenario: TC08 - Admin "Available" ve "Active" secmeden ürün ekleyememeli (Negative Scenario)
+  Scenario: TC08 - Admin "Available" ve "Active" secmeden ürün ekleyememeli -BUG  (Negative Scenario)
     And Admin Ürün Adı Textbox'ini "random" ile doldurur
     And Admin Açıklama Textbox'ini "Cheeseburger" ile doldurur
     And Admin İçerik Textbox'ini "Et" ile doldurur
@@ -141,11 +133,9 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "HAMBURGER" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     # Checkbox seçilmedi
-    And Admin Available ve Active seceneklerini secer
+    And Admin Available ve Active seceneklerini secmez
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi
+    Then Urun eklenememeli ama eklendi - BUG
     And Sayfa kapatilir
 
 
