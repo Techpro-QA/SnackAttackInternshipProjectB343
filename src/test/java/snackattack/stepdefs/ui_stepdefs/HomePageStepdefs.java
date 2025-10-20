@@ -5,9 +5,7 @@ import io.cucumber.java.en.Given;
 import org.junit.Assert;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
-import snackattack.utilities.ConfigReader;
-import snackattack.utilities.Driver;
-import snackattack.utilities.JSUtils;
+import snackattack.utilities.*;
 
 
 public class HomePageStepdefs {
@@ -68,5 +66,30 @@ public class HomePageStepdefs {
         homePage.loginButton.click();
         Assert.assertTrue(adminPanelPage.wellcomeToAdminPanelText.isDisplayed());
 
+    }
+
+    @And("Sayfanin en sonuna gidilir")
+    public void sayfaninEnSonunaGidilir() {
+        ActionsUtils.scrollEnd();
+    }
+
+    @And("Sayfanin en üstüne gidilir")
+    public void sayfaninEnÜstüneGidilir() {
+        ActionsUtils.scrollHome();
+    }
+
+    @And("Sayfanin asagisina scroll yapılır")
+    public void sayfaninAsagisinaScrollYapılır() {
+        ActionsUtils.scrollUp();
+    }
+
+    @And("Sayfanin yukarisina scroll yapılır")
+    public void sayfaninYukarisinaScrollYapılır() {
+        ActionsUtils.scrollDown();
+    }
+
+    @And("Kullanici {int} saniye bekler")
+    public void kullaniciSaniyeBekler(int süre) {
+        WaitUtils.waitFor(süre);
     }
 }

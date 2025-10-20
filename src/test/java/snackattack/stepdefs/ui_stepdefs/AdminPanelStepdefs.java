@@ -1,23 +1,15 @@
 package snackattack.stepdefs.ui_stepdefs;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.ProductManagementPage;
-import snackattack.utilities.ConfigReader;
 import snackattack.utilities.Driver;
 import snackattack.utilities.JSUtils;
 
-import java.util.List;
-
-public class AdminProductManagementStepdefs {
+public class AdminPanelStepdefs {
 
     HomePage homePage = new HomePage();
     AdminPanelPage adminPanelPage = new AdminPanelPage();

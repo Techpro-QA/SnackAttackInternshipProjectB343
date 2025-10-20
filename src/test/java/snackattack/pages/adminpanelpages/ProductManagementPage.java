@@ -36,15 +36,22 @@ public class ProductManagementPage {
     @FindBy(xpath = "//p[@class='text-red-500 text-sm']")
     public WebElement loginErrorMessage;
 
+    //New Button
+    @FindBy(xpath = "//a[.='New']")
+    public WebElement newProductButton;
+
     //Product güncelleme textbox locateleri
 
     @FindBy(xpath = "//input[@accept='image/*']")
-    public WebElement updateSellectFile;
+    public WebElement updateSelectFile;
+
+    @FindBy(id = "imgBase64")
+    public WebElement createProductSelectFile;
 
     @FindBy(name = "name")
     public WebElement updateProductNameTextbox;
 
-    @FindBy(name = "description")
+    @FindBy(tagName = "textarea")
     public WebElement updateDescriptionTextbox;
 
     @FindBy(name = "contents")
@@ -56,6 +63,14 @@ public class ProductManagementPage {
     @FindBy(name = "discount")
     public WebElement updateDiscountTextbox;
 
+    @FindBy(xpath = "//tr/td[3]")
+    public WebElement searchedProductNameColumn;
+
+    @FindBy(tagName = "button")
+    public WebElement moveToButton;
+
+
+
     //Kategoriler checboxlari locateleri
 
     @FindBy(xpath = "(//input[@type='checkbox'])[1]")
@@ -64,7 +79,7 @@ public class ProductManagementPage {
     @FindBy(xpath = "(//input[@type='checkbox'])[2]")
     public WebElement updateIceceklerCheckbox;
 
-     @FindBy(xpath = "(//input[@type='checkbox'])[3]")
+    @FindBy(xpath = "(//input[@type='checkbox'])[3]")
     public WebElement updateAtistirmaliklarCheckbox;
 
     @FindBy(xpath = "(//input[@type='checkbox'])[4]")
@@ -108,6 +123,22 @@ public class ProductManagementPage {
     @FindBy(xpath = "(//input[@type='checkbox'])[16]")
     public WebElement updateMevcutCheckbox;
 
+    @FindBy(xpath = "//button[@type='submit']")
+    public WebElement updateGüncelleButton;
+
+    @FindBy(id = "available")
+    public WebElement createAvailableCheckbox;
+
+    @FindBy(id = "active")
+    public WebElement createActiveCheckbox;
+
+    @FindBy(xpath = "//button[@type='submit']")
+    public WebElement createProductButton;
+
+    //Success message locate
+
+    @FindBy(xpath = "//*[contains(text(),'Ürün başarıyla eklendi')]")
+    public WebElement successMessage;
 
 
 

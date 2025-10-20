@@ -21,10 +21,5 @@ public class Hook {
                 .addHeader("Authorization", "Bearer " + Authentication.generateToken())
                 .build();
     }
-
-    @After
-    public void tearDown() {
-        Driver.closeDriver();
-    }
-
+    
 }

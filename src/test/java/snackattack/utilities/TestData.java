@@ -16,4 +16,7 @@ public class TestData {
     public static String expectedZipCode;
     public static String expectedEmail;
     public static int userId;
+
+    //Product verileri
+    public static String expectedProductName;
 }
