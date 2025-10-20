@@ -72,6 +72,7 @@ public class ContactPageStepdefs {
     @And("Acilan pencerede Name alani bos birakilir")
     public void acilanPenceredeNameAlaniBosBirakilir() {
 
+        contactPage.nameTextBox.sendKeys("");
     }
 
     @Then("Lutfen bu alani doldurun mesaji goruntulenmeli")
@@ -79,6 +80,25 @@ public class ContactPageStepdefs {
 
         ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.nameTextBox,"Lütfen bu alanı doldurun.");
     }
+
+    @And("Email  alani bos birakilir.")
+    public void emailAlaniBosBirakilir() {
+
+        contactPage.emailTextBox.sendKeys("");
+    }
+
+    @And("Email  alaninda @ isareti yazilmaz")
+    public void emailAlanindaIsaretiYazilmaz() {
+
+        contactPage.emailTextBox.sendKeys("sahinbatch.com");
+    }
+
+    @Then("{string} goruntulenmeli")
+    public void goruntulenmeli(String expectedMessage) {
+
+        ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.emailTextBox,expectedMessage);
+    }
+
 
 }
 
