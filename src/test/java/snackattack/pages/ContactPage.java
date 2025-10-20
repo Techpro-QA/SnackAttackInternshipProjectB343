@@ -28,7 +28,7 @@ public class ContactPage {
     @FindBy(xpath = "//button[@type='submit']")
     public WebElement SubmitContactButton;
 
-    @FindBy(linkText= "Contact Message with id 15 is CREATED Successfully")
+    @FindBy(xpath= "//h3[contains(text(), 'Contact Message with id') and contains(text(), 'CREATED')]")
     public WebElement ContactMessageVerification;
 
 

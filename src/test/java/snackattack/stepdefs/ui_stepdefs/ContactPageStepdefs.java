@@ -5,10 +5,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 import snackattack.pages.ContactPage;
 import snackattack.pages.HomePage;
+import snackattack.utilities.ActionsUtils;
 import snackattack.utilities.ConfigReader;
 import snackattack.utilities.Driver;
+import snackattack.utilities.ReusableMethods;
 
 public class ContactPageStepdefs {
 
@@ -16,13 +19,6 @@ public class ContactPageStepdefs {
     ContactPage contactPage = new ContactPage();
     Faker faker = new Faker();
 
-
-    @And("Anasayfadaki Contact butonuna tiklanir.")
-    public void anasayfadakiContactButonunaTiklanir() {
-
-       homePage.homeContact.click();
-
-    }
 
     @And("Acilan pencerede Name icin gecerli bir data girilir")
     public void acilanPenceredeNameIcinGecerliBirDataGirilir() {
@@ -49,12 +45,16 @@ public class ContactPageStepdefs {
     }
 
 
-    @And("{string} kutucugu isaretlenir.")
-    public void kutucuguIsaretlenir(String arg0) {
+    @And("Kullanıcı consent  kutucugunu  isaretler")
+    public void kullanıcıConsentKutucugunuIsaretler() {
 
-        contactPage.consentClickBox.click();
+        ActionsUtils.scrollDown();
+        WebElement checkbox = contactPage.consentClickBox;
+        if (!checkbox.isSelected()) {
+            checkbox.click();
+        }
+
     }
-
 
     @And("Send butonu tıklanir")
     public void sendButonuTıklanir() {
