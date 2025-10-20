@@ -16,6 +16,7 @@ import snackattack.utilities.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ProductManagementStepdefs {
@@ -25,6 +26,26 @@ public class ProductManagementStepdefs {
     ProductManagementPage productPage = new ProductManagementPage();
     WebDriver driver = Driver.getDriver();
     Faker faker = new Faker();
+
+    List<WebElement> tumUpdateCheckboxlari = Arrays.asList(
+            productManagementPage.updatePIZZACheckbox,
+            productManagementPage.updateIceceklerCheckbox,
+            productManagementPage.updateAtistirmaliklarCheckbox,
+            productManagementPage.updatePİZZACheckbox,
+            productManagementPage.updateTATLILARCheckbox,
+            productManagementPage.updatepizzaCheckbox,
+            productManagementPage.updateMEZELERCheckbox,
+            productManagementPage.updateSALATALARCheckbox,
+            productManagementPage.updateDenemeCheckbox,
+            productManagementPage.updateDONERCheckbox,
+            productManagementPage.updateHAMBURGERCheckbox
+    );
+
+    List<WebElement> tumEkKategoriCheckboxlari = Arrays.asList(
+            productManagementPage.updateSoslarCheckbox,
+            productManagementPage.updateSalataSoslariCheckbox,
+            productManagementPage.updateMezelerCheckbox
+    );
 
     @Then("Admin Admin Panel'e yönlenmis olmali")
     public void admin_panel_yonlendirme() {
@@ -67,17 +88,18 @@ public class ProductManagementStepdefs {
         Assert.assertTrue("Hata mesajı görünmüyor!", productPage.loginErrorMessage.isDisplayed());
     }
 
-    @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
-    public void gecersiz_name_search_bulunamamali() {
-        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.firstProductRow.isDisplayed());
+    @Then("{string} mesaji görüntülenmeli")
+    public void mesaj_görüntülenmeli(String expectedMessage) {
+        List<WebElement> messages = Driver.getDriver().findElements(By.xpath("//*[contains(text(),'" + expectedMessage + "')]"));
+
+        // Eğer mesaj DOM'da yoksa
+        Assert.assertFalse("Beklenen mesaj DOM'da bulunamadı: " + expectedMessage, messages.isEmpty());
+
+        // Eğer varsa, ilk mesajın görünür ve doğru metin içerdiğini kontrol et
+        String actualMessage = messages.get(0).getText().trim();
+        Assert.assertTrue("Mesaj beklenen metni içermiyor!", actualMessage.contains(expectedMessage));
+
     }
-
-    @And("Admin New butonuna tiklar")
-    public void adminNewButonunaTiklar() {
-
-        productManagementPage.createProductSelectFile.click();
-    }
-
 
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
@@ -92,9 +114,11 @@ public class ProductManagementStepdefs {
 
     @And("Admin Ürün Adı Textbox'ini {string} ile doldurur")
     public void adminÜrünAdıTextboxIniIleDoldurur(String productName) {
+
         if (productName.equals("random")){
-            productName = faker.food().dish();
+            productName = faker.food().dish()+ "_" + UUID.randomUUID().toString().substring(0, 4);
         }
+
         productManagementPage.updateProductNameTextbox.clear();
         productManagementPage.updateProductNameTextbox.sendKeys(productName);
         TestData.expectedProductName = productName;
@@ -122,67 +146,72 @@ public class ProductManagementStepdefs {
     public void adminİndirimTextboxIniIleDoldurur(String discount) {
         productManagementPage.updateDiscountTextbox.clear();
         productManagementPage.updateDiscountTextbox.sendKeys(discount);
-        ActionsUtils.scrollEnd();
         WaitUtils.waitFor(2);
     }
 
     @And("Admin {string} kategorisini secer")
     public void adminKategorisiniSecer(String kategorilerCheckboxName) {
 
+        for (WebElement checkbox : tumUpdateCheckboxlari) {
+            if (checkbox.isSelected()) {
+                ReusableMethods.click(checkbox);
+            }
+        }
+
         switch (kategorilerCheckboxName){
             case "PIZZA":
                 if (!productManagementPage.updatePIZZACheckbox.isSelected()){
-                    productManagementPage.updatePIZZACheckbox.click();
+                    ReusableMethods.click(productManagementPage.updatePIZZACheckbox);
                 }
                 break;
             case "ICECEKLER":
                 if (!productManagementPage.updateIceceklerCheckbox.isSelected()){
-                    productManagementPage.updateIceceklerCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateIceceklerCheckbox);
                 }
                 break;
             case "Atıştırmalıklar":
                 if (!productManagementPage.updateAtistirmaliklarCheckbox.isSelected()){
-                    productManagementPage.updateAtistirmaliklarCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateAtistirmaliklarCheckbox);
                 }
                 break;
             case "PİZZA":
                 if (!productManagementPage.updatePİZZACheckbox.isSelected()){
-                    productManagementPage.updatePİZZACheckbox.click();
+                    ReusableMethods.click(productManagementPage.updatePİZZACheckbox);
                 }
                 break;
             case "TATLILAR":
                 if (!productManagementPage.updateTATLILARCheckbox.isSelected()){
-                    productManagementPage.updateTATLILARCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateTATLILARCheckbox);
                 }
                 break;
             case "pizza":
                 if (!productManagementPage.updatepizzaCheckbox.isSelected()){
-                    productManagementPage.updatepizzaCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updatepizzaCheckbox);
                 }
                 break;
             case "MEZELER":
                 if (!productManagementPage.updateMEZELERCheckbox.isSelected()){
-                    productManagementPage.updateMEZELERCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateMEZELERCheckbox);
                 }
                 break;
             case "SALATALAR":
                 if (!productManagementPage.updateSALATALARCheckbox.isSelected()){
-                    productManagementPage.updateSALATALARCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateSALATALARCheckbox);
                 }
                 break;
             case "Deneme":
                 if (!productManagementPage.updateDenemeCheckbox.isSelected()){
-                    productManagementPage.updateDenemeCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateDenemeCheckbox);
                 }
                 break;
             case "DONER":
                 if (!productManagementPage.updateDONERCheckbox.isSelected()){
-                    productManagementPage.updateDONERCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateDONERCheckbox);
                 }
                 break;
             case "HAMBURGER":
                 if (!productManagementPage.updateHAMBURGERCheckbox.isSelected()){
-                    productManagementPage.updateHAMBURGERCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateHAMBURGERCheckbox);
                 }
                 break;
         }
@@ -192,20 +221,28 @@ public class ProductManagementStepdefs {
     @And("Admin {string} Ek Kategorisini secer")
     public void adminEkKategorisiniSecer(String ekKategorilerCheckboxName) {
 
+
+        for (WebElement checkbox : tumEkKategoriCheckboxlari) {
+            if (checkbox.isSelected()) {
+                ReusableMethods.click(checkbox);
+            }
+        }
+
+
         switch (ekKategorilerCheckboxName) {
             case "Soslar":
                 if (!productManagementPage.updateSoslarCheckbox.isSelected()) {
-                    productManagementPage.updateSoslarCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateSoslarCheckbox);
                 }
                 break;
             case "Salata Soslari":
                 if (!productManagementPage.updateSalataSoslariCheckbox.isSelected()) {
-                    productManagementPage.updateSalataSoslariCheckbox.click();
+                    ReusableMethods.click(productManagementPage.updateSalataSoslariCheckbox);
                 }
                 break;
             case "Mezeler":
-                if (!productManagementPage.updateSalataSoslariCheckbox.isSelected()) {
-                    productManagementPage.updateSalataSoslariCheckbox.click();
+                if (!productManagementPage.updateMezelerCheckbox.isSelected()) {
+                    ReusableMethods.click(productManagementPage.updateMezelerCheckbox);
                 }
                 break;
         }
@@ -216,18 +253,18 @@ public class ProductManagementStepdefs {
     public void adminPopulerMiVeMevcutMuCheckboxlariniSecer() {
 
         if (!productManagementPage.updatePopülerCheckbox.isSelected()){
-            productManagementPage.updatePopülerCheckbox.click();
+            ReusableMethods.click(productManagementPage.updatePopülerCheckbox);
         }
 
         if (!productManagementPage.updateMevcutCheckbox.isSelected()){
-            productManagementPage.updateMevcutCheckbox.click();
+            ReusableMethods.click(productManagementPage.updateMevcutCheckbox);
         }
 
     }
 
     @And("Admin Güncelle butonuna tiklar")
     public void adminGüncelleButonunaTiklar() {
-        productManagementPage.updateGüncelleButton.click();
+        ReusableMethods.click(productManagementPage.updateGüncelleButton);
     }
 
     @Then("Urunun guncellendigi kontrol edilir")
@@ -262,15 +299,32 @@ public class ProductManagementStepdefs {
         ReusableMethods.uploadFilePath(path);
     }
 
-    @And("Admin {string} ve {string} seceneklerini secer")
-    public void adminVeSecenekleriniSecer() {
+    @And("Admin submit butonuna scroll yapar")
+    public void adminSubmitButonunaScrollYapar() {
+        JSUtils.JSscrollIntoView(productManagementPage.moveToButton);
+        WaitUtils.waitFor(4);
+    }
+
+    @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
+    public void gecersiz_name_search_bulunamamali() {
+        Assert.assertTrue("Ürün tablosu görünmüyor!", productPage.firstProductRow.isDisplayed());
+    }
+
+    @And("Admin New butonuna tiklar")
+    public void adminNewButonunaTiklar() {
+
+        productManagementPage.newProductButton.click();
+    }
+
+    @And("Admin Available ve Active seceneklerini secer")
+    public void adminAvailableActiveSecenekleriniSecer() {
 
         if (!productManagementPage.createAvailableCheckbox.isSelected()){
-            productManagementPage.createAvailableCheckbox.click();
+            ReusableMethods.click(productManagementPage.createAvailableCheckbox);
         }
 
         if (!productManagementPage.createActiveCheckbox.isSelected()){
-            productManagementPage.createActiveCheckbox.click();
+            ReusableMethods.click(productManagementPage.createActiveCheckbox);
         }
 
     }
@@ -278,12 +332,36 @@ public class ProductManagementStepdefs {
     @And("Admin Create Product butonuna tiklar")
     public void adminCreateProductButonunaTiklar() {
 
-        productManagementPage.createProductButton.click();
+        ReusableMethods.click(productManagementPage.createProductButton);
     }
 
     @Then("Urunun eklendigi dogrulanir")
     public void urununEklendigiDogrulanir() {
-        Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
+
+        System.out.println(TestData.expectedProductName);
+        WaitUtils.waitFor(2);
+        Driver.getDriver().switchTo().alert().accept(); //ürün eklendi bildirimi
+        WaitUtils.waitFor(2);
+        productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
+        productManagementPage.searchButton.click();
+        WaitUtils.waitFor(2);
+
+        String actualProductName = productManagementPage.searchedProductNameColumn.getText().trim();
+        String expectedProductName = TestData.expectedProductName.trim();
+
+        System.out.println("Expected: " + expectedProductName);
+        System.out.println("Actual  : " + actualProductName);
+
+        Assert.assertEquals(expectedProductName, actualProductName);
+
     }
 
+
+    @Then("Urunun eklenemedigi dogrulanir")
+    public void urununEklenemedigiDogrulanir() {
+    }
+
+    @Then("Urun eklenememeli ama eklendi")
+    public void urunEklenememeliAmaEklendi() {
+    }
 }
