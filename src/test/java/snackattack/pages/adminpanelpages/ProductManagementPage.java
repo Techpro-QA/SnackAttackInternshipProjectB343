@@ -135,7 +135,10 @@ public class ProductManagementPage {
     @FindBy(xpath = "//button[@type='submit']")
     public WebElement createProductButton;
 
+    //Success message locate
 
+    @FindBy(xpath = "//*[contains(text(),'Ürün başarıyla eklendi')]")
+    public WebElement successMessage;
 
 
 
