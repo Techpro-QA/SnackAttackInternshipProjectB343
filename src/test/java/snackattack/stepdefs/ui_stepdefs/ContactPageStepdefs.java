@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import snackattack.pages.ContactPage;
 import snackattack.pages.HomePage;
@@ -66,6 +67,17 @@ public class ContactPageStepdefs {
     public void kayitIslemininBasariliBirSekildeGerceklestigiDogrulanir() throws Throwable {
 
         Assert.assertTrue(contactPage.ContactMessageVerification.isDisplayed());
+    }
+
+    @And("Acilan pencerede Name alani bos birakilir")
+    public void acilanPenceredeNameAlaniBosBirakilir() {
+
+    }
+
+    @Then("Lutfen bu alani doldurun mesaji goruntulenmeli")
+    public void lutfenBuAlaniDoldurunMesajiGoruntulenmeli() {
+
+        ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.nameTextBox,"Lütfen bu alanı doldurun.");
     }
 
 }
