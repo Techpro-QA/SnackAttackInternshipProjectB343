@@ -1,20 +1,23 @@
+@US15
 Feature: Admin herhangi bir üründe güncelleme yapabilmeli
-  @US15
+
   Background:
     Given Sayfaya gidilir
     When Kullanici loginRegister'a tiklar
     And Kullanici "admin" olarak giriş yapar
+    And Kullanici 2 saniye bekler
     And Admin Product Management'a tiklar
     And Admin güncelleyeceği urunune tiklar
 
-  @US15_TC_01
+  @US15_TC01
   Scenario: TC_01-Admin herhangi bir üründe güncelleme yapabilmeli
-    When Admin guncellenecek "C:\Users\Mustafa\Downloads\pizzaimg.jpg" resmi ekler
+    When Admin "C:\Users\Mustafa\Downloads\pizzaimg.jpg" resim ekler
     And Admin Ürün Adı Textbox'ini "PIZZA06" ile doldurur
     And Admin Açıklama Textbox'ini "Margarita" ile doldurur
     And Admin İçerik Textbox'ini "sos,mozarella" ile doldurur
     And Admin Fiyat Textbox'ini "35" ile doldurur
     And Admin İndirim Textbox'ini "0" ile doldurur
+    And Admin submit butonuna scroll yapar
     And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin populer mi? ve mevcut mu? checkboxlarini secer
@@ -29,6 +32,7 @@ Feature: Admin herhangi bir üründe güncelleme yapabilmeli
     And Admin İçerik Textbox'ini "" ile doldurur
     And Admin Fiyat Textbox'ini "" ile doldurur
     And Admin İndirim Textbox'ini "" ile doldurur
+    And Admin submit butonuna scroll yapar
     And Admin "" kategorisini secer
     And Admin "" Ek Kategorisini secer
     And Admin populer mi? ve mevcut mu? checkboxlarini secer
@@ -44,36 +48,10 @@ Feature: Admin herhangi bir üründe güncelleme yapabilmeli
     And Admin İçerik Textbox'ini "sos,mozarella" ile doldurur
     And Admin Fiyat Textbox'ini "-35" ile doldurur
     And Admin İndirim Textbox'ini "-10" ile doldurur
+    And Admin submit butonuna scroll yapar
     And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin populer mi? ve mevcut mu? checkboxlarini secer
     And Admin Güncelle butonuna tiklar
-    Then Urunun guncellendigi kontrol edilir
+    Then Urunun guncellenmedigi kontrol edilir
     And Sayfa kapatilir
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -82,12 +82,12 @@ public class ProductManagementStepdefs {
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
 
+        WaitUtils.waitForVisibility(productManagementPage.firstProductRow,10);
         if(productManagementPage.firstProductRow.isDisplayed()) {
             productManagementPage.firstProductRow.click();
         }
 
     }
-
 
 
     @And("Admin Ürün Adı Textbox'ini {string} ile doldurur")
@@ -98,7 +98,6 @@ public class ProductManagementStepdefs {
         productManagementPage.updateProductNameTextbox.clear();
         productManagementPage.updateProductNameTextbox.sendKeys(productName);
         TestData.expectedProductName = productName;
-
     }
 
     @And("Admin Açıklama Textbox'ini {string} ile doldurur")
@@ -129,26 +128,6 @@ public class ProductManagementStepdefs {
 
     @And("Admin {string} kategorisini secer")
     public void adminKategorisiniSecer(String kategorilerCheckboxName) {
-
-        List<WebElement> tumCheckboxlar = Arrays.asList(
-                productManagementPage.updatePIZZACheckbox,
-                productManagementPage.updateIceceklerCheckbox,
-                productManagementPage.updateAtistirmaliklarCheckbox,
-                productManagementPage.updatePİZZACheckbox,
-                productManagementPage.updateTATLILARCheckbox,
-                productManagementPage.updatepizzaCheckbox,
-                productManagementPage.updateMEZELERCheckbox,
-                productManagementPage.updateSALATALARCheckbox,
-                productManagementPage.updateDenemeCheckbox,
-                productManagementPage.updateDONERCheckbox,
-                productManagementPage.updateHAMBURGERCheckbox
-        );
-
-        for (WebElement checkbox : tumCheckboxlar) {
-            if (checkbox.isSelected()) {
-                checkbox.click();
-            }
-        }
 
         switch (kategorilerCheckboxName){
             case "PIZZA":
@@ -255,7 +234,6 @@ public class ProductManagementStepdefs {
     public void urununGuncellendigiKontrolEdilir() {
         Assert.assertTrue(Driver.getDriver().switchTo().alert().getText().equals("Ürün başarıyla güncellendi!"));
         Driver.getDriver().switchTo().alert().accept();
-        Driver.getDriver().switchTo().defaultContent();
         WaitUtils.waitFor(2);
         productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
         productManagementPage.searchButton.click();
@@ -284,7 +262,6 @@ public class ProductManagementStepdefs {
         ReusableMethods.uploadFilePath(path);
     }
 
-
     @And("Admin {string} ve {string} seceneklerini secer")
     public void adminVeSecenekleriniSecer() {
 
@@ -306,13 +283,7 @@ public class ProductManagementStepdefs {
 
     @Then("Urunun eklendigi dogrulanir")
     public void urununEklendigiDogrulanir() {
-
-//        Alert alert = driver.switchTo().alert();
-//        String alertText = alert.getText();
-//        Assert.assertEquals("Ürün başarıyla eklendi", alertText);
-//        alert.accept(); // kapatmak için
-
         Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
-
     }
+
 }

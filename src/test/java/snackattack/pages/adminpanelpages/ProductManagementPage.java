@@ -62,6 +62,9 @@ public class ProductManagementPage {
     @FindBy(xpath = "//tr/td[3]")
     public WebElement searchedProductNameColumn;
 
+    @FindBy(tagName = "button")
+    public WebElement moveToButton;
+
 
 
     //Kategoriler checboxlari locateleri
@@ -132,14 +135,6 @@ public class ProductManagementPage {
 
     @FindBy(xpath = "//*[contains(text(),'Ürün başarıyla eklendi')]")
     public WebElement successMessage;
-
-
-
-
-
-
-
-
 
 
 }
