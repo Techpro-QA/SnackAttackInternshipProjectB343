@@ -36,12 +36,16 @@ public class ProductManagementPage {
     @FindBy(xpath = "//p[@class='text-red-500 text-sm']")
     public WebElement loginErrorMessage;
 
+    //New Button
+    @FindBy(xpath = "//a[.='New']")
+    public WebElement newProductButton;
+
     //Product güncelleme textbox locateleri
 
     @FindBy(xpath = "//input[@accept='image/*']")
     public WebElement updateSelectFile;
 
-    @FindBy(xpath = "//a[.='New']")
+    @FindBy(id = "imgBase64")
     public WebElement createProductSelectFile;
 
     @FindBy(name = "name")
@@ -131,10 +135,7 @@ public class ProductManagementPage {
     @FindBy(xpath = "//button[@type='submit']")
     public WebElement createProductButton;
 
-    //Success message locate
 
-    @FindBy(xpath = "//*[contains(text(),'Ürün başarıyla eklendi')]")
-    public WebElement successMessage;
 
 
 
