@@ -17,6 +17,15 @@ public class TestData {
     public static String expectedEmail;
     public static int userId;
 
+    //Register verileri
+    public static String email;
+    public static String lastName;
+    public static String firstName;
+    public static String password;
+    public static String userName;
+    public static String address;
+    public static String phoneNumber;
+
     //Product verileri
     public static String expectedProductName;
 }
