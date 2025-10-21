@@ -60,5 +60,15 @@ public class PaymentManagementPage {
         return rows.get(index);
     }
 
+    @FindBy(xpath = "//span[.='More']")
+    public WebElement morePageButton;
+
+    @FindBy(xpath = "//a[text()='2']")
+    public WebElement secondPageButton;
+
+    @FindBy(xpath = "//a[text()='3']")
+    public WebElement thirdPageButton;
+
+
 
 }
