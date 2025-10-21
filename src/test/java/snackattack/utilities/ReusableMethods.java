@@ -1,5 +1,6 @@
 package snackattack.utilities;
 
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -180,5 +181,14 @@ public class ReusableMethods {
         } catch (Exception ignored) {
             // Herhangi bir hata oluşursa, bu hata yoksayılır.
         }
+    }
+
+
+   //Belirtilen input alanından validation mesajını alır ve beklenen mesajla karşılaştırır ve doğrulama yapar
+   public static void checkValidationMessage(WebDriver driver, WebElement element, String expectedMessage) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String actualMessage = (String) js.executeScript("return arguments[0].validationMessage;", element);
+        System.out.println("Validation mesajı: " + actualMessage);
+        Assert.assertEquals("Validation mesajı eşleşmiyor!", expectedMessage, actualMessage);
     }
 }
