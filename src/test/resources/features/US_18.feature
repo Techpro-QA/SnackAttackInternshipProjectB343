@@ -33,8 +33,13 @@
     Scenario: TC04 Admin herhangi bir ödeme detayını görüntüleyebilmeli ve siparişteki Order Code, Address, Payment Method, Status ayrıntılarını görebilmeli
       Given Kullanici "admin" olarak giriş yapar
       And Admin Payment Management'a tiklar
+      And Sayfanin en sonuna gidilir
       Then Payment ID, Order ID, User ID, Amount ve Payment Date sutunlarin altında veriler goruntulenir
       And Admin görüntülemek istedigi herhangi bir ödeme satirina tiklar ve Order Code, Address, Payment Method, Status ve Product bilgileri eksiksiz goruntulenir
-      And Sayfa kapatilir
 
+          # varsa 2. ve 3. sayfalar kontrol edilir
+      And Sayfanin en sonuna gidilir
+      When Eger ikinci sayfa aktifse Admin ikinci sayfaya gider ve ödeme detaylarını görüntüler
+      And Eger ücüncü sayfa aktifse Admin ücüncü sayfaya gider ve ödeme detaylarını görüntüler
+      And Sayfa kapatilir
 
