@@ -70,4 +70,18 @@ public class JSUtils {
         System.out.println(value);
         return value;
     }
+    /**
+     * HTML5 form doğrulama mesajını alır.
+     * @param element Hata mesajını veren input elementi (örneğin email input).
+     * @return Tarayıcının gösterdiği doğrulama mesajı metni.
+     */
+    public static String getValidationMessage(WebElement element) {
+        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
+        // validationMessage özelliğini direkt olarak alıyoruz
+        String message = (String) js.executeScript("return arguments[0].validationMessage;", element);
+
+        return message;
+    }
+
 }
