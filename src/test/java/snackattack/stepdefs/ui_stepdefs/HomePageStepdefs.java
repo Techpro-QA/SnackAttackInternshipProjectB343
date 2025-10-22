@@ -2,6 +2,7 @@ package snackattack.stepdefs.ui_stepdefs;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
@@ -91,5 +92,10 @@ public class HomePageStepdefs {
     @And("Kullanici {int} saniye bekler")
     public void kullaniciSaniyeBekler(int süre) {
         WaitUtils.waitFor(süre);
+    }
+
+    @Then("Kullanici basarili bir sekilde giris yaptigini dogrular")
+    public void kullaniciBasariliBirSekildeGirisYaptiginiDogrular() {
+        Assert.assertTrue(adminPanelPage.wellcomeToAdminPanelText.isDisplayed());
     }
 }
