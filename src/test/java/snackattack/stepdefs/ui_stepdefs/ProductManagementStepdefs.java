@@ -343,7 +343,7 @@ public class ProductManagementStepdefs {
     public void urununEklendigiDogrulanir() {
 
         System.out.println(TestData.expectedProductName);
-        WaitUtils.waitFor(3);
+        WaitUtils.waitFor(2);
         Driver.getDriver().switchTo().alert().accept(); //ürün eklendi bildirimi
         WaitUtils.waitFor(2);
         productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
