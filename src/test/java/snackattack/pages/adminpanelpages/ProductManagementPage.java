@@ -40,6 +40,17 @@ public class ProductManagementPage {
     @FindBy(xpath = "//a[.='New']")
     public WebElement newProductButton;
 
+    //Actions/delete Button
+    @FindBy(xpath = "//tr[1]/td[9]")
+    public WebElement productActionsDeleteButton;
+
+    //First product name locate
+    @FindBy(xpath = "//tr[1]/td[3]")
+    public WebElement firstProductName;
+
+    @FindBy(xpath = "//tbody")
+    public List<WebElement> searchedProductsList;
+
     //Product güncelleme textbox locateleri
 
     @FindBy(xpath = "//input[@accept='image/*']")

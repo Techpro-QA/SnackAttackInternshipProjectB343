@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"snackattack/stepdefs"},
-        tags = "@US_20",
+        tags = "@US16",
         dryRun = false
 )
 public class Runner {
