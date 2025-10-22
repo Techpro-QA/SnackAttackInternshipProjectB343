@@ -53,5 +53,5 @@ Feature: Admin herhangi bir üründe güncelleme yapabilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin populer mi? ve mevcut mu? checkboxlarini secer
     And Admin Güncelle butonuna tiklar
-    Then Urunun guncellenmedigi kontrol edilir
+    Then Urunun negatif verilerle guncellenmedigi kontrol edilir
     And Sayfa kapatilir

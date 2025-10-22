@@ -88,7 +88,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi - BUG
+    Then Urun eklenememeli
     And Sayfa kapatilir
 
   @US14_TC06
@@ -103,7 +103,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi - BUG
+    Then Urun eklenememeli
     And Sayfa kapatilir
 
   @US14_TC07
@@ -119,7 +119,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     # Image yükleme adımı atlandı
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi - BUG
+    Then Urun eklenememeli
     And Sayfa kapatilir
 
   @US14_TC08
@@ -135,31 +135,5 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     # Checkbox seçilmedi
     And Admin Available ve Active seceneklerini secmez
     And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli ama eklendi - BUG
+    Then Urun eklenememeli
     And Sayfa kapatilir
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
