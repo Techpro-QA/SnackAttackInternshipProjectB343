@@ -1,10 +1,14 @@
 @US_20
 Feature: User sayfadan mesaj gonderebilmeli
 
+  Background:
+
+  Given Sayfaya gidilir
+    And  Kullanici Contact'a tiklar
+
   @US_20_TC01
   Scenario: TC_01-Tum alanlar dogru dolduruldugunda basarili gonderim yapabilmeli
-    Given Sayfaya gidilir
-    And  Kullanici Contact'a tiklar
+
     And  Acilan pencerede Name icin gecerli bir data girilir
     And  Email  icin gecerli bir data girilir
     And  Subject alani doldurulur
@@ -12,11 +16,11 @@ Feature: User sayfadan mesaj gonderebilmeli
     And  Kullanıcı consent  kutucugunu  isaretler
     And  Send butonu tıklanir
     Then Kayit isleminin basarili bir sekilde gerceklestigi dogrulanir"
+    And Sayfa kapatilir
 
   @US_20_TC02
   Scenario: TC_02-Name alani bos birakildiginda mesaj gonderim islemi gerceklesmemeli ve “Lutfen bu alani doldurun” uyarisi goruntulenmeli
-    Given Sayfaya gidilir
-    And  Kullanici Contact'a tiklar
+
     And  Acilan pencerede Name alani bos birakilir
     And  Email  icin gecerli bir data girilir
     And  Subject alani doldurulur
@@ -24,11 +28,11 @@ Feature: User sayfadan mesaj gonderebilmeli
     And  Kullanıcı consent  kutucugunu  isaretler
     And  Send butonu tıklanir
     Then Lutfen bu alani doldurun mesaji goruntulenmeli
+    And Sayfa kapatilir
 
   @US_20_TC03
   Scenario: TC_02-Email alanı boş bırakıldığında mesaj gönderim işlemi gerçekleşmemeli ve “Lütfen bu alanı doldurun” uyarısı görüntülenmelidir.
-    Given Sayfaya gidilir
-    And  Kullanici Contact'a tiklar
+
     And  Acilan pencerede Name icin gecerli bir data girilir
     And  Email  alani bos birakilir.
     And  Subject alani doldurulur
@@ -36,11 +40,11 @@ Feature: User sayfadan mesaj gonderebilmeli
     And  Kullanıcı consent  kutucugunu  isaretler
     And  Send butonu tıklanir
     Then "Lütfen bu alanı doldurun." goruntulenmeli
+    And Sayfa kapatilir
 
   @US_20_TC04
   Scenario: TC_03-Email alaninda @ işareti eksik yazıldıgında mesaj oluşturma islemi gerceklesmemeli ve “Lütfen bu alanı doldurun” uyarısı görüntülenmelidir
-    Given Sayfaya gidilir
-    And  Kullanici Contact'a tiklar
+
     And Acilan pencerede Name icin gecerli bir data girilir
     And Email  alaninda @ isareti yazilmaz
     And Subject alani doldurulur
@@ -48,3 +52,4 @@ Feature: User sayfadan mesaj gonderebilmeli
     And Kullanıcı consent  kutucugunu  isaretler
     And Send butonu tıklanir
     Then "Lütfen e-posta adresine bir \"@\" işareti ekleyin. \"sahinbatch.com\" adresinde \"@\" eksik." goruntulenmeli
+    And Sayfa kapatilir
