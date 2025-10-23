@@ -161,12 +161,10 @@ public class LoginRegisterStepDefs {
     public void kullaniciPasswordAlaninaYazar(String key) {
         String passwordValue = (ConfigReader.getProperty(key) != null)
                 ? ConfigReader.getProperty(key)
-                : (key.equalsIgnoreCase("random")
-                ? (TestData.password = faker.internet().password(8,10))  //  hafızaya kaydet
-                : (key.equalsIgnoreCase("memoryPassword")
-                ? TestData.password
-                : key));
+                : (key.equalsIgnoreCase("random") ? faker.internet().password(8,10)
+                : (key.equalsIgnoreCase("memoryPassword") ? TestData.password : key));
 
+        TestData.password = passwordValue; // <-- KRİTİK: her durumda hafızaya yaz
         homePage.registerPasswordTextBox.clear();
         homePage.registerPasswordTextBox.sendKeys(passwordValue);
 
@@ -180,7 +178,7 @@ public class LoginRegisterStepDefs {
                 : (confirmPasswordKey.equalsIgnoreCase("memoryPassword")
                 ? TestData.password
                 : confirmPasswordKey);
-
+        TestData.password = confirmPasswordValue;
         homePage.registerConfirmPasswordTextBox.clear();
         homePage.registerConfirmPasswordTextBox.sendKeys(confirmPasswordValue);
     }
@@ -251,10 +249,9 @@ public class LoginRegisterStepDefs {
     public void kullaniciSayfadaMesajiGormeli(String expectedText) {
         WebElement elementToVerify;
 
-        // Ternary Operatörü ile hangi elementi kontrol edeceğimizi belirliyoruz (2 Element varsayımıyla).
         elementToVerify = (expectedText.toLowerCase().contains("token") || expectedText.toLowerCase().contains("read"))
                 ? homePage.registerStatusMessagePopup         // Pop-up hata (Örn: Unexpected token)
-                : homePage.authLoginErrorStatus;   // Geleneksel hata (Örn: Required)
+                : homePage.authLoginErrorStatus;   //  hata (Örn: Required)
 
         WaitUtils.waitForVisibility(elementToVerify, 10);
         String actualText = elementToVerify.getText()
@@ -266,5 +263,50 @@ public class LoginRegisterStepDefs {
         System.out.println("SEÇİLEN ELEMENTİN METNİ: " + actualText);
         Assert.assertTrue(actualText.contains(cleanExpectedText));
 
+    }
+
+    @And("Kullanici Phone Number alanina harf veya ozel karakter icerikli {string} yazar")
+    public void kullaniciPhoneNumberAlaninaHarfVeyaOzelKarakterIcerikliYazar(String phone) {
+        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox,3);
+        homePage.registerPhoneNumberTextBox.clear();
+        homePage.registerPhoneNumberTextBox.sendKeys(phone);
+    }
+
+    @Then("Phone Number alti {string} uyarisi gorunur")
+    public void phoneNumberAltiUyarisiGorunur(String expected) {
+        WaitUtils.waitFor(2);
+        String actual= homePage.registerInvalidPhoneNumberMessage.getText().trim();
+        Assert.assertTrue(
+                actual.equalsIgnoreCase(expected) || actual.toLowerCase().contains(expected.toLowerCase())
+        );
+    }
+
+    @And("Kullanici Phone Number alanina ulke formatina uymayan sekilde {string} yazar")
+    public void kullaniciPhoneNumberAlaninaUlkeFormatinaUymayanSekildeYazar(String phone) {
+        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox, 3);
+        homePage.registerPhoneNumberTextBox.clear();
+        homePage.registerPhoneNumberTextBox.sendKeys(phone);
+    }
+
+
+    @And("Kullanici Phone Number alanina {string} girer")
+    public void kullaniciPhoneNumberAlaninaGirer(String phoneKey) {
+        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox,2);
+        String phoneValue = (ConfigReader.getProperty(phoneKey) != null)
+                ? ConfigReader.getProperty(phoneKey)
+                : phoneKey; // config dosyasinda yoksa yazdigimi kullanacak
+
+        homePage.registerPhoneNumberTextBox.clear();
+        homePage.registerPhoneNumberTextBox.sendKeys(phoneValue);
+
+    }
+
+
+    @Then("Kullanici login sayfasina yonlenir ve URL {string} olarak devam eder")
+    public void kullaniciLoginSayfasinaYonlenirVeURLOlarakDevamEder(String expectedPath) {
+        WaitUtils.waitFor(3);
+        String currentUrl = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains(expectedPath));
+        System.out.println("Kullanici login sayfasina yonlendirildi: " + currentUrl);
     }
 }
