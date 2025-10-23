@@ -37,5 +37,4 @@ public class SettingsPage {
     @FindBy(xpath = "//button[.='Update Profile']")
     public WebElement settingUpdateProfileButton ;
 
-
 }
