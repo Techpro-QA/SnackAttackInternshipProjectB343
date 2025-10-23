@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import snackattack.pages.HomePage;
 import snackattack.utilities.ConfigReader;
+import snackattack.utilities.Driver;
 import snackattack.utilities.JSUtils;
 import snackattack.utilities.WaitUtils;
 
@@ -29,23 +30,19 @@ public class LoginStepDefs {
 
     @And("Kullanici login Password alanina {string} yazar")
     public void kullaniciLoginPasswordAlaninaYazar(String passwordKey) {
-        String passwordValue;
-        String configAttempt = ConfigReader.getProperty(passwordKey);
-        // Ternary Operatörü ile passwordValue'yu belirliyoruz:
-        // Koşul: Eğer configAttempt, null değilse, boş değilse VE orijinal passwordKey'den farklı bir değerse
-        //       (yani ConfigReader gerçekten bir değer döndürdüyse).
-        passwordValue = (configAttempt != null && !configAttempt.isEmpty() && !configAttempt.equals(passwordKey))
-                ? configAttempt   // ConfigReader'dan gelen değeri kullan.
-                : passwordKey;    // yoksa, doğrudan girilen String değeri kullan.
+        String passwordValue = ConfigReader.getProperty(passwordKey);
+        String source = "Config Dosyası";
+
+        if (passwordValue == null || passwordValue.isEmpty()) {
+            passwordValue = passwordKey;
+            source = "Doğrudan Girdi";
+        }
 
         WaitUtils.waitForVisibility(homePage.loginPasswordTextBox, 5);
         homePage.loginPasswordTextBox.clear();
         homePage.loginPasswordTextBox.sendKeys(passwordValue);
 
-        String source = (configAttempt != null && !configAttempt.isEmpty() && !configAttempt.equals(passwordKey))
-                ? "Config Dosyası"
-                : "Doğrudan Girdi";
-        System.out.println("Login için kullanılan parola gönderildi. Kaynak: " + source);
+        System.out.println("Login için parola gönderildi. Kaynak: " + source);
     }
 
     @Then("{string} mesaji email altinda gorunmeli")
@@ -94,5 +91,20 @@ public class LoginStepDefs {
         System.out.println("GELEN GERÇEK MESAJ: " + actualMessage);
         Assert.assertTrue(actualMessage.contains(expectedKeyword));
 
+    }
+
+
+    @When("Kullanici Forgot Password? linkine tiklar")
+    public void kullaniciForgotPasswordLinkineTiklar() {
+        WaitUtils.waitFor(2);
+        homePage.forgotPasswordLink.click();
+    }
+
+    @Then("Kullanici sifre sifirlama sayfasina yonlendirildigini dogrular")
+    public void kullaniciSifreSifirlamaSayfasinaYonlendirildiginiDogrular() {
+
+        String currentUrl = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(currentUrl.endsWith("/forgot-password"));
+        System.out.println(" Kullanici sifre sifirlama sayfasina yonlendirildi: " + currentUrl);
     }
 }

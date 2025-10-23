@@ -75,6 +75,15 @@ public class HomePage {
     @FindBy(linkText = "Logout")
     public WebElement logoutButton;
 
+    @FindBy(id = "email")
+    public WebElement forgotPasswordEmailTextBox;
+
+    @FindBy(xpath = "//button[normalize-space()='Reset Password']")
+    public WebElement resetPasswordButton;
+
+    @FindBy(css = "a[href='/forgot-password']")
+    public WebElement forgotPasswordLink;
+
     @FindBy(xpath = "//h1[contains(text(),'Wellcome to Customer Panel')]")
     public WebElement userPanelTitle;
 
@@ -86,6 +95,9 @@ public class HomePage {
 
     @FindBy(xpath = "//p[@class='text-red-500 text-xs' and text()='Invalid phone number.']")
     public WebElement invalidPhoneNumberMessage;
+
+    @FindBy(xpath = "//p[@class='text-red-500 text-xs' and normalize-space()='Invalid phone number.']")
+    public WebElement registerInvalidPhoneNumberMessage;
 
     @FindBy(xpath = "//p[contains(text(),'Invalid email')]")
     public WebElement invalidEmailMessage;
