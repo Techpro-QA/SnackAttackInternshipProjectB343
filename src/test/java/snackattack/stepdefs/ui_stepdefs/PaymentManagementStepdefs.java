@@ -58,7 +58,7 @@ public class PaymentManagementStepdefs {
     }
 
     @When("Eger ikinci sayfa aktifse Admin ikinci sayfaya gider ve ödeme detaylarını görüntüler")
-    public void eğerIkinciSayfaAktifseAdminIkinciSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
+    public void egerIkinciSayfaAktifseAdminIkinciSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
 
         ReusableMethods.visibleWait(paymentManagementPage.secondPageButton, 10);
 
@@ -82,14 +82,14 @@ public class PaymentManagementStepdefs {
                 paymentManagementPage.closeButton.click();
             }
         }else {
-            System.out.println("All Payment sadece bir sayfadan ibaret");
+            System.out.println("All Payment sadece bir sayfadan ibaretdir");
         }
     }
     @And("Eger ücüncü sayfa aktifse Admin ücüncü sayfaya gider ve ödeme detaylarını görüntüler")
-    public void eğerÜcüncüSayfaAktifseAdminÜçüncüSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
+    public void egerÜcüncüSayfaAktifseAdminÜcüncüSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
         ReusableMethods.visibleWait(paymentManagementPage.thirdPageButton, 10);
 
-        // ikinci sayfa varsa
+        // ücüncü sayfa varsa
         if (paymentManagementPage.thirdPageButton.isDisplayed()) {
             paymentManagementPage.thirdPageButton.click();
             ReusableMethods.visibleWait(paymentManagementPage.secondPageButton,10);
@@ -109,7 +109,7 @@ public class PaymentManagementStepdefs {
                 paymentManagementPage.closeButton.click();
             }
         }else {
-            System.out.println("All Payment sadece ik1 sayfadan ibaret");
+            System.out.println("All Payment sadece iki sayfadan ibaretdir");
         }
     }
 

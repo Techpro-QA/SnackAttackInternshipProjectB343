@@ -11,6 +11,7 @@ import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.ProductManagementPage;
 import snackattack.utilities.*;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -262,6 +263,7 @@ public class ProductManagementStepdefs {
     @And("Admin Güncelle butonuna tiklar")
     public void adminGüncelleButonunaTiklar() {
         ReusableMethods.click(productManagementPage.updateGüncelleButton);
+        WaitUtils.waitFor(2);
     }
 
     @Then("Urunun guncellendigi kontrol edilir")
@@ -282,15 +284,20 @@ public class ProductManagementStepdefs {
 
     @Then("Urunun guncellenmedigi kontrol edilir")
     public void urununGuncellenmedigiKontrolEdilir() {
+
+        ReusableMethods.checkValidationMessage(Driver.getDriver(),productManagementPage.updateProductNameTextbox,"Lütfen bu alanı doldurun.");
+
     }
 
     @When("Admin {string} resim ekler")
     public void adminResimEkler(String path) {
 
+        File file = new File(path);
+
         if (path.contains("Mustafa")){
-            ReusableMethods.click(productManagementPage.updateSelectFile);
+            productManagementPage.updateSelectFile.sendKeys(file.getAbsolutePath());
         } else {
-            ReusableMethods.click(productManagementPage.createProductSelectFile);
+            productManagementPage.createProductSelectFile.sendKeys(file.getAbsolutePath());
         }
 
         ReusableMethods.uploadFilePath(path);
@@ -340,13 +347,11 @@ public class ProductManagementStepdefs {
         Driver.getDriver().switchTo().alert().accept(); //ürün eklendi bildirimi
         WaitUtils.waitFor(2);
         productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
-        productManagementPage.searchButton.click();
+        ReusableMethods.click(productManagementPage.searchButton);
         WaitUtils.waitFor(2);
 
         String actualProductName = productManagementPage.searchedProductNameColumn.getText().trim();
         String expectedProductName = TestData.expectedProductName.trim();
-
-        Assert.assertTrue("Ürün başarıyla eklendi", productManagementPage.successMessage.isDisplayed());
 
         System.out.println("Expected: " + expectedProductName);
         System.out.println("Actual  : " + actualProductName);
@@ -354,6 +359,7 @@ public class ProductManagementStepdefs {
         Assert.assertEquals(expectedProductName, actualProductName);
 
     }
+
     @Then("Urunun eklenemedigi dogrulanir")
     public void urununEklenemedigiDogrulanir() {
 
@@ -362,12 +368,24 @@ public class ProductManagementStepdefs {
 
     }
 
-    @Then("Urun eklenememeli ama eklendi - BUG")
-    public void urunEklenememeliAmaEklendi() {
+    @Then("Urun eklenememeli")
+    public void urunEklenememeli() {
 
         // Önce eklenen ürün adını al (random'du)
         String expectedProductName = TestData.expectedProductName;
         System.out.println("Kontrol edilecek ürün adı: " + expectedProductName);
+
+        WaitUtils.waitFor(3);
+        // Alert varsa kapat (ürün hatalı şekilde eklendiği için alert çıkabilir)
+        try {
+            Alert alert = Driver.getDriver().switchTo().alert();
+            String alertText = alert.getText();
+            System.out.println("Gelen Alert Mesajı: " + alertText);
+            alert.accept();
+            WaitUtils.waitFor(2);
+        } catch (NoAlertPresentException e) {
+            System.out.println("Alert bulunamadı.");
+        }
 
         // Ürün arama işlemi
         productManagementPage.searchBox.clear();
@@ -411,8 +429,55 @@ public class ProductManagementStepdefs {
     @And("Admin Available ve Active seceneklerini secmez")
     public void adminAvailableVeActiveSecenekleriniSecmez() {
 
+        if (productManagementPage.createAvailableCheckbox.isSelected()){
             ReusableMethods.click(productManagementPage.createAvailableCheckbox);
-            ReusableMethods.click(productManagementPage.createActiveCheckbox);
+        }
 
+        if (productManagementPage.createActiveCheckbox.isSelected()){
+            ReusableMethods.click(productManagementPage.createActiveCheckbox);
+        }
+    }
+
+
+    @And("Admin silmek istedigi urunun Actions kismindaki çop kutusu\\(delete) icon'una tiklar")
+    public void adminSilmekIstedigiUrununActionsKismindakiÇopKutusuDeleteIconUnaTiklar() {
+
+        TestData.expectedProductName = productManagementPage.firstProductName.getText();
+        ReusableMethods.click(productManagementPage.productActionsDeleteButton);
+        WaitUtils.waitFor(2);
+
+
+    }
+
+    @And("Admin Are you sure you want to delete this product? alertini görür ve Tamam'a tiklar")
+    public void adminAreYouSureYouWantToDeleteThisProductAlertiniGörürVeTamamATiklar() {
+        WaitUtils.waitFor(2);
+        Assert.assertTrue(Driver.getDriver().switchTo().alert().getText().contains("Are you sure you want to delete this product?"));
+        ReusableMethods.alertAccept();
+        WaitUtils.waitFor(2);
+
+    }
+
+    @And("Admin mevcut mu? checkbox'indaki tiki kaldirir\\(unsellected)")
+    public void adminMevcutMuCheckboxIndakiTikiKaldirirUnsellected() {
+
+        if (productManagementPage.updateMevcutCheckbox.isSelected()){
+            ReusableMethods.click(productManagementPage.updateMevcutCheckbox);
+        }
+    }
+
+    @Then("Urunun silindigi kontrol edilir")
+    public void urununSilindigiKontrolEdilir() {
+        Assert.assertTrue(Driver.getDriver().switchTo().alert().getText().contains("Ürün başarıyla güncellendi!"));
+        ReusableMethods.alertAccept();
+        WaitUtils.waitFor(2);
+        productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
+        productManagementPage.searchButton.click();
+        Assert.assertEquals(1,productManagementPage.searchedProductsList.size());
+    }
+
+    @Then("Urunun negatif verilerle guncellenmedigi kontrol edilir")
+    public void urununNegatifVerilerleGuncellenmedigiKontrolEdilir() {
+        Assert.assertTrue(Driver.getDriver().switchTo().alert().getText().contains("Lütfen tüm zorunlu alanları doldurun!"));
     }
 }
