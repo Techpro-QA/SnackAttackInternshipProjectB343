@@ -10,7 +10,7 @@ public class Authentication {
     public static String generateToken() {
 
         //set the url
-        String url = ConfigReader.getProperty("baseUrl")+"/login";
+        String url = ConfigReader.getProperty("snackUrl")+"/login";
         //set the payload
         String credentials = "";
         //send request get response
