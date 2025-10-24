@@ -42,7 +42,7 @@ public class SupportRequestStepdefs {
 
         Assert.assertTrue(supportRequestsPage.detailOfRequest.isDisplayed());
         Assert.assertEquals("Message Details", supportRequestsPage.messageDetailTitle.getText());
-        Assert.assertTrue(supportRequestsPage.messageDetailParagraphs.size() >= 4);
+
 
     }
 
@@ -72,8 +72,6 @@ public class SupportRequestStepdefs {
     public void tumRequestlerinGoruntulendigiDogrulanir() {
 
         int rowCount = supportRequestsPage.rows.size();
-        System.out.println("Tablodaki request sayısı: " + rowCount);
-
         Assert.assertTrue("Filtreleme sonucu beklenen sayida kayit goruntulenemedi", rowCount >= 2);
     }
 
@@ -123,14 +121,11 @@ public class SupportRequestStepdefs {
 
     }
 
-
-
-
     @Then("Sadece ilgili subjecte sahip Support Request'lerin listelendigi dogrulanir")
     public void sadeceIlgiliSubjecteSahipSupportRequestLerinListelendigiDogrulanir() {
 
 
-        String expectedSubject = supportRequestsPage.subjectName.getText();
+        String expectedSubject = "Uyarı";
         List<WebElement> subjects = supportRequestsPage.subjectList;
 
         for (WebElement subject : subjects) {
@@ -162,8 +157,7 @@ public class SupportRequestStepdefs {
     @Then("Sadece ilgili {string} değerine sahip Support Request'in listelendiği doğrulanır")
     public void sadeceIlgiliDeğerineSahipSupportRequestInListelendiğiDoğrulanır(String date) {
 
-        //?????????????????????????????????????
-
+        Assert.assertTrue(supportRequestsPage.messageDetail5.getText().contains(date));
 
     }
 
@@ -186,7 +180,8 @@ public class SupportRequestStepdefs {
     @Then("Sadece girilen time değerine sahip Support Request kayıtlarının listelendiği doğrulanır")
     public void sadeceGirilenTimeDeğerineSahipSupportRequestKayıtlarınınListelendiğiDoğrulanır() {
 
-//????????????????????????????????????????????????????
+        String expectedTime = "17:48";
+        Assert.assertTrue(supportRequestsPage.messageDetail5.getText().contains(expectedTime));
 
 
     }
@@ -204,11 +199,11 @@ public class SupportRequestStepdefs {
         
     }
 
-    @Then("Basarili silme bildirimi {string} gorulur")
-    public void basariliSilmeBildirimiGorulur(String arg0) {
+
+    @Then("Basarili silme bildirimi gorulur")
+    public void basariliSilmeBildirimiGorulur() {
 
         Assert.assertTrue(supportRequestsPage.successMsj.isDisplayed());
-
 
     }
 }

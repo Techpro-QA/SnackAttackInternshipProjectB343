@@ -64,6 +64,6 @@ Feature: Admin Contact Mesajlari gorebilmeli (Support Requests)
   Scenario: TC_08 - Support request ler silinebilmeli
     And Herhangi bir mesajin yaninda bulunan Delete ikonuna tiklanir
     And Onay penceresinde Yes secenegine tiklanir
-    Then Basarili silme bildirimi "Message deleted successfully" gorulur
+    Then Basarili silme bildirimi gorulur
 
 
