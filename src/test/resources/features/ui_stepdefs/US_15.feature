@@ -1,4 +1,4 @@
-@US15
+@US_15
 Feature: Admin herhangi bir üründe güncelleme yapabilmeli
 
   Background:
