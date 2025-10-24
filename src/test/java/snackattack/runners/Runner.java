@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"snackattack/stepdefs"},
-        tags = "@US_21_TC08",
+        tags = "@DB_US_12_Payment_Validation",
 
         dryRun = false
 )
