@@ -18,7 +18,7 @@ Feature: Login/Register Testi
         And Kullanici Country Code select alanindan "TR" secer
         And Kullanici Phone Number alanina TR kuralina uygun 10 haneli numara girer
         When Kullanici register butonuna tiklar
-        Then Kullanici Anasayfaya yonlendigi dogrulanir
+        Then Kullanici login sayfasina yonlenir ve URL "/login" olarak devam eder
         And Sayfa kapatilir
 
 
@@ -203,15 +203,47 @@ Feature: Login/Register Testi
   Scenario: TC_13 - Zaten kayitli bir email ile Kayit islemi gerceklesmemelidir (Negative)
     And Kullanici First Name alanina gecerli data girer
     And Kullanici Last Name alanina gecerli data girer
-    And Kullanici Email alanina "memoryEmail" yazar
+    And Kullanici Email alanina "userEmail" yazar
     And Kullanici User Name alanina gecerli data girer
-    And Kullanici Password alanina "memoryPassword" yazar
+    And Kullanici Password alanina "userPassword" yazar
     And Kullanici Confirm Password alanina Password ile ayni degeri girer
     And Kullanici Address alanina gecerli data girer
     And Kullanici Country Code select alanindan "TR" secer
-    And Kullanici Phone Number alanina TR kuralina uygun 10 haneli numara girer
+    And Kullanici Phone Number alanina "userPhone" girer
     When Kullanici register butonuna tiklar
     Then Kullanici kayit sayfasinda kalir ve URL "/register" olarak devam eder
+    And Sayfa kapatilir
+
+  @TC_14
+  Scenario: TC_13 - Telefon içinde harf veya özel karakter varsa Kayit islemi gerceklesmemelidir (Negative)
+    And Kullanici First Name alanina gecerli data girer
+    And Kullanici Last Name alanina gecerli data girer
+    And Kullanici Email alanina "random" yazar
+    And Kullanici User Name alanina gecerli data girer
+    And Kullanici Password alanina "random" yazar
+    And Kullanici Confirm Password alanina Password ile ayni degeri girer
+    And Kullanici Address alanina gecerli data girer
+    And Kullanici Country Code select alanindan "TR" secer
+    And Kullanici Phone Number alanina harf veya ozel karakter icerikli "530-123-ABCD" yazar
+    When Kullanici register butonuna tiklar
+    Then Phone Number alti "Invalid phone number." uyarisi gorunur
+    And Kullanici kayit sayfasinda kalir ve URL "/register" olarak devam eder
+    And Sayfa kapatilir
+
+  @TC_15
+  Scenario: TC_12 - Country select ile telefon formatı uyuşmazsa Kayit islemi gerceklesmemelidir (Negative)
+    And Kullanici First Name alanina gecerli data girer
+    And Kullanici Last Name alanina gecerli data girer
+    And Kullanici Email alanina "random" yazar
+    And Kullanici User Name alanina gecerli data girer
+    And Kullanici Password alanina "random" yazar
+    And Kullanici Confirm Password alanina Password ile ayni degeri girer
+    And Kullanici Address alanina gecerli data girer
+    And Kullanici Country Code select alanindan "TR" secer
+    And Kullanici Phone Number alanina ulke formatina uymayan sekilde "1234568975" yazar
+    When Kullanici register butonuna tiklar
+    Then Phone Number alti "Invalid phone number." uyarisi gorunur
+    And Kullanici kayit sayfasinda kalir ve URL "/register" olarak devam eder
     And Sayfa kapatilir
 
 
