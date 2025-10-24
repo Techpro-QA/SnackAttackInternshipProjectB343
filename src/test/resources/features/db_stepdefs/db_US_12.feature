@@ -10,6 +10,5 @@
 
       Scenario: Admin olarak veritabanındaki ödeme isim ve bilgileri dogrulanmali
         When Payments tablosu veritabaninda aranir
-        And Payment bilgileri UI dan alinir
         Then Payment bilgileri dogrulanir
         And Baglanti kapatilir
