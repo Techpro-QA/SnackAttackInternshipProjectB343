@@ -21,8 +21,6 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
-    And Admin Create Product butonuna tiklar
     Then Urunun eklendigi dogrulanir
     And Sayfa kapatilir
 
@@ -39,8 +37,6 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "" ile doldurur
-    And Admin Create Product butonuna tiklar
     Then Urunun eklendigi dogrulanir
     And Sayfa kapatilir
 
@@ -55,8 +51,6 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin "HAMBURGER" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
-    And Admin Create Product butonuna tiklar
-    And Admin İndirim Textbox'ini "35" ile doldurur
     And Admin Create Product butonuna tiklar
     Then Urunun eklenemedigi dogrulanir
     And Sayfa kapatilir
