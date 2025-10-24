@@ -225,6 +225,7 @@ Feature: Admin sayfaya kayıt olabilmelidir. (US_03)
     And Sayfa kapatilir
 
 
+  @TC_15
   Scenario: TC_15 - Var olan kayitli bir email ile Admni kayit islemi gerceklesmemelidir (Negative)
     Then Admin register panel'ine yönlenmis olmali
     And Admin First Name alanina gecerli data girer
