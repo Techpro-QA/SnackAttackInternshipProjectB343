@@ -78,6 +78,12 @@ Feature: US_02 - Login islemleri
     And Kullanici kayit sayfasinda kalir ve URL "/login" olarak devam eder
     And Sayfa kapatilir
 
+  @pos-forgotpassword-navigation
+  Scenario: Forgot Password linki kullaniciyi sifre sifirlama sayfasina yonlendirmelidir
+    When Kullanici Forgot Password? linkine tiklar
+    Then Kullanici sifre sifirlama sayfasina yonlendirildigini dogrular
+
+
 
 
 
