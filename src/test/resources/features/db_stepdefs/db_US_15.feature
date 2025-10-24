@@ -1,4 +1,4 @@
-@DB_US_14_Product_Validation
+@DB_US_15_Product_Validation
 Feature: Admin OLarak Ürün Ekleme kategorilerinin isimlerinin ve bilgilerinin doğrulanması
 
   Background:
