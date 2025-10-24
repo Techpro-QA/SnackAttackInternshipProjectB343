@@ -16,22 +16,13 @@ import java.util.Map;
 
 public class DB_PaymentManagementStepdefs {
 
-    HomePage homePage = new HomePage();
-    AdminPanelPage adminPanelPage = new AdminPanelPage();
-    PaymentManagementPage paymentManagementPage = new PaymentManagementPage();
     Map<String, Object> actualDatabase = new HashMap<>();
     SoftAssertions softAssert = new SoftAssertions();
-
-    @Given("Database baglantisi kurulur")
-    public void databaseBaglantisiKurulur() {
-        DBUtils.createConnection();
-    }
 
     @When("Payments tablosu veritabaninda aranir")
     public void paymentsTablosuVeritabanindaAranir() throws SQLException {
 
-        // SQL sorgusuna username ekledik
-        String query = "SELECT\n" +
+        resultSet = statement.executeQuery("SELECT\n" +
                 "    id,\n" +
                 "    order_id,\n" +
                 "    user_id,\n" +
@@ -57,12 +48,34 @@ public class DB_PaymentManagementStepdefs {
     @Then("Payment bilgileri dogrulanir")
     public void paymentBilgileriDogrulanir() {
 
-        // Sabit id ve username doğrulaması
-        softAssert.assertThat(actualDatabase.get("id")).isEqualTo(57);
-        softAssert.assertThat(actualDatabase.get("order_id")).isEqualTo(65);
-        softAssert.assertThat(actualDatabase.get("user_id")).isEqualTo(32);
-        softAssert.assertThat((Double) actualDatabase.get("amount")).isEqualTo(570.0);
-        softAssert.assertThat(actualDatabase.get("payment_date_formatted")).isEqualTo("24.10.2025 13:08:42");
+        softAssert = new SoftAssertions();
+
+        // Payment ID kontrolü
+        softAssert.assertThat(TestData.expectedFirstRowPaymentId)
+                .as("Payment ID kontrolü")
+                .isEqualTo(actualDatabaseFirstRow.get("id").toString());
+
+        // Order ID kontrolü
+        softAssert.assertThat(TestData.expectedFirstRowOrderId)
+                .as("Order ID kontrolü")
+                .isEqualTo(actualDatabaseFirstRow.get("order_id").toString());
+
+        // User ID kontrolü
+        softAssert.assertThat(TestData.expectedFirstRowUserId)
+                .as("User ID kontrolü")
+                .isEqualTo(actualDatabaseFirstRow.get("user_id").toString());
+
+
+        //$ işaretini kaldirdim ve ondalık formatını esitledim
+        String uiAmount = TestData.expectedFirstRowAmount.replace("$", "").trim();
+
+        //Database’den gelen değeri alıp UI’daki gibi iki ondalıklı formatta String’e cevirdim
+        String dbAmount = String.format("%.2f", Double.parseDouble(actualDatabaseFirstRow.get("amount").toString()));
+
+        // Amount kontrolü
+        softAssert.assertThat(uiAmount)
+                .as("Amount kontrolü")
+                .isEqualTo(dbAmount);
 
         softAssert.assertAll();
 

@@ -6,7 +6,7 @@ public class DBUtils {
     public static Connection connection;
     public static Statement statement;
     public static ResultSet resultSet;
-    // :small_blue_diamond: 1. Bağlantıyı aç
+    // 1. Bağlantıyı aç
     public static void createConnection() {
         try {
             if (connection == null || connection.isClosed()) {
@@ -21,7 +21,7 @@ public class DBUtils {
             throw new RuntimeException(":x: Veritabanı bağlantısı kurulamadı: " + e.getMessage());
         }
     }
-    // :small_blue_diamond: 2. Sorgu çalıştır
+    // 2. Sorgu çalıştır
     public static ResultSet executeQuery(String query) {
         try {
             statement = connection.createStatement();
@@ -31,7 +31,7 @@ public class DBUtils {
         }
         return resultSet;
     }
-    // :small_blue_diamond: 3. Kaynakları kapat
+    // 3. Kaynakları kapat
     public static void closeConnection() {
         try {
             if (resultSet != null) resultSet.close();
