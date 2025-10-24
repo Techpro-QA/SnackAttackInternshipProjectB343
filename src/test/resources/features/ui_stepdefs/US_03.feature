@@ -239,3 +239,4 @@ Feature: Admin sayfaya kayıt olabilmelidir. (US_03)
     And Admin Phone Number alanina TR kuralina uygun 10 haneli numara girer
     When Admin register butonuna tiklar
     Then Already Registered mesaji görüntülendiği doğrulanır.
+    And Sayfa kapatilir
