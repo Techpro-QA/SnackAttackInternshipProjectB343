@@ -11,6 +11,7 @@ import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.PaymentManagementPage;
 import snackattack.utilities.Driver;
 import snackattack.utilities.ReusableMethods;
+import snackattack.utilities.TestData;
 
 import java.util.List;
 
@@ -55,6 +56,23 @@ public class PaymentManagementStepdefs {
 
 
         }
+        String firstRowPaymentIdText = paymentManagementPage.firstRowPaymentId.getText();
+        TestData.expectedFirstRowPaymentId=firstRowPaymentIdText;
+
+        String firstRowOrderIdText = paymentManagementPage.firstRowOrderId.getText();
+        TestData.expectedFirstRowOrderId=firstRowOrderIdText;
+
+        String firstRowUserIdText = paymentManagementPage.firstRowUserId.getText();
+        TestData.expectedFirstRowUserId=firstRowUserIdText;
+
+        String firstRowAmountText = paymentManagementPage.firstRowAmount.getText();
+        TestData.expectedFirstRowAmount=firstRowAmountText;
+
+        String firstRowPaymentDateText = paymentManagementPage.firstRowPaymentDate.getText();
+        TestData.expectedFirstRowPaymentDate=firstRowPaymentDateText;
+
+
+
     }
 
     @When("Eger ikinci sayfa aktifse Admin ikinci sayfaya gider ve ödeme detaylarını görüntüler")
