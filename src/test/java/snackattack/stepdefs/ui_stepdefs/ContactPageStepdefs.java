@@ -78,17 +78,24 @@ public class ContactPageStepdefs {
         contactPage.nameTextBox.sendKeys("");
     }
 
-    @Then("Lutfen bu alani doldurun mesaji goruntulenmeli")
-    public void lutfenBuAlaniDoldurunMesajiGoruntulenmeli() {
+  //
+    // @Then("{string} goruntulenmeli")@Then("Lutfen bu alani doldurun mesaji goruntulenmeli")
+  //
+    //     public void validation_mesaji_goruntulenmeli(String expectedMessage) {public void lutfenBuAlaniDoldurunMesajiGoruntulenmeli() {
 
 
-            JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-            String actualMessage = (String) js.executeScript("return arguments[0].validationMessage;", contactPage.nameTextBox);
-            System.out.println("Validation mesajı: " + actualMessage);
-            Assert.assertEquals("Validation mesajı eşleşmiyor!", "Lütfen bu alanı doldurun.", actualMessage);
+  //
+    //                 WebElement firstInvalid = driver.switchTo().activeElement();JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+  //
+    //                 JavascriptExecutor js = (JavascriptExecutor) driver;String actualMessage = (String) js.executeScript("return arguments[0].validationMessage;", contactPage.nameTextBox);
+  //
+    //                 String actualMessage = (String) js.executeScript(System.out.println("Validation mesajı: " + actualMessage);
+  //
+    //                         "return arguments[0].validationMessage;", firstInvalidAssert.assertEquals("Validation mesajı eşleşmiyor!", "Lütfen bu alanı doldurun.", actualMessage);
 
-        //ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.nameTextBox,"Lütfen bu alanı doldurun.");
-    }
+  //
+    //         );ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.nameTextBox,"Lütfen bu alanı doldurun.");
+  // }
 
     @And("Email  alani bos birakilir.")
     public void emailAlaniBosBirakilir() {
@@ -102,12 +109,36 @@ public class ContactPageStepdefs {
         contactPage.emailTextBox.sendKeys("sahinbatch.com");
     }
 
-    @Then("{string} goruntulenmeli")
-    public void goruntulenmeli(String expectedMessage) {
 
-        ReusableMethods.checkValidationMessage(Driver.getDriver(),contactPage.emailTextBox,expectedMessage);
+    @And("Subject alanini bos birakir")
+    public void subjectAlaniniBosBirakir() {
+
+        contactPage.subjectTextBox.sendKeys("");
     }
 
 
-}
+
+    @And("Message alanini bos birakir")
+    public void messageAlaniniBosBirakir() {
+
+        contactPage.messageTextBox.sendKeys("");
+    }
+
+    @And("Kullanıcı consent  kutucugunu  isaretlenmez")
+    public void kullanıcıConsentKutucugunuIsaretlenmez() {
+
+    }
+
+    @Then("{string} goruntulenmeli")
+        public void validation_mesaji_goruntulenmeli(String expectedMessage) {
+            WebElement firstInvalid = Driver.getDriver().switchTo().activeElement();
+            JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+            String actualMessage = (String) js.executeScript(
+                    "return arguments[0].validationMessage;", firstInvalid
+            );
+            System.out.println("Validation mesajı: " + actualMessage);
+            Assert.assertEquals(expectedMessage, actualMessage);
+        }
+    }
+
 
