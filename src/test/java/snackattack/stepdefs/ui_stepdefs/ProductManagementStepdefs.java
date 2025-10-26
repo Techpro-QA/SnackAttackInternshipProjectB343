@@ -344,7 +344,7 @@ public class ProductManagementStepdefs {
 
         System.out.println(TestData.expectedProductName);
         WaitUtils.waitFor(2);
-        Driver.getDriver().switchTo().alert().accept(); //ürün eklendi bildirimi
+        ReusableMethods.alertAccept(); //ürün eklendi bildirimi
         WaitUtils.waitFor(2);
         productManagementPage.searchBox.sendKeys(TestData.expectedProductName);
         ReusableMethods.click(productManagementPage.searchButton);
@@ -445,8 +445,6 @@ public class ProductManagementStepdefs {
         TestData.expectedProductName = productManagementPage.firstProductName.getText();
         ReusableMethods.click(productManagementPage.productActionsDeleteButton);
         WaitUtils.waitFor(2);
-
-
     }
 
     @And("Admin Are you sure you want to delete this product? alertini görür ve Tamam'a tiklar")

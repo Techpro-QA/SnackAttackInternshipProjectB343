@@ -16,9 +16,7 @@ import snackattack.utilities.*;
 public class AdminManagementStepDef {
 
     HomePage homePage = new HomePage();
-    AdminPanelPage adminPanelPage = new AdminPanelPage();
     AdminManagementPage adminManagementPage = new AdminManagementPage();
-    WebDriver driver = Driver.getDriver();
     Faker faker = new Faker();
 
 
