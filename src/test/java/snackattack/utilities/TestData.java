@@ -37,5 +37,10 @@ public class TestData {
     public static String expectedFirstRowPaymentDate;
 
 
+    //Category Management verileri
+    public static String expextedCategoryName;
+
+    //Admin Management verileri
+    public static String expectedAdminId;
 
 }
