@@ -237,5 +237,55 @@ public class AdminManagementStepDef {
 
     }
 
+    @Then("Tum admin listesinin goruntulendigini kontrol edilir")
+    public void tumAdminListesininGoruntulendiginiKontrolEdilir() {
+
+        Assert.assertTrue(adminManagementPage.allAdminsTableTitle.isDisplayed());
+        Assert.assertTrue(adminManagementPage.adminsTableHead.isDisplayed());
+        Assert.assertTrue(adminManagementPage.adminsTableBody.isDisplayed());
+
+
     }
+
+    @When("Admin Admin Management listesinden herhangi bir kaydin cop kutusu icon'ina tiklar")
+    public void adminAdminManagementListesindenHerhangiBirKaydinCopKutusuIconInaTiklar() {
+
+        TestData.expectedAdminId=adminManagementPage.firstRowAdminId.getText();
+        ReusableMethods.waitForSecond(2);
+        adminManagementPage.firstRowDeleteIcon.click();
+
+
+    }
+
+    @Then("Silinmesi hedeflenilen adminin listede olmadigi kontrol edilir")
+    public void silinmesiHedeflenilenAdmininListedeOlmadigiKontrolEdilir() {
+
+        ReusableMethods.waitForSecond(2);
+        Assert.assertNotEquals(adminManagementPage.firstRowAdminId.getText(), TestData.expectedAdminId);
+    }
+
+    @When("Admin Management sayfasida admin@example.com satirinda ki cop kutusu icon'ina tiklar")
+    public void adminManagementSayfasidaAdminExampleComSatirindaKiCopKutusuIconInaTiklar() {
+
+
+        TestData.expectedAdminId= adminManagementPage.systemAdminId.getText();
+        ReusableMethods.click(adminManagementPage.systemAdminDeleteIcon);
+
+    }
+
+    @Then("admin@example.com kaydinin listesinde kaldigi ve silinmedigi kontrol edilir")
+    public void adminExampleComKaydininListesindeKaldigiVeSilinmedigiKontrolEdilir() {
+
+        ReusableMethods.visibleWait(adminManagementPage.adminDeleteErrorAllert,3);
+        Assert.assertTrue(adminManagementPage.adminDeleteErrorAllert.isDisplayed());
+        Assert.assertEquals(adminManagementPage.systemAdminId.getText(), TestData.expectedAdminId);
+
+    }
+
+    @And("Admin ikinci sayfa butonuna tiklar")
+    public void adminIkinciSayfaButonunaTiklar() {
+        ReusableMethods.click(adminManagementPage.tableSecondPageButton);
+        ReusableMethods.waitForSecond(2);
+    }
+}
 
