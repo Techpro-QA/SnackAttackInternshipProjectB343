@@ -28,4 +28,19 @@ public class TestData {
 
     //Product verileri
     public static String expectedProductName;
+
+    //Payment verileri
+    public static String expectedFirstRowPaymentId;
+    public static String expectedFirstRowOrderId;
+    public static String expectedFirstRowUserId;
+    public static String expectedFirstRowAmount;
+    public static String expectedFirstRowPaymentDate;
+
+
+    //Category Management verileri
+    public static String expextedCategoryName;
+
+    //Admin Management verileri
+    public static String expectedAdminId;
+
 }

@@ -69,6 +69,38 @@ public class PaymentManagementPage {
     @FindBy(xpath = "//a[text()='3']")
     public WebElement thirdPageButton;
 
+    @FindBy(xpath = "(//table//tbody//tr)[1]")
+    public WebElement firstRow;
+
+    @FindBy(xpath = "(//table//tbody//tr)[2]")
+    public WebElement secondRow;
+
+    @FindBy(xpath = "(//table//tbody//tr)[3]")
+    public WebElement thirdRow;
+
+    @FindBy(xpath = "(//table//tbody//tr)[4]")
+    public WebElement fourthRow;
+
+    @FindBy(xpath = "(//table//tbody//tr)[5]")
+    public WebElement fifthRow;
+
+
+    @FindBy(xpath = "(//table//tbody//tr//td)[2]")
+    public WebElement firstRowPaymentId;
+
+
+    @FindBy(xpath = "(//table//tbody//tr//td)[3]")
+    public WebElement firstRowOrderId;
+
+
+    @FindBy(xpath = "(//table//tbody//tr//td)[4]")
+    public WebElement firstRowUserId;
+
+    @FindBy(xpath = "(//table//tbody//tr//td)[5]")
+    public WebElement firstRowAmount;
+
+    @FindBy(xpath = "(//table//tbody//tr//td)[6]")
+    public WebElement firstRowPaymentDate;
 
 
 }
