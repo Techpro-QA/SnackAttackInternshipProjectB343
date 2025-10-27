@@ -13,7 +13,7 @@ import snackattack.pages.adminpanelpages.AdminManagementPage;
 import snackattack.pages.adminpanelpages.ProductManagementPage;
 import snackattack.utilities.*;
 
-public class AdminManagementStepDef {
+public class AdminManagementStepdef {
 
     HomePage homePage = new HomePage();
     AdminManagementPage adminManagementPage = new AdminManagementPage();

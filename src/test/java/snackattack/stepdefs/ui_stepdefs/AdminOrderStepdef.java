@@ -18,7 +18,7 @@ import snackattack.utilities.WaitUtils;
 import java.time.Duration;
 import java.util.List;
 
-public class AdminOrderStepDef {
+public class AdminOrderStepdef {
 
     HomePage homePage = new HomePage();
     OrderManagementPage orderManagementPage = new OrderManagementPage();
