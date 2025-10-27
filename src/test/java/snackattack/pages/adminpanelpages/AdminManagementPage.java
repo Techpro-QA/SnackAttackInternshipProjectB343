@@ -42,5 +42,39 @@ public class AdminManagementPage {
     @FindBy(xpath = "//p")
     public WebElement invalidPhoneNumberMessageText;
 
+    //Admin table locates
 
+    @FindBy(tagName = "h1")
+    public WebElement allAdminsTableTitle;
+
+    @FindBy(tagName = "thead")
+    public WebElement adminsTableHead;
+
+
+    @FindBy(tagName = "tbody")
+    public WebElement adminsTableBody;
+
+
+    @FindBy(xpath = "//tbody/tr[1]/td[6]")
+    public WebElement firstRowDeleteIcon;
+
+
+    @FindBy(xpath = "//tbody/tr[1]/td[1]")
+    public WebElement firstRowAdminId;
+
+
+    @FindBy(xpath = "(//a[@class='page-link'])[1]")
+    public WebElement tableSecondPageButton;
+
+
+    @FindBy(xpath = "//tbody/tr[4]/td[6]")
+    public WebElement systemAdminDeleteIcon;
+
+
+    @FindBy(xpath = "//tbody/tr[4]/td[1]")
+    public WebElement systemAdminId;
+
+
+    @FindBy(xpath = "(//div[.='Error deleting admin.'])[4]")
+    public WebElement adminDeleteErrorAllert;
 }
