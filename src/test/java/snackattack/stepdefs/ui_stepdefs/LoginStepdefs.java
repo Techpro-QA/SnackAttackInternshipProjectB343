@@ -10,7 +10,7 @@ import snackattack.utilities.Driver;
 import snackattack.utilities.JSUtils;
 import snackattack.utilities.WaitUtils;
 
-public class LoginStepDefs {
+public class LoginStepdefs {
     HomePage homePage = new HomePage();
     @And("Kullanici loginButton'a tiklar")
     public void kullaniciLoginButtonATiklar() {

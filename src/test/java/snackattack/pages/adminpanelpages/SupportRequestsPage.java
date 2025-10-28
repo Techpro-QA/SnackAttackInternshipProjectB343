@@ -39,9 +39,6 @@ public class SupportRequestsPage {
     @FindBy(xpath = "//div[contains(@class,'bg-white')]//h2")
     public WebElement messageDetailTitle;
 
-    @FindBy(xpath = "//div[contains(@class,'bg-white')]//p")
-    public List<WebElement> messageDetailParagraphs;
-
     @FindBy(xpath = "//input[@placeholder='email']")
     public WebElement emailInput;
 
@@ -51,16 +48,13 @@ public class SupportRequestsPage {
     @FindBy(xpath = "//table/tbody/tr/td[3]")
     public List<WebElement> emailList;
 
-    @FindBy(xpath = "//tr/td[4]")
-    public WebElement subjectName;
-
     @FindBy(xpath = "//table//td[4]")
     public List<WebElement> subjectList;
 
-    @FindBy(xpath = "//input[@type='date'])[1]")
+    @FindBy(xpath = "(//input[@type='date'])[1]")
     public WebElement dateInput1;
 
-    @FindBy(xpath = "//input[@type='date'])[2]")
+    @FindBy(xpath = "(//input[@type='date'])[2]")
     public WebElement dateInput2;
 
     @FindBy(xpath = "(//input[@placeholder='HH'])[1]")
@@ -75,7 +69,7 @@ public class SupportRequestsPage {
     @FindBy(xpath = "(//input[@placeholder='MM'])[2]")
     public WebElement minute2;
 
-    @FindBy(xpath = "//p[contains(text(),'Date:')]")
-    public WebElement time;
+    @FindBy(xpath = "(//button[@class='px-3 py-2 bg-green-500 text-white rounded flex items-center justify-center'])[5]")
+    public WebElement messageDetail5;
 
 }
