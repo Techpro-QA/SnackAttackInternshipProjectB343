@@ -1,6 +1,5 @@
 package snackattack.stepdefs.db_stepdefs;
 
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import snackattack.utilities.ConfigReader;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class DB_UsersVerificationStepDefs {
+public class DB_UsersVerificationStepdefs {
     private ResultSet rs;
 
     @When("Kullanici config dosyasindaki email adresine sahip kaydi sorgular")

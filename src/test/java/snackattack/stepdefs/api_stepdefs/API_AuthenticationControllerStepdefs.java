@@ -21,7 +21,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.Assert.*;
 import static snackattack.stepdefs.Hook.spec;
 
-public class API_AuthenticationControllerStepDefs {
+public class API_AuthenticationControllerStepdefs {
     UserRegisterPojo requestBody;
     Response response;
     Faker faker = new Faker();
