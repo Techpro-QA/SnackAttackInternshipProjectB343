@@ -26,6 +26,7 @@ public class TestData {
     public static String address;
     public static String phoneNumber;
 
+
     //Product verileri
     public static String expectedProductName;
 
@@ -37,5 +38,10 @@ public class TestData {
     public static String expectedFirstRowPaymentDate;
 
 
+    //Category Management verileri
+    public static String expextedCategoryName;
+
+    //Admin Management verileri
+    public static String expectedAdminId;
 
 }
