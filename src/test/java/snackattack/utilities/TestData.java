@@ -26,6 +26,7 @@ public class TestData {
     public static String address;
     public static String phoneNumber;
 
+
     //Product verileri
     public static String expectedProductName;
 

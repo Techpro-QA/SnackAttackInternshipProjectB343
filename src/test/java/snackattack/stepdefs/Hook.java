@@ -11,15 +11,51 @@ import snackattack.utilities.Driver;
 
 public class Hook {
 
-    public static RequestSpecification spec;
+   // public static RequestSpecification spec;
 
-    @Before("@apie2e")
+    /*@Before()
     public void setUp() throws Exception {
         spec = new RequestSpecBuilder()
-                .setBaseUri(ConfigReader.getProperty("baseUrl"))
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
                 .setContentType(ContentType.JSON)
                 .addHeader("Authorization", "Bearer " + Authentication.generateToken())
                 .build();
+    }*/
+    public static RequestSpecification spec;
+
+    // 🔸 Admin token gerektiren testler
+    @Before("@adminToken")
+    public void setUpAdminToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generateAdminToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Admin token ile test başlatıldı.");
+    }
+
+    // 🔸 User token gerektiren testler
+    @Before("@userToken")
+    public void setUpUserToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generateUserToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Kullanıcı token ile test başlatıldı.");
+    }
+
+    // 🔸 Token’sız endpointler
+    @Before("@noToken")
+    public void setUpNoToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Token’sız test başlatıldı.");
     }
     
 }
