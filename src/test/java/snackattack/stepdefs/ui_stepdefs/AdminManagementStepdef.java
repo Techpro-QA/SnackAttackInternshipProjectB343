@@ -13,12 +13,10 @@ import snackattack.pages.adminpanelpages.AdminManagementPage;
 import snackattack.pages.adminpanelpages.ProductManagementPage;
 import snackattack.utilities.*;
 
-public class AdminManagementStepDef {
+public class AdminManagementStepdef {
 
     HomePage homePage = new HomePage();
-    AdminPanelPage adminPanelPage = new AdminPanelPage();
     AdminManagementPage adminManagementPage = new AdminManagementPage();
-    WebDriver driver = Driver.getDriver();
     Faker faker = new Faker();
 
 

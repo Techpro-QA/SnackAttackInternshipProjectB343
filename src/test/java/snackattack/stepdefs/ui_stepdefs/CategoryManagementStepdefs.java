@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CategoryManagementStepDefs {
+public class CategoryManagementStepdefs {
     CategoryManagementPage categoryManagementPage= new CategoryManagementPage();
 
 
