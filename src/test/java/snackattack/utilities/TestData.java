@@ -44,4 +44,7 @@ public class TestData {
     //Admin Management verileri
     public static String expectedAdminId;
 
+    //Customer Management verileri
+    public static String expectedUserId;
+
 }
