@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import snackattack.pages.HomePage;
 import snackattack.utilities.*;
 
-public class LoginRegisterStepDefs {
+public class LoginRegisterStepdefs {
 
     HomePage homePage= new HomePage();
     // ===== Test Data =====
