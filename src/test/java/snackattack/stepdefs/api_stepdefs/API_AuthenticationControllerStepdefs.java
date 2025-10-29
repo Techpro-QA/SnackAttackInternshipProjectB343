@@ -7,7 +7,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.junit.Assert;
 import snackattack.pages.pojos.UserRegisterPojo;
 import snackattack.pages.pojos.UserRegisterResponsePojo;
 import snackattack.utilities.ConfigReader;
@@ -22,11 +21,12 @@ import static org.junit.Assert.*;
 import static snackattack.stepdefs.Hook.spec;
 
 public class API_AuthenticationControllerStepdefs {
-    UserRegisterPojo requestBody;
+
     Response response;
     Faker faker = new Faker();
     String token;
     String newPassword;
+    String adminToken;
 
     @Given("{string} endpoint'ine baglanti kurulur")
     public void endpointIneBaglantiKurulur(String endpoint) {
@@ -42,6 +42,7 @@ public class API_AuthenticationControllerStepdefs {
         }  else {
             throw new IllegalArgumentException("Geçersiz endpoint adı: " + endpoint);
         }
+
     }
 
     @When("Kullanici olusturmak icin POST istegi gonderilir")
@@ -62,7 +63,7 @@ public class API_AuthenticationControllerStepdefs {
         }
         //set the payload
         // POJO ile body
-        requestBody = new UserRegisterPojo(
+        UserRegisterPojo requestBody = new UserRegisterPojo(
                 TestData.firstName,
                 TestData.lastName,
                 TestData.email,
@@ -90,7 +91,15 @@ public class API_AuthenticationControllerStepdefs {
 
     @And("Response body icinde kullanici bilgileri dogrulanmali")
     public void responseBodyIcindeKullaniciBilgileriDogrulanmali() {
-
+        UserRegisterPojo requestBody = new UserRegisterPojo( TestData.firstName,
+                TestData.lastName,
+                TestData.email,
+                TestData.userName,
+                TestData.password,
+                TestData.phoneNumber,
+                "TR",
+                TestData.address,
+                true);
         UserRegisterResponsePojo actualData = response.as(UserRegisterResponsePojo.class);
 
         //Assertions
@@ -148,7 +157,7 @@ public class API_AuthenticationControllerStepdefs {
         String actualEmail = response.jsonPath().getString("email");
         String expectedEmail = ConfigReader.getProperty("user_email");
 
-        Assert.assertEquals("Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
+        assertEquals("Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
     }
 
     @When("Sifre guncellemek icin PATCH istegi gonderilir")
@@ -164,7 +173,6 @@ public class API_AuthenticationControllerStepdefs {
         //get response
         response = given(spec)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
                 .body(requestBody)
                 .when()
                 .patch("{first}/{second}");
@@ -194,5 +202,26 @@ public class API_AuthenticationControllerStepdefs {
     }
 
 
+    @When("Admin token almak icin POST istegi gonderilir")
+    public void adminTokenAlmakIcinPOSTIstegiGonderilir() {
+        // set the expected data
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("email", ConfigReader.getProperty("adminEmail"));
+        requestBody.put("password", ConfigReader.getProperty("adminPassword"));
+
+
+        // send request get response
+        response = given(spec)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("{first}/{second}");
+
+        response.prettyPrint();
+
+        // Token'i al ve degiskene ata
+        adminToken = response.jsonPath().getString("token");
+        System.out.println("Admin Token: " + adminToken);
+    }
 }
 
