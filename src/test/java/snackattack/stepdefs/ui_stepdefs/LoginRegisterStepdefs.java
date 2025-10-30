@@ -72,10 +72,27 @@ public class LoginRegisterStepdefs {
     @And("Kullanici Phone Number alanina TR kuralina uygun {int} haneli numara girer")
     public void kullaniciPhoneNumberAlaninaTRKuralinaUygunHaneliNumaraGirer(int length) {
         WaitUtils.waitFor(3);
-        int telDigits = length-1;
-        String phone = "5"+ faker.number().digits(telDigits);
+        String[] validPrefixes = {"530","535", "540", "545"};
+        // Rastgele bir prefix seç (üst sınır exclusive)
+        int idx = faker.number().numberBetween(0, validPrefixes.length);
+        String prefix = validPrefixes[idx];
+
+        // Kalan hane sayısını hesapla
+        int remainingDigits = length - prefix.length();
+        if (remainingDigits < 0) {
+            throw new IllegalArgumentException("Istene uzunluk prefix'ten kucuk olamaz: length=" + length);
+        }
+
+        // Kalan haneleri üret ve numarayı oluştur
+        String suffix = remainingDigits == 0 ? "" : faker.number().digits(remainingDigits);
+        String phone = prefix + suffix;
+
+        // Hafızaya kaydet + UI'ya yaz
         TestData.phoneNumber = phone;
+        homePage.registerPhoneNumberTextBox.clear();
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
+
+        System.out.println("Girilen telefon numarasi: " + phone);
     }
 
     @When("Kullanici register butonuna tiklar")
