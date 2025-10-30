@@ -26,6 +26,14 @@ Feature: Product API Testleri
     Then Status kodu 200 olmalı
     And Ürün bilgisi dönmeli
 
+  @getAllProductsAdmin
+  @noToken
+  Scenario: Admin filtreli ürün listesini getir
+    Given Admin ürün listeleme için query parametreleri hazırlanır
+    When Kullanıcı "GET" isteğini "/products/allProduct-admin" endpointine gönderir
+    Then Status kodu 200 olmalı
+    And Filtreli ürün listesi dönmeli
+
 
 
 
