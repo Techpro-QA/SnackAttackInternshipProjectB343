@@ -76,6 +76,34 @@ public class Authentication {
         return userToken;
     }
 
+    // 🔹 DYNAMIC TOKEN (E2E testlerinde UI’dan olusan kullanici icin)
+    public static String generateDynamicUserToken() {
+
+        String url = ConfigReader.getProperty("snackUrlApi") + "/auth/login";
+
+        if (TestData.email == null || TestData.password == null) {
+            throw new IllegalStateException("⚠️ TestData içinde email/password bulunamadı! " +
+                    "UI kaydı yapılmadan token alınamaz.");
+        }
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("email", TestData.email);
+        requestBody.put("password", TestData.password);
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post(url);
+
+        response.then().statusCode(200);
+
+        String dynamicToken = response.jsonPath().getString("token");
+        System.out.println("🚀 Dinamik kullanıcı token’ı oluşturuldu: " + dynamicToken);
+
+        return dynamicToken;
+    }
+
     // 🧹 Cache temizleme metodu (isteğe bağlı)
     public static void clearTokens() {
         adminToken = null;
