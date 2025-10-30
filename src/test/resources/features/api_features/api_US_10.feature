@@ -19,29 +19,30 @@
 
 
     @getUser
-    @userToken
+    @e2eToken
     Scenario: Kullanici bilgilerini token ile alabilmeli
       Given "user" endpoint'ine baglanti kurulur
       When Kullanici bilgileri GET istegi ile alinir
       Then Status code 200 olmali
       And Response body icinde email bilgisi dogrulanmali
 
+
+    @patchPassword
+      @end2endToken
+        Scenario: Kullanici password bilgilerini guncelleyebilmeli
+        Given "updatePassword" endpoint'ine baglanti kurulur
+        When Sifre guncellemek icin PATCH istegi gonderilir
+        Then Status code 200 olmali
+        And Response body icinde guncel bilgiler dogrulanmali
+
     @authLoginAdmin
-    @adminToken
+    @noToken
     Scenario:  Kullanici gecerli bilgilerle login olup token alabilmeli
       Given "login" endpoint'ine baglanti kurulur
       When Admin token almak icin POST istegi gonderilir
       Then Status code 200 olmali
       And Response body icinde token bilgisi dogrulanmali
 
-
-    @patchPassword
-      @adminToken
-        Scenario: Kullanici password bilgilerini guncelleyebilmeli
-        Given "updatePassword" endpoint'ine baglanti kurulur
-        When Sifre guncellemek icin PATCH istegi gonderilir
-        Then Status code 200 olmali
-        And Response body icinde guncel bilgiler dogrulanmali
 
 
 
