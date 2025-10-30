@@ -7,7 +7,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.junit.Assert;
 import snackattack.pages.pojos.UserRegisterPojo;
 import snackattack.pages.pojos.UserRegisterResponsePojo;
 import snackattack.utilities.ConfigReader;
@@ -22,11 +21,12 @@ import static org.junit.Assert.*;
 import static snackattack.stepdefs.Hook.spec;
 
 public class API_AuthenticationControllerStepdefs {
-    UserRegisterPojo requestBody;
+
     Response response;
     Faker faker = new Faker();
     String token;
     String newPassword;
+    String adminToken;
 
     @Given("{string} endpoint'ine baglanti kurulur")
     public void endpointIneBaglantiKurulur(String endpoint) {
@@ -42,6 +42,7 @@ public class API_AuthenticationControllerStepdefs {
         }  else {
             throw new IllegalArgumentException("Geçersiz endpoint adı: " + endpoint);
         }
+
     }
 
     @When("Kullanici olusturmak icin POST istegi gonderilir")
@@ -62,7 +63,7 @@ public class API_AuthenticationControllerStepdefs {
         }
         //set the payload
         // POJO ile body
-        requestBody = new UserRegisterPojo(
+        UserRegisterPojo requestBody = new UserRegisterPojo(
                 TestData.firstName,
                 TestData.lastName,
                 TestData.email,
@@ -90,7 +91,15 @@ public class API_AuthenticationControllerStepdefs {
 
     @And("Response body icinde kullanici bilgileri dogrulanmali")
     public void responseBodyIcindeKullaniciBilgileriDogrulanmali() {
-
+        UserRegisterPojo requestBody = new UserRegisterPojo( TestData.firstName,
+                TestData.lastName,
+                TestData.email,
+                TestData.userName,
+                TestData.password,
+                TestData.phoneNumber,
+                "TR",
+                TestData.address,
+                true);
         UserRegisterResponsePojo actualData = response.as(UserRegisterResponsePojo.class);
 
         //Assertions
@@ -108,11 +117,25 @@ public class API_AuthenticationControllerStepdefs {
     @When("Token almak icin POST istegi gonderilir")
     public void tokenAlmakIcinPOSTIstegiGonderilir() {
         //set the expected data
+        //  Dynamic Request Body hazirligi
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("email", ConfigReader.getProperty("user_email"));
-        requestBody.put("password", ConfigReader.getProperty("user_password"));
 
-        //send request get response
+        // Eger TestData doluysa (E2E senaryosu) onu kullan
+        String email = (TestData.email != null && !TestData.email.isEmpty())
+                ? TestData.email
+                : ConfigReader.getProperty("user_email");
+
+        String password = (TestData.password != null && !TestData.password.isEmpty())
+                ? TestData.password
+                : ConfigReader.getProperty("user_password");
+
+        requestBody.put("email", email);
+        requestBody.put("password", password);
+
+        System.out.println(" Token almak icin kullanilacak email: " + email);
+        System.out.println(" Token almak icin kullanilacak password: " + password);
+
+        // send request
         response = given(spec)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -121,9 +144,10 @@ public class API_AuthenticationControllerStepdefs {
 
         response.prettyPrint();
 
-        // Token'i al ve degiskene ata
+        //  Token'i al ve degiskene ata
         token = response.jsonPath().getString("token");
-        System.out.println("Alinan Token: " + token);
+        System.out.println(" Alinan Token: " + token);
+
     }
 
     @And("Response body icinde token bilgisi dogrulanmali")
@@ -144,11 +168,20 @@ public class API_AuthenticationControllerStepdefs {
 
     @And("Response body icinde email bilgisi dogrulanmali")
     public void responseBodyIcindeEmailBilgisiDogrulanmali() {
-        //Assertions
+        //Assertions //bu stepi 2 feature icin kullaniyorum biri configdeki veriler icin biri fakerdan urettigim veriler icin
         String actualEmail = response.jsonPath().getString("email");
         String expectedEmail = ConfigReader.getProperty("user_email");
+        // Eğer TestData.email doluysa (E2E senaryosu) onu kullan
+        if (TestData.email != null && !TestData.email.isEmpty()) {
+            expectedEmail = TestData.email;
+        }
 
-        Assert.assertEquals("Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
+        System.out.println("Email dogrulamasi yapiliyor...");
+        System.out.println("Expected: " + expectedEmail);
+        System.out.println("Actual  : " + actualEmail);
+
+        assertEquals("Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
+        System.out.println("Kullanıcı email bilgisi basariyla dogrulandi!");
     }
 
     @When("Sifre guncellemek icin PATCH istegi gonderilir")
@@ -164,7 +197,6 @@ public class API_AuthenticationControllerStepdefs {
         //get response
         response = given(spec)
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
                 .body(requestBody)
                 .when()
                 .patch("{first}/{second}");
@@ -178,15 +210,15 @@ public class API_AuthenticationControllerStepdefs {
     public void responseBodyIcindeGuncelBilgilerDogrulanmali() {
         System.out.println("Response body: " + response.asString());
 
-        // Response'ı Map'e dönüştürüyoruz
+        // Response'i Map'e donusturuyoruz
         Map<String, Object> actualData = response.as(HashMap.class);
 
-        // Response'u yazdır
+        // Response'u yazdir
         System.out.println("Response map: " + actualData);
 
         // Beklenen sonucu test ediyoruz
         assertEquals("Password UPDATED successfully", actualData.get("message"));
-        assertEquals(true, actualData.get("success")); // eğer API bu alanı dönüyorsa
+        assertEquals(true, actualData.get("success")); // eger API bu alani donuyorsa
         System.out.println("Sifre basariyla guncellendi = " + newPassword);
         //Degisen sifreyi (yenisini) config dosyasina kaydediyoruz
         ConfigUpdater.updateProperty("user_password",newPassword);
@@ -194,5 +226,26 @@ public class API_AuthenticationControllerStepdefs {
     }
 
 
+    @When("Admin token almak icin POST istegi gonderilir")
+    public void adminTokenAlmakIcinPOSTIstegiGonderilir() {
+        // set the expected data
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("email", ConfigReader.getProperty("adminEmail"));
+        requestBody.put("password", ConfigReader.getProperty("adminPassword"));
+
+
+        // send request get response
+        response = given(spec)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("{first}/{second}");
+
+        response.prettyPrint();
+
+        // Token'i al ve degiskene ata
+        adminToken = response.jsonPath().getString("token");
+        System.out.println("Admin Token: " + adminToken);
+    }
 }
 

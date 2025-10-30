@@ -47,6 +47,19 @@ public class Hook {
         System.out.println("✅ Kullanıcı token ile test başlatıldı.");
     }
 
+    // 🔸 E2E senaryolarda (UI'dan olusan kullanici ile) token alma
+    @Before("@e2eToken_ui_us01")
+    public void setUpDynamicToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generateDynamicUserToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Dinamik (E2E) kullanici token ile test başlatıldı.");
+    }
+
+
     // 🔸 Token’sız endpointler
     @Before("@noToken")
     public void setUpNoToken() {
