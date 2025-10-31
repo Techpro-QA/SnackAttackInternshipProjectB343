@@ -93,7 +93,7 @@ public class DB_UsersVerificationStepdefs {
         rs = DBUtils.executeQuery(query);
     }
 
-    @Then("Kullanicinin veritabanindaki bilgileri TestData’daki datalarla uyusmalidir")
+    @Then("Kullanicinin veritabanindaki bilgileri TestData’daki data ile uyusmalidir")
     public void kullanicininVeritabanindakiBilgileriTestDataDakiDatalarlaUyusmalidir() throws SQLException {
         assertNotNull("Resultset null dondu,sorgu calistirilmamis olabilir",rs);
         assertTrue("Kullanici veri tabaninda bulunamadi", rs.next());
