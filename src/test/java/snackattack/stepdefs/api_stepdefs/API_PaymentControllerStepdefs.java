@@ -7,6 +7,9 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import snackattack.pojos.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 
 import static org.junit.Assert.assertEquals;
@@ -130,20 +133,59 @@ public class API_PaymentControllerStepdefs {
 
     @When("Yeni ödeme olusturmak icin POST istegi gonderilir")
     public void yeniÖdemeOlusturmakIcinPOSTIstegiGonderilir() {
+
+        PaymentCreatePaymentPojo payload = new PaymentCreatePaymentPojo(80, 40.00, "CREDIT_CARD", "2025-10-30T22:50:00.000Z", "USD", "STRIPE", "Test payment for order 77", "2025-10-30T22:50:00.000Z", "2025-10-30T22:50:00.000Z", null);
+        response = given(spec).body(payload).when().post("{first}/{second}/{third}");
+
+
     }
 
     @And("Response body icinde olusturulan ödeme bilgisi dogrulanmali")
     public void responseBodyIcindeOlusturulanÖdemeBilgisiDogrulanmali() {
+
+        PaymentCreatePostDataPojo postDataPojo = new PaymentCreatePostDataPojo(72, 80, 167, "2025-10-30T22:50:00", 40.00, "CREDIT_CARD", "5519b7f8-1db6-466f-b1c5-23b4f3f03893", "Ödeme başarısız", true, "USD", "STRIPE");
+        PaymentCreatePostResponsePojo expectedData = new PaymentCreatePostResponsePojo(true,"Payment details retrieved successfully",postDataPojo,null,"OK","2025-10-31T19:10:12.478739066");
+
+        PaymentCreatePostResponsePojo actualData = response.as(PaymentCreatePostResponsePojo.class);
+
+        assertEquals(expectedData.isSuccess(),actualData.isSuccess());
+        assertEquals(expectedData.getMessage(),actualData.getMessage());
+        assertEquals(expectedData.getData().getOrderId(),actualData.getData().getOrderId());
+        assertEquals(expectedData.getData().getPaymentGateway(),actualData.getData().getPaymentGateway());
+        assertEquals(expectedData.getData().getAmount(),actualData.getData().getAmount());
+        assertEquals(expectedData.getData().getFailureReason(),actualData.getData().getFailureReason());
+        assertEquals(expectedData.getErrors(),actualData.getErrors());
+        assertEquals(expectedData.getData().getOrderId(),actualData.getData().getOrderId());
+        assertEquals(expectedData.getStatus(),actualData.getStatus());
+
     }
 
 
 
     @When("Transaction reference GET istegi ile alinir")
     public void transactionReferenceGETIstegiIleAlinir() {
+        response = given(spec).when().get("{first}/{second}/{third}/{fourth}");
+
     }
 
     @And("Response body icinde transaction bilgisi dogrulanmali")
     public void responseBodyIcindeTransactionBilgisiDogrulanmali() {
+        Map<String, Object> expectedData = new HashMap<>();
+
+        expectedData.put("success", true);
+        expectedData.put("message", "Transaction reference retrieved successfully");
+        expectedData.put("data", "77adc922-ffce-4807-a904-44b6ad640287");
+        expectedData.put("errors", null);
+        expectedData.put("status", "OK");
+
+        Map<String, Object> actualData = response.as(HashMap.class);
+
+        assertEquals(expectedData.get("success"),actualData.get("success"));
+        assertEquals(expectedData.get("message"),actualData.get("message"));
+        assertEquals(expectedData.get("data"),actualData.get("data"));
+        assertEquals(expectedData.get("errors"),actualData.get("errors"));
+        assertEquals(expectedData.get("status"),actualData.get("status"));
+
     }
 
 }

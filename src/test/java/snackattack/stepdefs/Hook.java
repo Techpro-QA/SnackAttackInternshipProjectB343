@@ -11,7 +11,7 @@ import snackattack.utilities.Driver;
 
 public class Hook {
 
-   // public static RequestSpecification spec;
+    // public static RequestSpecification spec;
 
     /*@Before()
     public void setUp() throws Exception {
@@ -70,5 +70,15 @@ public class Hook {
 
         System.out.println("✅ Token’sız test başlatıldı.");
     }
-    
+
+    // Order id icin olusturuldu
+    @Before("@userOrderToken")
+    public void setUpUserOrderToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generateOrderAdminToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+    }
 }

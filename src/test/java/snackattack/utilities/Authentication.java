@@ -25,6 +25,7 @@ public class Authentication {
         // ✅ Cache alanları
         private static String adminToken;
     private static String userToken;
+    private static String generateOrderAdminToken;
 
     // 🔹 ADMIN TOKEN
     public static String generateAdminToken() {
@@ -109,6 +110,20 @@ public class Authentication {
         adminToken = null;
         userToken = null;
         System.out.println("🧹 Token cache temizlendi.");
+    }
+
+    //  GENERATE ORDER ADMIN TOKEN
+    public static String generateOrderAdminToken() {
+        if (generateOrderAdminToken != null) {
+            return generateOrderAdminToken;
+        }
+        String url = ConfigReader.getProperty("snackUrlApi") + "/auth/login";
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("email", ConfigReader.getProperty("userOrderEmail"));
+        requestBody.put("password", ConfigReader.getProperty("userOrderPassword"));
+        Response response = given().contentType(ContentType.JSON).body(requestBody).when().post(url);
+        generateOrderAdminToken = response.jsonPath().getString("token");
+        return generateOrderAdminToken;
     }
 
 

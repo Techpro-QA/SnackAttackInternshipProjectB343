@@ -54,8 +54,22 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
 
 
 
+  # GET /api/payments/{paymentId}/transactionReference
+  # Bu senaryoda belirli bir ödemenin transaction reference bilgisini alıyoruz
+  @PaymentTransactionReference
+  @adminToken
+  Scenario: Transaction reference bilgisini al
+    Given "PaymentsTransactionReference" endpoint'ine baglanti kurulur
+    When Transaction reference GET istegi ile alinir
+    Then Status code dogrulanir
+    And Response body icinde transaction bilgisi dogrulanmali
+
+
+
   # POST /api/payments/createPayment
   # Bu senaryoda yeni bir ödeme oluşturuyoruz
+  @PaymentCreate
+  @userOrderToken
   Scenario: Yeni ödeme olustur
     Given "PaymentsCreatePayment" endpoint'ine baglanti kurulur
     When Yeni ödeme olusturmak icin POST istegi gonderilir
@@ -63,12 +77,3 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
     And Response body icinde olusturulan ödeme bilgisi dogrulanmali
 
 
-
-
-  # GET /api/payments/{paymentId}/transactionReference
-  # Bu senaryoda belirli bir ödemenin transaction reference bilgisini alıyoruz
-  Scenario: Transaction reference bilgisini al
-    Given "PaymentsTransactionReference" endpoint'ine baglanti kurulur
-    When Transaction reference GET istegi ile alinir
-    Then Status code dogrulanir
-    And Response body icinde transaction bilgisi dogrulanmali
