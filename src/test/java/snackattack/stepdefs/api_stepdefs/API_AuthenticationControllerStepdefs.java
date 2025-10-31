@@ -39,6 +39,18 @@ public class API_AuthenticationControllerStepdefs {
             spec.pathParams("first", "auth", "second", "user");
         }else if (endpoint.equalsIgnoreCase("updatePassword")) {
             spec.pathParams("first", "auth", "second", "updatePassword");
+        }else if (endpoint.equalsIgnoreCase("PaymentsPaymentId")) {
+            spec.pathParams("first", "api", "second", "payments","third",57);
+        }else if (endpoint.equalsIgnoreCase("PaymentsCreatePayment")) {
+            spec.pathParams("first", "api", "second", "payments","third","createPayment");
+        }else if (endpoint.equalsIgnoreCase("PaymentsTransactionReference")) {
+            spec.pathParams("first", "api", "second", "payments","third",57,"fourth","transactionReference");
+        }else if (endpoint.equalsIgnoreCase("PaymentsFailureReason")) {
+            spec.pathParams("first", "api", "second", "payments","third",57,"fourth","failureReason");
+        }else if (endpoint.equalsIgnoreCase("Payments")) {
+            spec.pathParams("first", "api", "second", "payments");
+        }else if (endpoint.equalsIgnoreCase("PaymentsUpdateStatus")) {
+            spec.pathParams("first", "api", "second", "payments","third","updatePaymentStatus","fourth",57);
         }  else {
             throw new IllegalArgumentException("Geçersiz endpoint adı: " + endpoint);
         }
