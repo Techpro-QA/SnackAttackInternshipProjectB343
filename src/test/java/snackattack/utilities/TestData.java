@@ -47,4 +47,8 @@ public class TestData {
     //Customer Management verileri
     public static String expectedUserId;
 
+    //Contact Message verileri
+    public static String subject;
+    public static String message;
+
 }

@@ -14,8 +14,6 @@ import java.util.Map;
 
 public class DB_ContactMessageStepdefs {
 
-    Connection connection;
-    Statement statement;
     ResultSet resultSet;
     Map<String, String> actualData;
 
@@ -42,13 +40,5 @@ public class DB_ContactMessageStepdefs {
         Assert.assertEquals("Message uyuşmuyor!", expectedMessage, actualData.get("message"));
         Assert.assertEquals("Subject uyuşmuyor!", expectedSubject, actualData.get("subject"));
     }
-
-    @Then("Database baglantisi kapatilir")
-    public void databaseBaglantisiKapatilir() throws SQLException {
-        if (resultSet != null) resultSet.close();
-        if (statement != null) statement.close();
-        if (connection != null) connection.close();
-    }
-
 
 }
