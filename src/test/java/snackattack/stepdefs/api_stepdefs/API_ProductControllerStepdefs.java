@@ -64,6 +64,7 @@ public class API_ProductControllerStepdefs {
         } else {
             System.out.println("Status code doğru: " + statusCode);
         }
+
     }
 
     //GET /products — Tüm ürünleri listele
