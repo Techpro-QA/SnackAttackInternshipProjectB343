@@ -1,4 +1,4 @@
-package snackattack.pages.pojos;
+package snackattack.pages.pojos.productpojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;

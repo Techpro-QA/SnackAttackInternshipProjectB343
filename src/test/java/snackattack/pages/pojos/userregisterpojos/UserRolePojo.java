@@ -1,4 +1,4 @@
-package snackattack.pages.pojos;
+package snackattack.pages.pojos.userregisterpojos;
 
 public class UserRolePojo {
     private Integer id;

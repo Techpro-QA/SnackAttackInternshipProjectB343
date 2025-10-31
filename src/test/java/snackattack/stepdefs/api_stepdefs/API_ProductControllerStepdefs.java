@@ -4,7 +4,9 @@ import io.cucumber.java.en.*;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
-import snackattack.pages.pojos.*;
+import snackattack.pages.pojos.productpojos.AdditionsCategoryPojo;
+import snackattack.pages.pojos.productpojos.CategoriesPojo;
+import snackattack.pages.pojos.productpojos.ProductRequestPojo;
 import snackattack.stepdefs.Hook;
 
 import java.util.*;
