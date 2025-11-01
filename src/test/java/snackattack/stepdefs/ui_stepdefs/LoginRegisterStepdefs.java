@@ -15,115 +15,113 @@ public class LoginRegisterStepdefs {
     HomePage homePage= new HomePage();
     // ===== Test Data =====
     private final Faker faker = new Faker();
-    private String generatedPassword;
-    private String randomEmail;
 
-    @And("Kullanici First Name alanina gecerli data girer")
-    public void kullaniciFirstNameAlaninaGecerliDataGirer() {
-    String firstName = faker.name().firstName();
-    TestData.firstName = firstName;//hafizaya kaydet
-    homePage.registerFirstNameTextBox.sendKeys(firstName);
 
+    @And("{string} First Name alanina gecerli data girer")
+    public void firstNameAlaninaGecerliDataGirer(String rol) {
+        String firstName = faker.name().firstName();
+        TestData.firstName = firstName;//hafizaya kaydet
+        homePage.registerFirstNameTextBox.sendKeys(firstName);
     }
 
-    @And("Kullanici Last Name alanina gecerli data girer")
-    public void kullaniciLastNameAlaninaGecerliDataGirer() {
+
+    @And("{string} Last Name alanina gecerli data girer")
+    public void lastNameAlaninaGecerliDataGirer(String rol) {
         String lastName = faker.name().lastName();
-        TestData.lastName = lastName; //hafizaya kaydet
+        TestData.lastName = lastName;
         homePage.registerLastNameTextBox.sendKeys(lastName);
     }
 
 
-    @And("Kullanici User Name alanina gecerli data girer")
-    public void kullaniciUserNameAlaninaGecerliDataGirer() {
+    @And("{string} User Name alanina gecerli data girer")
+    public void userNameAlaninaGecerliDataGirer(String rol) {
         String userName = faker.name().username();
-        TestData.userName = userName;//hafizaya kaydet
+        TestData.userName = userName;
         homePage.registerUserNameTextBox.sendKeys(userName);
     }
 
+    @And("{string} Password alanina {string} yazar")
+    public void passwordAlaninaYazar(String rol, String key) {
+        String passwordValue = (ConfigReader.getProperty(key) != null)
+                ? ConfigReader.getProperty(key)
+                : (key.equalsIgnoreCase("random") ? faker.internet().password(8,10)
+                : (key.equalsIgnoreCase("memoryPassword") ? TestData.password : key));
 
-    @And("Kullanici Confirm Password alanina Password ile ayni degeri girer")
-    public void kullaniciConfirmPasswordAlaninaPasswordIleAyniDegeriGirer() {
+        TestData.password = passwordValue;
+        homePage.registerPasswordTextBox.clear();
+        homePage.registerPasswordTextBox.sendKeys(passwordValue);
+        System.out.println(rol + " icin kullanilan password: " + passwordValue);
+    }
+
+    @And("{string} Confirm Password alanina Password ile ayni degeri girer")
+    public void confirmPasswordAlaninaPasswordIleAyniDegeriGirer(String rol) {
         WaitUtils.waitForVisibility(homePage.registerConfirmPasswordTextBox,3);
         Assert.assertNotNull("generated password yok; once Password adimini calistir", TestData.password);
         homePage.registerConfirmPasswordTextBox.clear();
         homePage.registerConfirmPasswordTextBox.sendKeys(TestData.password);
-
     }
 
-    @And("Kullanici Address alanina gecerli data girer")
-    public void kullaniciAddressAlaninaGecerliDataGirer() {
+    @And("{string} Address alanina gecerli data girer")
+    public void addressAlaninaGecerliDataGirer(String rol) {
         String address = faker.address().fullAddress();
         TestData.address = address;
         homePage.registerAddressTextBox.sendKeys(address);
     }
 
-    @And("Kullanici Country Code select alanindan {string} secer")
-    public void kullaniciCountryCodeSelectAlanindanSecer(String countryCode) {
+    @And("{string} Country Code select alanindan {string} secer")
+    public void countryCodeSelectAlanindanSecer(String rol, String countryCode) {
         JSUtils.JSscrollIntoView(homePage.registerCountryCodeSelect);
         Select select = new Select(homePage.registerCountryCodeSelect);
         select.selectByValue(countryCode);
         WaitUtils.waitFor(3);
         String selectedValue = select.getFirstSelectedOption().getAttribute("value");
         Assert.assertEquals(countryCode, selectedValue);
-
     }
 
-    @And("Kullanici Phone Number alanina TR kuralina uygun {int} haneli numara girer")
-    public void kullaniciPhoneNumberAlaninaTRKuralinaUygunHaneliNumaraGirer(int length) {
-        WaitUtils.waitFor(3);
+    @And("{string} Phone Number alanina TR kuralina uygun {int} haneli numara girer")
+    public void phoneNumberAlaninaTRKuralinaUygunHaneliNumaraGirer(String rol, int length) {
+        WaitUtils.waitFor(1);
         String[] validPrefixes = {"530","535", "540", "545"};
-        // Rastgele bir prefix seç (üst sınır exclusive)
         int idx = faker.number().numberBetween(0, validPrefixes.length);
         String prefix = validPrefixes[idx];
-
-        // Kalan hane sayısını hesapla
         int remainingDigits = length - prefix.length();
-        if (remainingDigits < 0) {
-            throw new IllegalArgumentException("Istene uzunluk prefix'ten kucuk olamaz: length=" + length);
-        }
-
-        // Kalan haneleri üret ve numarayı oluştur
-        String suffix = remainingDigits == 0 ? "" : faker.number().digits(remainingDigits);
+        String suffix = faker.number().digits(remainingDigits);
         String phone = prefix + suffix;
-
-        // Hafızaya kaydet + UI'ya yaz
         TestData.phoneNumber = phone;
         homePage.registerPhoneNumberTextBox.clear();
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
-
-        System.out.println("Girilen telefon numarasi: " + phone);
+        System.out.println(rol + " icin girilen telefon numarasi: " + phone);
     }
 
-    @When("Kullanici register butonuna tiklar")
-    public void kullaniciButonunaTiklar() {
+    @When("{string} register butonuna tiklar")
+    public void registerButonunaTiklar(String rol) {
         WaitUtils.waitForClickablility(homePage.registerSubmitButton,5);
         JSUtils.JSclickWithTimeout(homePage.registerSubmitButton);
-
     }
 
-    @Then("Kullanici Anasayfaya yonlendigi dogrulanir")
-    public void kayitIslemininBasariliOlduguMesajiIleDogrulanir( ) {
+    @Then("{string} login sayfasina yonlenir ve URL {string} olarak devam eder")
+    public void loginSayfasinaYonlenirVeURLOlarakDevamEder(String rol, String expectedPath) {
+        WaitUtils.waitFor(3);
+        String currentUrl = Driver.getDriver().getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains(expectedPath));
+        System.out.println(rol + " login sayfasina yonlendirildi: " + currentUrl);
+    }
+
+    @Then("{string} Anasayfaya yonlendigi dogrulanir")
+    public void anasayfayaYonlendigiDogrulanir(String rol) {
         WaitUtils.waitForVisibility(homePage.homeLogo,5);
         Assert.assertTrue(homePage.userPanelTitle.isDisplayed());
         String actualTitle = homePage.userPanelTitle.getText().trim();
-        Assert.assertTrue(
-                actualTitle.contains("Wellcome to Customer Panel")
-        );
-        System.out.println("Kullanici basariyla register olup, basariyla anasayfaya yonlenmistir");
-
-
+        Assert.assertTrue(actualTitle.contains("Wellcome to Customer Panel"));
+        System.out.println(rol + " basariyla register olup anasayfaya yonlendirildi");
     }
 
-
-    @And("Kullanici kayit sayfasinda kalir ve URL {string} olarak devam eder")
-    public void kullaniciKayitSayfasindaKalirVeURLOlarakDevamEder(String expectedPath) {
+    @And("{string} kayit sayfasinda kalir ve URL {string} olarak devam eder")
+    public void kayitSayfasindaKalirVeURLOlarakDevamEder(String rol, String expectedPath) {
         WaitUtils.waitFor(2);
         String currentUrl = Driver.getDriver().getCurrentUrl();
         Assert.assertTrue(currentUrl.contains(expectedPath));
         Assert.assertFalse(Driver.getDriver().getCurrentUrl().contains("/dashboard/member"));
-
-
     }
 
     @And("Kullanici First Name alanini bos birakir")
@@ -153,85 +151,83 @@ public class LoginRegisterStepdefs {
         Assert.assertTrue(fieldName + " alti uyari gorunmedi!", actual.toLowerCase().contains("required"));
     }
 
-    @And("Kullanici Last Name alanini bos birakir")
-    public void kullaniciLastNameAlaniniBosBirakir() {homePage.registerLastNameTextBox.clear();}
-
-    @And("Kullanici Email alanini bos birakir")
-    public void kullaniciEmailAlaniniBosBirakir() {homePage.registerEmailTextBox.clear();}
-
-    @And("Kullanici User Name alanini bos birakir")
-    public void kullaniciUserNameAlaniniBosBirakir() {homePage.registerUserNameTextBox.clear();}
-
-    @And("Kullanici Password alanini bos birakir")
-    public void kullaniciPasswordAlaniniBosBirakir() {homePage.registerPasswordTextBox.clear();}
-
-    @And("Kullanici Confirm Password alanini bos birakir")
-    public void kullaniciConfirmPasswordAlaniniBosBirakir() {homePage.registerConfirmPasswordTextBox.clear();}
-
-    @And("Kullanici registerButon'a tiklar")
-    public void kullaniciRegisterButonATiklar() {
-        ReusableMethods.visibleWait(homePage.registerButton,5);
-        homePage.registerButton.click();
+    @And("{string} Last Name alanini bos birakir")
+    public void lastNameAlaniniBosBirakir(String rol) {
+        homePage.registerLastNameTextBox.clear();
+        System.out.println(rol + " Last Name alanini bos birakti");
     }
 
-    @And("Kullanici Password alanina {string} yazar")
-    public void kullaniciPasswordAlaninaYazar(String key) {
-        String passwordValue = (ConfigReader.getProperty(key) != null)
-                ? ConfigReader.getProperty(key)
-                : (key.equalsIgnoreCase("random") ? faker.internet().password(8,10)
-                : (key.equalsIgnoreCase("memoryPassword") ? TestData.password : key));
+    @And("{string} Email alanini bos birakir")
+    public void emailAlaniniBosBirakir(String rol) {
+        homePage.registerEmailTextBox.clear();
+        System.out.println(rol + " Email alanini bos birakti");
+    }
 
-        TestData.password = passwordValue; // <-- KRİTİK: her durumda hafızaya yaz
+    @And("{string} User Name alanini bos birakir")
+    public void userNameAlaniniBosBirakir(String rol) {
+        homePage.registerUserNameTextBox.clear();
+        System.out.println(rol + " User Name alanini bos birakti");
+    }
+
+    @And("{string} Password alanini bos birakir")
+    public void passwordAlaniniBosBirakir(String rol) {
         homePage.registerPasswordTextBox.clear();
-        homePage.registerPasswordTextBox.sendKeys(passwordValue);
-
-        System.out.println("Kullanilan password: " + passwordValue);
+        System.out.println(rol + " Password alanini bos birakti");
     }
 
-    @And("Kullanici Confirm Password alanina {string} yazar")
-    public void kullaniciConfirmPasswordAlaninaYazar(String confirmPasswordKey) {
+    @And("{string} Confirm Password alanini bos birakir")
+    public void confirmPasswordAlaniniBosBirakir(String rol) {
+        homePage.registerConfirmPasswordTextBox.clear();
+        System.out.println(rol + " Confirm Password alanini bos birakti");
+    }
+
+    @And("{string} registerButon'a tiklar")
+    public void registerButonATiklar(String rol) {
+        ReusableMethods.visibleWait(homePage.registerButton, 5);
+        homePage.registerButton.click();
+        System.out.println(rol + " register butonuna tikladi");
+    }
+
+
+    @And("{string} Confirm Password alanina {string} yazar")
+    public void confirmPasswordAlaninaYazar(String rol, String confirmPasswordKey) {
         String confirmPasswordValue = (ConfigReader.getProperty(confirmPasswordKey) != null)
                 ? ConfigReader.getProperty(confirmPasswordKey)
                 : (confirmPasswordKey.equalsIgnoreCase("memoryPassword")
                 ? TestData.password
                 : confirmPasswordKey);
+
         TestData.password = confirmPasswordValue;
         homePage.registerConfirmPasswordTextBox.clear();
         homePage.registerConfirmPasswordTextBox.sendKeys(confirmPasswordValue);
+        System.out.println(rol + " Confirm Password alanina '" + confirmPasswordValue + "' yazdi");
     }
 
+    @And("{string} Address alanini bos birakir")
+    public void addressAlaniniBosBirakir(String rol) {
+        homePage.registerAddressTextBox.clear();
+        System.out.println(rol + " Address alanini bos birakti");
+    }
 
-    @And("Kullanici Address alanini bos birakir")
-    public void kullaniciAddressAlaniniBosBirakir() {homePage.registerAddressTextBox.clear();}
+    @And("{string} Phone Number alanini bos birakir")
+    public void phoneNumberAlaniniBosBirakir(String rol) {
+        homePage.registerPhoneNumberTextBox.clear();
+        System.out.println(rol + " Phone Number alanini bos birakti");
+    }
 
-    @And("Kullanici Phone Number alanini bos birakir")
-    public void kullaniciPhoneNumberAlaniniBosBirakir() {homePage.registerPhoneNumberTextBox.clear();}
-
-    @And("Kullanici Email alanina {string} yazar")
-    public void kullaniciEmailAlaninaYazar(String emailKey) {
+    @And("{string} Email alanina {string} yazar")
+    public void emailAlaninaYazar(String rol, String emailKey) {
         String emailValue = (ConfigReader.getProperty(emailKey) != null)
                 ? ConfigReader.getProperty(emailKey)
                 : (emailKey.equalsIgnoreCase("random")
-                ? (TestData.email = faker.internet().emailAddress())      //  kaydet
+                ? (TestData.email = faker.internet().emailAddress())      // yeni random email oluştur
                 : (emailKey.equalsIgnoreCase("memoryEmail")
-                ? TestData.email                                     //  tekrar kullan
-                : emailKey));
+                ? TestData.email                                         // hafızadaki email’i yeniden kullan
+                : emailKey));                                            // direkt verilen değeri yaz
 
         homePage.registerEmailTextBox.clear();
         homePage.registerEmailTextBox.sendKeys(emailValue);
-
-        System.out.println("Kullanilan email: " + emailValue);
-    }
-
-
-    @And("Kullanici Password alanina gecerli password yazar")
-    public void kullaniciPasswordAlaninaGecerliPasswordYazar() {
-        homePage.registerPasswordTextBox.sendKeys(ConfigReader.getProperty("userPassword"));
-    }
-
-    @And("Kullanici Confirm Password alanina gecerli password yazar")
-    public void kullaniciConfirmPasswordAlaninaGecerliPasswordYazar() {
-        homePage.registerConfirmPasswordTextBox.sendKeys(ConfigReader.getProperty("userPassword"));
+        System.out.println(rol + " Email alanina '" + emailValue + "' yazdi");
     }
 
 
@@ -262,32 +258,38 @@ public class LoginRegisterStepdefs {
         );
     }
 
-    @Then("Kullanici sayfada {string} mesaji gormeli")
-    public void kullaniciSayfadaMesajiGormeli(String expectedText) {
+    @Then("{string} sayfada {string} mesaji gormeli")
+    public void sayfadaMesajiGormeli(String rol, String expectedText) {
         WebElement elementToVerify;
 
+        // mesaj turune gore karsilastirilacak elementi seciyoruz
         elementToVerify = (expectedText.toLowerCase().contains("token") || expectedText.toLowerCase().contains("read"))
-                ? homePage.registerStatusMessagePopup         // Pop-up hata (Örn: Unexpected token)
-                : homePage.authLoginErrorStatus;   //  hata (Örn: Required)
+                ? homePage.registerStatusMessagePopup       // Pop-up hata (örnek: Unexpected token)
+                : homePage.authLoginErrorStatus;            // Giriş hatası (örnek: Required)
 
+        //elementin gorunmesini bekliyoruz
         WaitUtils.waitForVisibility(elementToVerify, 10);
-        String actualText = elementToVerify.getText()
-                .trim()
-                .toLowerCase();
 
+        // metinleri karsilastirabilmek icin formlarini ayni yapiyoruz
+        String actualText = elementToVerify.getText().trim().toLowerCase();
         String cleanExpectedText = expectedText.trim().toLowerCase();
-        System.out.println("TEST EDİLECEK BEKLENEN METİN: " + expectedText);
-        System.out.println("SEÇİLEN ELEMENTİN METNİ: " + actualText);
-        Assert.assertTrue(actualText.contains(cleanExpectedText));
 
+        System.out.println(rol + " için TEST EDİLECEK BEKLENEN METİN: " + expectedText);
+        System.out.println("SEÇİLEN ELEMENTİN GERÇEK METNİ: " + actualText);
+
+        // Assertions
+        Assert.assertTrue(actualText.contains(cleanExpectedText));
     }
 
-    @And("Kullanici Phone Number alanina harf veya ozel karakter icerikli {string} yazar")
-    public void kullaniciPhoneNumberAlaninaHarfVeyaOzelKarakterIcerikliYazar(String phone) {
-        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox,3);
+
+    @And("{string} Phone Number alanina harf veya ozel karakter icerikli {string} yazar")
+    public void phoneNumberAlaninaHarfVeyaOzelKarakterIcerikliYazar(String rol, String phone) {
+        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox, 3);
         homePage.registerPhoneNumberTextBox.clear();
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
+        System.out.println(rol + " Phone Number alanina harf/ozel karakter icerikli '" + phone + "' yazdi");
     }
+
 
     @Then("Phone Number alti {string} uyarisi gorunur")
     public void phoneNumberAltiUyarisiGorunur(String expected) {
@@ -298,32 +300,34 @@ public class LoginRegisterStepdefs {
         );
     }
 
-    @And("Kullanici Phone Number alanina ulke formatina uymayan sekilde {string} yazar")
-    public void kullaniciPhoneNumberAlaninaUlkeFormatinaUymayanSekildeYazar(String phone) {
+    @And("{string} Phone Number alanina ulke formatina uymayan sekilde {string} yazar")
+    public void phoneNumberAlaninaUlkeFormatinaUymayanSekildeYazar(String rol, String phone) {
         WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox, 3);
         homePage.registerPhoneNumberTextBox.clear();
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
+
+        System.out.println(rol + " Phone Number alanina ulke formatina uymayan '" + phone + "' yazdi");
     }
 
 
-    @And("Kullanici Phone Number alanina {string} girer")
-    public void kullaniciPhoneNumberAlaninaGirer(String phoneKey) {
-        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox,2);
+
+    @And("{string} Phone Number alanina {string} girer")
+    public void phoneNumberAlaninaGirer(String rol, String phoneKey) {
+        WaitUtils.waitForVisibility(homePage.registerPhoneNumberTextBox, 2);
+
         String phoneValue = (ConfigReader.getProperty(phoneKey) != null)
                 ? ConfigReader.getProperty(phoneKey)
-                : phoneKey; // config dosyasinda yoksa yazdigimi kullanacak
+                : phoneKey; // config dosyasinda yoksa yazdigini kullanir
 
         homePage.registerPhoneNumberTextBox.clear();
         homePage.registerPhoneNumberTextBox.sendKeys(phoneValue);
 
+        System.out.println(rol + " Phone Number alanina '" + phoneValue + "' girdi");
     }
 
-
-    @Then("Kullanici login sayfasina yonlenir ve URL {string} olarak devam eder")
-    public void kullaniciLoginSayfasinaYonlenirVeURLOlarakDevamEder(String expectedPath) {
-        WaitUtils.waitFor(3);
-        String currentUrl = Driver.getDriver().getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains(expectedPath));
-        System.out.println("Kullanici login sayfasina yonlendirildi: " + currentUrl);
+    @And("{string} First Name alanini bos birakir")
+    public void firstNameAlaniniBosBirakir(String rol) {
+        homePage.registerFirstNameTextBox.clear();
+        System.out.println(rol + "FirstName alanini bos birakti");
     }
 }

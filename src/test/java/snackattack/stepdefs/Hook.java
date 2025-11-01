@@ -11,17 +11,15 @@ import snackattack.utilities.Driver;
 
 public class Hook {
 
-   // public static RequestSpecification spec;
 
-    /*@Before()
-    public void setUp() throws Exception {
-        spec = new RequestSpecBuilder()
-                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
-                .setContentType(ContentType.JSON)
-                .addHeader("Authorization", "Bearer " + Authentication.generateToken())
-                .build();
-    }*/
     public static RequestSpecification spec;
+
+    // 🔸 Öncelikle her senaryodan önce cache temizliği
+    @Before(order = 0)
+    public void clearAllTokensBeforeScenario() {
+        Authentication.clearTokens();
+        System.out.println("🧹 [HOOK] Tüm token cache temizlendi (her senaryo öncesi).");
+    }
 
     // 🔸 Admin token gerektiren testler
     @Before("@adminToken")
@@ -33,6 +31,17 @@ public class Hook {
                 .build();
 
         System.out.println("✅ Admin token ile test başlatıldı.");
+    }
+    // 🔸 Private admin token gerektiren testler
+    @Before("@privateAdminToken")
+    public void setUpPrivateAdminToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generatePrivateAdminToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Private admin token ile test başlatıldı.");
     }
 
     // 🔸 User token gerektiren testler
@@ -46,9 +55,21 @@ public class Hook {
 
         System.out.println("✅ Kullanıcı token ile test başlatıldı.");
     }
+    // 🔸 Private user token gerektiren testler
+    @Before("@privateUserToken")
+    public void setUpPrivateUserToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .addHeader("Authorization", "Bearer " + Authentication.generatePrivateUserToken())
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Private user token ile test başlatıldı.");
+    }
+
 
     // 🔸 E2E senaryolarda (UI'dan olusan kullanici ile) token alma
-    @Before("@e2eToken_ui_us01")
+    @Before("@dynamicToken")
     public void setUpDynamicToken() {
         spec = new RequestSpecBuilder()
                 .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
