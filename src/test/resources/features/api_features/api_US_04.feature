@@ -10,7 +10,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Ödeme detaylarını al
     Given "PaymentsPaymentId" endpoint'ine baglanti kurulur
     When Ödeme detaylari GET istegi ile alinir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde ödeme bilgileri dogrulanmali
 
 
@@ -22,7 +22,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Tüm ödemeleri listele
     Given "Payments" endpoint'ine baglanti kurulur
     When Ödemeler GET istegi ile listelenir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde ödeme listesi dogrulanmali
 
 
@@ -35,7 +35,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Ödemenin Failure Reason bilgisini güncelle
     Given "PaymentsFailureReason" endpoint'ine baglanti kurulur
     When Failure reason bilgisini guncellemek icin PUT istegi gonderilir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde failure reason bilgisi dogrulanmali
 
 
@@ -48,7 +48,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Ödemenin durumunu güncelle
     Given "PaymentsUpdateStatus" endpoint'ine baglanti kurulur
     When Payment status bilgisini guncellemek icin PUT istegi gonderilir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde status bilgisi dogrulanmali
 
 
@@ -61,7 +61,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Transaction reference bilgisini al
     Given "PaymentsTransactionReference" endpoint'ine baglanti kurulur
     When Transaction reference GET istegi ile alinir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde transaction bilgisi dogrulanmali
 
 
@@ -73,7 +73,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   Scenario: Yeni ödeme olustur
     Given "PaymentsCreatePayment" endpoint'ine baglanti kurulur
     When Yeni ödeme olusturmak icin POST istegi gonderilir
-    Then Status code dogrulanir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde olusturulan ödeme bilgisi dogrulanmali
 
 
