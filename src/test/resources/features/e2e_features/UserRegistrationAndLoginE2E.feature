@@ -46,7 +46,7 @@ Feature: User registration and login end-to-end verification
           Scenario: Kullanici kayit olunan bir hesabin dorulamasini db uzerinden yapabilmelidir
             Given Veritabanı bağlantısı kurulur
             When Kullanici TestData’daki email bilgisiyle veritabaninda kaydi sorgular
-            Then Kullanicinin veritabanindaki bilgileri TestData’daki datalarla uyusmalidir
+            Then Kullanicinin veritabanindaki bilgileri TestData’daki data ile uyusmalidir
 
 
 

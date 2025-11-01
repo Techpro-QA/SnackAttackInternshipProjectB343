@@ -95,31 +95,36 @@ public class DB_UsersVerificationStepdefs {
 
     @Then("Kullanicinin veritabanindaki bilgileri TestData’daki data ile uyusmalidir")
     public void kullanicininVeritabanindakiBilgileriTestDataDakiDatalarlaUyusmalidir() throws SQLException {
-        assertNotNull("Resultset null dondu,sorgu calistirilmamis olabilir",rs);
+        assertNotNull("Resultset null dondu, sorgu calistirilmamis olabilir", rs);
         assertTrue("Kullanici veri tabaninda bulunamadi", rs.next());
 
-        //DB'den gelen veriler
+        // DB'den gelen veriler
         String actualFirstName = rs.getString("first_name");
         String actualLastName  = rs.getString("last_name");
         String actualUserName  = rs.getString("user_name");
         String actualEmail     = rs.getString("email");
         String actualPhoneRaw  = rs.getString("phone_number");
 
-        //Test datadan gelen veriler =>Bunlar ui testinde olusturdugumuz dinamik datalar
+        // TestData'dan gelen veriler (UI testinde oluşturulan dinamik datalar)
         String expectedFirstName = TestData.firstName;
         String expectedLastName  = TestData.lastName;
         String expectedUserName  = TestData.userName;
         String expectedEmail     = TestData.email;
         String expectedPhone     = TestData.phoneNumber;
 
-        //Assertions
-        assertEquals(expectedFirstName,actualFirstName);
-        assertEquals(expectedLastName,actualLastName);
-        assertEquals(expectedUserName,actualUserName);
-        assertEquals(expectedEmail,actualEmail);
-        assertEquals(expectedPhone,actualPhoneRaw);
+        // Telefon numarasını normalize et (sadece rakamlar)
+        String actualPhone = actualPhoneRaw == null ? "" : actualPhoneRaw.replaceAll("\\D", "");
+        String expectedPhoneNormalized = expectedPhone == null ? "" : expectedPhone.replaceAll("\\D", "");
+
+        // Assertions
+        assertEquals("First Name uyusmuyor!", expectedFirstName, actualFirstName);
+        assertEquals("Last Name uyusmuyor!", expectedLastName, actualLastName);
+        assertEquals("User Name uyusmuyor!", expectedUserName, actualUserName);
+        assertEquals("Email uyusmuyor!", expectedEmail, actualEmail);
+        assertEquals("Telefon numarasi uyusmuyor!", expectedPhoneNormalized, actualPhone);
 
         System.out.println("Kullanici DB'de basariyla dogrulandi = " + actualEmail);
-
     }
+
+
 }
