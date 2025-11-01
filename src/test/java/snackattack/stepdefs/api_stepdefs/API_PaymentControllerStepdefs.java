@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import snackattack.pojos.*;
 
 import java.util.HashMap;
@@ -23,7 +24,9 @@ public class API_PaymentControllerStepdefs {
 
     @When("Ödeme detaylari GET istegi ile alinir")
     public void ödemeDetaylariGETIstegiIleAlinir() {
-        response = given(spec).when().get("{first}/{second}/{third}");
+        response = given(spec)
+                .when()
+                .get("{first}/{second}/{third}");
     }
 
 
@@ -49,12 +52,16 @@ public class API_PaymentControllerStepdefs {
 
     @Then("Status code dogrulanir")
     public void statusCodeDogrulanir() {
-        response.then().statusCode(200);
+        response
+                .then()
+                .statusCode(200);
     }
 
     @When("Ödemeler GET istegi ile listelenir")
     public void ödemelerGETIstegiIleListelenir() {
-        response = given(spec).when().get("{first}/{second}");
+        response = given(spec)
+                .when()
+                .get("{first}/{second}");
 
     }
 
@@ -71,7 +78,10 @@ public class API_PaymentControllerStepdefs {
     @When("Failure reason bilgisini guncellemek icin PUT istegi gonderilir")
     public void failureReasonBilgisiniGuncellemekIcinPUTIstegiGonderilir() {
         String payload = "Kullanıcı iptal etti";
-        response = given(spec).body(payload).when().put("{first}/{second}/{third}/{fourth}");
+        response = given(spec)
+                .body(payload)
+                .when()
+                .put("{first}/{second}/{third}/{fourth}");
 
 
     }
@@ -102,7 +112,10 @@ public class API_PaymentControllerStepdefs {
         String payload = "{\n" +
                 "  \"status\": \"FAILED\"\n" +
                 "}";
-        response = given(spec).body(payload).when().put("{first}/{second}/{third}/{fourth}");
+        response = given(spec)
+                .body(payload)
+                .when()
+                .put("{first}/{second}/{third}/{fourth}");
 
     }
 
@@ -135,7 +148,10 @@ public class API_PaymentControllerStepdefs {
     public void yeniÖdemeOlusturmakIcinPOSTIstegiGonderilir() {
 
         PaymentCreatePaymentPojo payload = new PaymentCreatePaymentPojo(80, 40.00, "CREDIT_CARD", "2025-10-30T22:50:00.000Z", "USD", "STRIPE", "Test payment for order 77", "2025-10-30T22:50:00.000Z", "2025-10-30T22:50:00.000Z", null);
-        response = given(spec).body(payload).when().post("{first}/{second}/{third}");
+        response = given(spec)
+                .body(payload)
+                .when()
+                .post("{first}/{second}/{third}");
 
 
     }
@@ -164,7 +180,9 @@ public class API_PaymentControllerStepdefs {
 
     @When("Transaction reference GET istegi ile alinir")
     public void transactionReferenceGETIstegiIleAlinir() {
-        response = given(spec).when().get("{first}/{second}/{third}/{fourth}");
+        response = given(spec)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
 
     }
 
@@ -188,4 +206,23 @@ public class API_PaymentControllerStepdefs {
 
     }
 
+
+
+    @Then("Status code {int} oldugu dogrulanir")
+    public void statusCodeOlduguDogrulanir(int statusCode) {
+
+        int actualStatusCode = response.statusCode();
+
+        if (actualStatusCode != statusCode) {
+            System.out.println("Expected Status code: " + statusCode + " | Actual Status code: " + actualStatusCode);
+            System.out.println("Response Body: " + response.getBody().asString());
+        } else {
+            System.out.println("Status code dogru: " + statusCode);
+        }
+
+        Assert.assertEquals("Status code eslesmiyor!", statusCode, actualStatusCode);
+    }
+
 }
+
+
