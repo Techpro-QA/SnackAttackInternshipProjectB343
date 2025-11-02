@@ -3,11 +3,9 @@
 Feature: Yeni ödeme oluşturma, veritabanında doğrulama ve admin panelinde görüntüleme
 
 
-
   Scenario: Yeni ödeme oluşturma ve doğrulama (API → DB → UI)
 
-       # ---------- UI Aşaması ----------
-    Given
+       # UI ASAMASI
     Given Sayfaya gidilir
     And Kullanici loginRegister'a tiklar
     And Kullanici "admin" olarak giriş yapar
@@ -16,16 +14,14 @@ Feature: Yeni ödeme oluşturma, veritabanında doğrulama ve admin panelinde g�
 
 
 
-    # ---------- DB Aşaması ----------
+      #  DB ASAMASI
     Given Veritabanı bağlantısı kurulur
     When Payments tablosundaki son ödeme bilgileri veritabaninda aranir
     Then DB’deki ödeme bilgileri UI’den dönen bilgilerle tutarlı olmalı
 
 
 
-
-
-    # ---------- API Aşaması ----------
+      #  API ASAMASI
     Given "PaymentsLastPaymentID" endpoint'ine baglanti kurulur
     When Admin son ödeme bilgilerini almak icin GET istegi gonderir
     Then Status code 200 oldugu dogrulanir
