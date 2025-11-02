@@ -46,7 +46,9 @@ public class API_AuthenticationControllerStepdefs {
         }else if (endpoint.equalsIgnoreCase("updatePassword")) {
             spec.pathParams("first", "auth", "second", "updatePassword");
         }else if (endpoint.equalsIgnoreCase("PaymentsPaymentId")) {
-            spec.pathParams("first", "api", "second", "payments","third",57);
+            spec.pathParams("first", "api", "second", "payments","third",57);}
+        else if (endpoint.equalsIgnoreCase("PaymentsLastPaymentID")) {
+            spec.pathParams("first", "api", "second", "payments","third",Integer.parseInt(TestData.expectedFirstRowPaymentId));
         }else if (endpoint.equalsIgnoreCase("PaymentsCreatePayment")) {
             spec.pathParams("first", "api", "second", "payments","third","createPayment");
         }else if (endpoint.equalsIgnoreCase("PaymentsTransactionReference")) {
