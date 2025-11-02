@@ -11,6 +11,7 @@ Feature: Yeni ödeme oluşturma, veritabanında doğrulama ve admin panelinde g�
     And Kullanici "admin" olarak giriş yapar
     And Admin Payment Management'a tiklar
     Then Payments tablosundaki son ödeme bilgileri UI dan alinir
+    And Sayfa kapatilir
 
 
 
