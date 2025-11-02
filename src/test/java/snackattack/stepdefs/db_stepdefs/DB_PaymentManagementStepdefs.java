@@ -80,7 +80,7 @@ public class DB_PaymentManagementStepdefs {
                 "    currency,\n" +
                 "    TO_CHAR(payment_date, 'DD.MM.YYYY HH24:MI:SS') AS payment_date_formatted\n" +
                 "FROM snack_attack_db.payments\n" +
-                "ORDER BY payment_date desc \n" +
+                "ORDER BY id DESC\n" +
                 "LIMIT 1;";
 
         ResultSet resultSet = DBUtils.executeQuery(query);
