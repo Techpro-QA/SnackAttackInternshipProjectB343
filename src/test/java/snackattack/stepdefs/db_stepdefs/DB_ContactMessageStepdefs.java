@@ -1,5 +1,6 @@
 package snackattack.stepdefs.db_stepdefs;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
@@ -40,5 +41,6 @@ public class DB_ContactMessageStepdefs {
         Assert.assertEquals("Message uyuşmuyor!", expectedMessage, actualData.get("message"));
         Assert.assertEquals("Subject uyuşmuyor!", expectedSubject, actualData.get("subject"));
     }
+
 
 }
