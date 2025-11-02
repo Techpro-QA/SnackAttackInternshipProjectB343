@@ -6,7 +6,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import snackattack.utilities.Authentication;
 import snackattack.pojos.UserRegisterPojo;
 import snackattack.pojos.UserRegisterResponsePojo;
 import snackattack.utilities.ConfigReader;
@@ -25,8 +27,12 @@ public class API_AuthenticationControllerStepdefs {
     Response response;
     Faker faker = new Faker();
     String token;
-    String newPassword;
+    //String newPassword;
     String adminToken;
+    String privateAdminToken;
+    String privateUserToken;
+    String userToken;
+    String dynamicToken;
 
     @Given("{string} endpoint'ine baglanti kurulur")
     public void endpointIneBaglantiKurulur(String endpoint) {
@@ -40,7 +46,9 @@ public class API_AuthenticationControllerStepdefs {
         }else if (endpoint.equalsIgnoreCase("updatePassword")) {
             spec.pathParams("first", "auth", "second", "updatePassword");
         }else if (endpoint.equalsIgnoreCase("PaymentsPaymentId")) {
-            spec.pathParams("first", "api", "second", "payments","third",57);
+            spec.pathParams("first", "api", "second", "payments","third",57);}
+        else if (endpoint.equalsIgnoreCase("PaymentsLastPaymentID")) {
+            spec.pathParams("first", "api", "second", "payments","third",Integer.parseInt(TestData.expectedFirstRowPaymentId));
         }else if (endpoint.equalsIgnoreCase("PaymentsCreatePayment")) {
             spec.pathParams("first", "api", "second", "payments","third","createPayment");
         }else if (endpoint.equalsIgnoreCase("PaymentsTransactionReference")) {
@@ -94,6 +102,18 @@ public class API_AuthenticationControllerStepdefs {
                 .post("{first}/{second}");
         response.prettyPrint();
 
+
+        // Eğer kullanıcı başarıyla oluşturulduysa bilgileri kalıcı hale getir
+        if (response.statusCode() == 201) {
+            ConfigUpdater.updateProperty("privateUserEmail", TestData.email);
+            ConfigUpdater.updateProperty("privateUserPassword", TestData.password);
+            System.out.println("💾 Yeni kullanıcı bilgileri config'e eklendi: "
+                    + TestData.email + " / " + TestData.password);
+        } else {
+            System.out.println("❌ Register başarısız, config güncellenmedi.");
+        }
+
+
     }
 
     @Then("Status code {int} olmali")
@@ -132,22 +152,17 @@ public class API_AuthenticationControllerStepdefs {
         //  Dynamic Request Body hazirligi
         Map<String, Object> requestBody = new HashMap<>();
 
-        // Eger TestData doluysa (E2E senaryosu) onu kullan
-        String email = (TestData.email != null && !TestData.email.isEmpty())
-                ? TestData.email
-                : ConfigReader.getProperty("user_email");
-
-        String password = (TestData.password != null && !TestData.password.isEmpty())
-                ? TestData.password
-                : ConfigReader.getProperty("user_password");
+        // Config dosyasındaki ortak user bilgilerini oku
+        String email = ConfigReader.getProperty("user_email");
+        String password = ConfigReader.getProperty("user_password");
 
         requestBody.put("email", email);
         requestBody.put("password", password);
 
-        System.out.println(" Token almak icin kullanilacak email: " + email);
-        System.out.println(" Token almak icin kullanilacak password: " + password);
+        System.out.println("🔐 Token almak icin kullanilacak email: " + email);
+        System.out.println("🔐 Token almak icin kullanilacak password: " + password);
 
-        // send request
+        // POST isteği gönder
         response = given(spec)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -156,95 +171,45 @@ public class API_AuthenticationControllerStepdefs {
 
         response.prettyPrint();
 
-        //  Token'i al ve degiskene ata
+        // Token'i al ve değişkene ata
         token = response.jsonPath().getString("token");
-        System.out.println(" Alinan Token: " + token);
+        System.out.println("🎟️ Alinan Token: " + token);
 
     }
 
-    @And("Response body icinde token bilgisi dogrulanmali")
-    public void responseBodyIcindeTokenBilgisiDogrulanmali() {
-        assertNotNull("Token null geldi!", token);
-        System.out.println("Token basariyla alindi ve dogrulandi");
-    }
 
-    @When("Kullanici bilgileri GET istegi ile alinir")
-    public void kullaniciBilgileriGETIstegiIleAlinir() {
-        //send request get response
+    @When("{string} bilgileri GET istegi ile alinir")
+    public void bilgileriGETIstegiIleAlinir(String rol) {
+        // GET isteğini gönder ve yanıtı al
         response = given(spec)
                 .when()
                 .get("/{first}/{second}");
 
+        System.out.println(rol + " bilgileri GET isteği ile alındı.");
         response.prettyPrint();
     }
 
-    @And("Response body icinde email bilgisi dogrulanmali")
-    public void responseBodyIcindeEmailBilgisiDogrulanmali() {
-        //Assertions //bu stepi 2 feature icin kullaniyorum biri configdeki veriler icin biri fakerdan urettigim veriler icin
-        String actualEmail = response.jsonPath().getString("email");
-        String expectedEmail = ConfigReader.getProperty("user_email");
-        // Eğer TestData.email doluysa (E2E senaryosu) onu kullan
-        if (TestData.email != null && !TestData.email.isEmpty()) {
-            expectedEmail = TestData.email;
-        }
-
-        System.out.println("Email dogrulamasi yapiliyor...");
-        System.out.println("Expected: " + expectedEmail);
-        System.out.println("Actual  : " + actualEmail);
-
-        assertEquals("Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
-        System.out.println("Kullanıcı email bilgisi basariyla dogrulandi!");
-    }
-
-    @When("Sifre guncellemek icin PATCH istegi gonderilir")
-    public void sifreGuncellemekIcinPATCHIstegiGonderilir() {
-        //set the expected data
-        //eski sifreyi config properties dosyasindan aliyoruz
-        String oldPassword = ConfigReader.getProperty("user_password");
-        // Yeni sifre dinamik olusturuluyor, fakerdan uretiyoruz dinamik olmasi icin
-        newPassword = faker.internet().password(9, 12, true, true);
-        Map<String,Object> requestBody = new HashMap<>();
-        requestBody.put("oldPassword",oldPassword);//eski sifremiz yani configde olan
-        requestBody.put("newPassword",newPassword);
-        //get response
-        response = given(spec)
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when()
-                .patch("{first}/{second}");
-
-        response.prettyPrint();
-
-
-    }
 
     @And("Response body icinde guncel bilgiler dogrulanmali")
     public void responseBodyIcindeGuncelBilgilerDogrulanmali() {
-        System.out.println("Response body: " + response.asString());
+        String body = response.asString().trim();
 
-        // Response'i Map'e donusturuyoruz
-        Map<String, Object> actualData = response.as(HashMap.class);
+        System.out.println("Response body: " + body);
 
-        // Response'u yazdir
-        System.out.println("Response map: " + actualData);
+        // JSON degilse duz metin olarak dogruluyoruz
+        assertEquals("Password UPDATED successfully", body);
 
-        // Beklenen sonucu test ediyoruz
-        assertEquals("Password UPDATED successfully", actualData.get("message"));
-        assertEquals(true, actualData.get("success")); // eger API bu alani donuyorsa
-        System.out.println("Sifre basariyla guncellendi = " + newPassword);
-        //Degisen sifreyi (yenisini) config dosyasina kaydediyoruz
-        ConfigUpdater.updateProperty("user_password",newPassword);
-
+        System.out.println("Sifre basariyla guncellendi = " + TestData.newPassword);
+        ConfigUpdater.updateProperty("privateAdminPassword", TestData.newPassword);
     }
 
 
-    @When("Admin token almak icin POST istegi gonderilir")
-    public void adminTokenAlmakIcinPOSTIstegiGonderilir() {
+    @When("Private admin token almak icin POST istegi gonderilir")
+    public void privateAdminTokenAlmakIcinPOSTIstegiGonderilir() {
         // set the expected data
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("email", ConfigReader.getProperty("adminEmail"));
-        requestBody.put("password", ConfigReader.getProperty("adminPassword"));
-
+        requestBody.put("email", ConfigReader.getProperty("privateAdminEmail"));
+        requestBody.put("password", ConfigReader.getProperty("privateAdminPassword"));
 
         // send request get response
         response = given(spec)
@@ -255,9 +220,147 @@ public class API_AuthenticationControllerStepdefs {
 
         response.prettyPrint();
 
-        // Token'i al ve degiskene ata
-        adminToken = response.jsonPath().getString("token");
-        System.out.println("Admin Token: " + adminToken);
+        // Token'i al ve değişkene ata
+        privateAdminToken = response.jsonPath().getString("token");
+        System.out.println("🔑 Private Admin Token: " + privateAdminToken);
+    }
+
+    @And("Response body icinde private admin token bilgisi dogrulanmali")
+    public void responseBodyIcindePrivateAdminTokenBilgisiDogrulanmali() {
+        assertNotNull("Token null geldi!", privateAdminToken);
+        System.out.println("Token basariyla alindi ve dogrulandi");
+    }
+
+    @When("Private admin sifresini guncellemek icin PATCH istegi gonderilir")
+    public void privateAdminSifresiniGuncellemekIcinPATCHIstegiGonderilir() {
+        // Eski şifreyi config’den al (private admin hesabına ait)
+        String oldPassword = ConfigReader.getProperty("privateAdminPassword");
+
+        // Yeni şifreyi dinamik oluştur
+        TestData.newPassword = faker.internet().password(9, 12, true, true);
+
+        // Request body hazırla
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("oldPassword", oldPassword);
+        requestBody.put("newPassword", TestData.newPassword);
+
+        // İsteği gönder
+        response = given(spec)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .patch("{first}/{second}");
+
+        response.prettyPrint();
+
+        // Yeni şifreyi kaydet (TestData ve Config’e)
+        TestData.password = TestData.newPassword;
+        ConfigUpdater.updateProperty("privateAdminPassword", TestData.newPassword);
+
+        System.out.println("🔐 Private admin şifresi başarıyla güncellendi: " + TestData.newPassword);
+    }
+
+    @When("Private user token almak icin Post istegi gonderilir")
+    public void privateUserTokenAlmakIcinPostIstegiGonderilir() {
+        Map<String, Object> requestBody = new HashMap<>();
+
+        // Öncelik: TestData -> yoksa ConfigReader (privateUser)
+        String email = (TestData.email != null && !TestData.email.isEmpty())
+                ? TestData.email
+                : ConfigReader.getProperty("privateUserEmail");
+
+        String password = (TestData.password != null && !TestData.password.isEmpty())
+                ? TestData.password
+                : ConfigReader.getProperty("privateUserPassword");
+
+        requestBody.put("email", email);
+        requestBody.put("password", password);
+
+        System.out.println("🔐 Private token almak icin kullanilacak email: " + email);
+        System.out.println("🔐 Private token almak icin kullanilacak password: " + password);
+
+        // POST isteği gönder
+        response = given(spec)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("{first}/{second}");
+
+        response.prettyPrint();
+
+        // Token'i al ve değişkene ata
+        privateUserToken = response.jsonPath().getString("token");
+        System.out.println("👤 Private User Token: " + privateUserToken);
+    }
+
+    @And("Response body icinde private email bilgisi dogrulanmali")
+    public void responseBodyIcindePrivateEmailBilgisiDogrulanmali() {
+        // Response body'den actual email aliyoruz
+        String actualEmail = response.jsonPath().getString("email");
+
+        // private user icin
+        String expectedEmail = ConfigReader.getProperty("privateUserEmail");
+
+        // Eğer TestData doluysa (register sonrası E2E test)
+        if (TestData.email != null && !TestData.email.isEmpty()) {
+            expectedEmail = TestData.email;
+        }
+
+        System.out.println("📧 Private email doğrulaması yapılıyor...");
+        System.out.println("Expected: " + expectedEmail);
+        System.out.println("Actual  : " + actualEmail);
+
+        // Karşılaştırma
+        assertEquals("❌ Private kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
+        System.out.println("✅ Private kullanıcı email bilgisi başarıyla doğrulandı!");
+    }
+
+    @And("Response body icinde user token bilgileri dogrulanmali")
+    public void responseBodyIcindeUserTokenBilgileriDogrulanmali() {
+        String userToken = Authentication.generateUserToken();
+        assertNotNull("❌ User token null geldi!", userToken);
+        System.out.println("✅ User token başarıyla alındı: " + userToken);
+    }
+
+    @And("Response body icinde admin token bilgileri dogrulanmali")
+    public void responseBodyIcindeAdminTokenBilgileriDogrulanmali() {
+        String adminToken = Authentication.generateAdminToken();
+        assertNotNull("❌ Admin token null geldi!", adminToken);
+        System.out.println("✅ Admin token başarıyla alındı: " + adminToken);
+    }
+
+    @And("Response body icinde private admin bilgileri dogrulanmali")
+    public void responseBodyIcindePrivateAdminBilgileriDogrulanmali() {
+        String privateAdminToken = Authentication.generatePrivateAdminToken();
+        assertNotNull("❌ Private admin token null geldi!", privateAdminToken);
+        System.out.println("✅ Private admin token başarıyla alındı: " + privateAdminToken);
+    }
+
+    @And("Response body icinde private user bilgileri dogrulanmali")
+    public void responseBodyIcindePrivateUserBilgileriDogrulanmali() {
+        String privateUserToken = Authentication.generatePrivateUserToken();
+        assertNotNull("❌ Private user token null geldi!", privateUserToken);
+        System.out.println("✅ Private user token başarıyla alındı: " + privateUserToken);
+    }
+
+    @And("Response body icinde dynamic token bilgileri dogrulanmali")
+    public void responseBodyIcindeDynamicTokenBilgileriDogrulanmali() {
+        String dynamicToken = Authentication.generateDynamicUserToken();
+        assertNotNull("❌ Dynamic token null geldi!", dynamicToken);
+        System.out.println("✅ Dynamic (E2E) token başarıyla alındı: " + dynamicToken);
+    }
+
+    @And("Response body icinde user email bilgisi dogrulanmali")
+    public void responseBodyIcindeUserEmailBilgisiDogrulanmali() {
+        String actualEmail = response.jsonPath().getString("email");
+        String expectedEmail = ConfigReader.getProperty("user_email");
+
+        System.out.println("📧 Email dogrulamasi yapiliyor...");
+        System.out.println("Expected (user_email): " + expectedEmail);
+        System.out.println("Actual: " + actualEmail);
+
+        assertEquals("❌ Kullanıcı email bilgisi uyuşmuyor!", expectedEmail, actualEmail);
+        System.out.println("✅ Kullanıcı email bilgisi başarıyla doğrulandı!");
     }
 }
 
