@@ -1,4 +1,4 @@
-package snackattack.pages.pojos;
+package snackattack.pojos;
 
 public class UserRegisterResponsePojo {
     private String email;
