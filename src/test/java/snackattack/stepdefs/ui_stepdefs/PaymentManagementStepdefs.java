@@ -131,4 +131,23 @@ public class PaymentManagementStepdefs {
         }
     }
 
+
+    @Then("Payments tablosundaki son ödeme bilgileri UI dan alinir")
+    public void paymentsTablosundakiSonÖdemeBilgileriUIDanAlinir() {
+        String firstRowPaymentIdText = paymentManagementPage.firstRowPaymentId.getText();
+        TestData.expectedFirstRowPaymentId=firstRowPaymentIdText;
+
+        String firstRowOrderIdText = paymentManagementPage.firstRowOrderId.getText();
+        TestData.expectedFirstRowOrderId=firstRowOrderIdText;
+
+        String firstRowUserIdText = paymentManagementPage.firstRowUserId.getText();
+        TestData.expectedFirstRowUserId=firstRowUserIdText;
+
+        String firstRowAmountText = paymentManagementPage.firstRowAmount.getText();
+        TestData.expectedFirstRowAmount=firstRowAmountText;
+
+        String firstRowPaymentDateText = paymentManagementPage.firstRowPaymentDate.getText();
+        TestData.expectedFirstRowPaymentDate=firstRowPaymentDateText;
+
+    }
 }

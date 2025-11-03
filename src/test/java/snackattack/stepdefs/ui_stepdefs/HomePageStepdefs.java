@@ -25,7 +25,6 @@ public class HomePageStepdefs {
     }
 
 
-
     @And("Kullanici logoya tiklar")
     public void kullaniciLogoyaTiklar() {
         JSUtils.JSscrollIntoView(homePage.homeLogo);
