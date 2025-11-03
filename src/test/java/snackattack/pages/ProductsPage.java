@@ -47,4 +47,8 @@ public class ProductsPage {
 
     @FindBy(xpath = "//*[contains(normalize-space(),'Sonuç bulunamadı') or contains(normalize-space(),'No results')]")
     public WebElement emptyStateMsg;
+
+    //sol üst köşedeki ilk ürün
+    @FindBy(xpath = "(//div[@class='w-64 h-96 bg-color4 bg-opacity-50 rounded-lg mb-10 p-4 shadow-lg flex flex-col items-center text-center cursor-pointer hover:bg-color2 hover:scale-95 transition duration-500 hover-glow '])[1]")
+    public WebElement firstProduct;
 }

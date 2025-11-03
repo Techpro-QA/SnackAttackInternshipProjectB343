@@ -102,4 +102,10 @@ public class Hook {
                 .build();
 
     }
+
+    @After("@closePage")
+    public void tearDownForPaymentScenario() {
+        Driver.closeDriver();
+    }
+
 }

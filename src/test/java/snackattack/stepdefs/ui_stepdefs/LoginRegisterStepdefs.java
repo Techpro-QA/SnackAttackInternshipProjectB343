@@ -92,6 +92,14 @@ public class LoginRegisterStepdefs {
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
         System.out.println(rol + " icin girilen telefon numarasi: " + phone);
     }
+    @And("Kullanici Phone Number alanina tr kuralina uygun {int} haneli numara girer")
+    public void kullaniciPhoneNumberAlaninaTrKuralinaUygunHaneliNumaraGirer(int length) {
+
+        int telDigits = length-3;
+        String phone = "505"+ faker.number().digits(telDigits);
+        TestData.phoneNumber = phone;
+        homePage.registerPhoneNumberTextBox.sendKeys(phone);
+    }
 
     @When("{string} register butonuna tiklar")
     public void registerButonunaTiklar(String rol) {
