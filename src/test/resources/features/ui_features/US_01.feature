@@ -16,7 +16,7 @@ Feature: Login/Register Testi
         And Kullanici Confirm Password alanina Password ile ayni degeri girer
         And Kullanici Address alanina gecerli data girer
         And Kullanici Country Code select alanindan "TR" secer
-        And Kullanici Phone Number alanina TR kuralina uygun 10 haneli numara girer
+        And Kullanici Phone Number alanina tr kuralina uygun 10 haneli numara girer
         When Kullanici register butonuna tiklar
         Then Kullanici login sayfasina yonlenir ve URL "/login" olarak devam eder
         And Sayfa kapatilir

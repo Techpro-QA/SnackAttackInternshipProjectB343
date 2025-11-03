@@ -78,6 +78,15 @@ public class LoginRegisterStepdefs {
         homePage.registerPhoneNumberTextBox.sendKeys(phone);
     }
 
+ @And("Kullanici Phone Number alanina tr kuralina uygun {int} haneli numara girer")
+    public void kullaniciPhoneNumberAlaninaTrKuralinaUygunHaneliNumaraGirer(int length) {
+
+        int telDigits = length-3;
+        String phone = "505"+ faker.number().digits(telDigits);
+        TestData.phoneNumber = phone;
+        homePage.registerPhoneNumberTextBox.sendKeys(phone);
+    }
+
     @When("Kullanici register butonuna tiklar")
     public void kullaniciButonunaTiklar() {
         WaitUtils.waitForClickablility(homePage.registerSubmitButton,5);

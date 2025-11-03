@@ -57,5 +57,10 @@ public class Hook {
 
         System.out.println("✅ Token’sız test başlatıldı.");
     }
-    
+
+    @After("@closePage")
+    public void tearDownForPaymentScenario() {
+        Driver.closeDriver();
+    }
+
 }

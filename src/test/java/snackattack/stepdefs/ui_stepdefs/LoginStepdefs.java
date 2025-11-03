@@ -5,10 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import snackattack.pages.HomePage;
-import snackattack.utilities.ConfigReader;
-import snackattack.utilities.Driver;
-import snackattack.utilities.JSUtils;
-import snackattack.utilities.WaitUtils;
+import snackattack.utilities.*;
 
 public class LoginStepdefs {
     HomePage homePage = new HomePage();
@@ -106,5 +103,19 @@ public class LoginStepdefs {
         String currentUrl = Driver.getDriver().getCurrentUrl();
         Assert.assertTrue(currentUrl.endsWith("/forgot-password"));
         System.out.println(" Kullanici sifre sifirlama sayfasina yonlendirildi: " + currentUrl);
+    }
+
+    @And("Kullanici Email alanina olusturulan email i girer")
+    public void kullaniciEmailAlaninaOlusturulanEmailIGirer() {
+        WaitUtils.waitForVisibility(homePage.loginEmailTextBox,3);
+        System.out.println(TestData.email);
+        homePage.loginEmailTextBox.sendKeys(TestData.email);
+    }
+
+    @And("Kullanici Password alanina olusturulan password u girer")
+    public void kullaniciPasswordAlaninaOlusturulanPasswordUGirer() {
+        WaitUtils.waitForVisibility(homePage.loginPasswordTextBox,3);
+        System.out.println(TestData.password);
+        homePage.loginPasswordTextBox.sendKeys(TestData.password);
     }
 }
