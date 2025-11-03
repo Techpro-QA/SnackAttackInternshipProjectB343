@@ -9,58 +9,15 @@ import snackattack.utilities.*;
 
 public class LoginStepdefs {
     HomePage homePage = new HomePage();
-    @And("Kullanici loginButton'a tiklar")
-    public void kullaniciLoginButtonATiklar() {
+    @And("{string} loginButton'a tiklar")
+    public void loginButtonaTiklar(String rol) {
+        // Login butonuna tıklama işlemi
+        WaitUtils.waitForVisibility(homePage.loginButton, 5);
         homePage.loginButton.click();
+
+        System.out.println(rol + " login butonuna tıkladı.");
     }
 
-    @When("Kullanici login Email alanina {string} yazar")
-    public void kullaniciLoginEmailAlaninaYazar(String emailKeyOrValue) {
-        String emailValue = ConfigReader.getProperty(emailKeyOrValue);
-        emailValue = (emailValue != null && !emailValue.isEmpty()) ? emailValue : emailKeyOrValue;
-
-        WaitUtils.waitForVisibility(homePage.loginEmailTextBox, 5);
-        homePage.loginEmailTextBox.clear();
-        homePage.loginEmailTextBox.sendKeys(emailValue);
-        System.out.println("Login icin kullanilan email: " + emailValue);
-    }
-
-    @And("Kullanici login Password alanina {string} yazar")
-    public void kullaniciLoginPasswordAlaninaYazar(String passwordKey) {
-        String passwordValue = ConfigReader.getProperty(passwordKey);
-        String source = "Config Dosyası";
-
-        if (passwordValue == null || passwordValue.isEmpty()) {
-            passwordValue = passwordKey;
-            source = "Doğrudan Girdi";
-        }
-
-        WaitUtils.waitForVisibility(homePage.loginPasswordTextBox, 5);
-        homePage.loginPasswordTextBox.clear();
-        homePage.loginPasswordTextBox.sendKeys(passwordValue);
-
-        System.out.println("Login için parola gönderildi. Kaynak: " + source);
-    }
-
-    @Then("{string} mesaji email altinda gorunmeli")
-    public void mesajiEmailAltindaGorunmeli(String expectedMessage) {
-        WaitUtils.waitForVisibility(homePage.loginRequiredFieldErrorMessage,5);
-        String actualMessage = homePage.loginRequiredFieldErrorMessage.getText().trim();
-        System.out.println("Email altinda gorunen mesaj: " + actualMessage);
-        Assert.assertTrue(actualMessage.toLowerCase().contains(expectedMessage.toLowerCase()));
-
-    }
-
-    @When("Kullanici login Email alanini bos birakir")
-    public void kullaniciLoginEmailAlaniniBosBirakir() {homePage.loginEmailTextBox.clear();}
-
-    @And("Kullanici login Password alanini bos birakir")
-    public void kullaniciLoginPasswordAlaniniBosBirakir() {homePage.loginPasswordTextBox.clear();}
-
-    @Then("{string} mesaji password altinda gorunmeli")
-    public void mesajiPasswordAltindaGorunmeli(String expectedMessage) {
-        
-    }
 
     @Then("{string} mesaji {string} altinda gorunmeli")
     public void mesajiAltindaGorunmeli(String expectedMessage, String fieldName) {
@@ -68,7 +25,6 @@ public class LoginStepdefs {
         String actualMessage = homePage.loginRequiredFieldErrorMessage.getText().trim();
         System.out.println(fieldName + " altinda gorunen mesaj: " + actualMessage);
         Assert.assertTrue(actualMessage.toLowerCase().contains(expectedMessage.toLowerCase()));
-
     }
 
 
@@ -91,19 +47,76 @@ public class LoginStepdefs {
     }
 
 
-    @When("Kullanici Forgot Password? linkine tiklar")
-    public void kullaniciForgotPasswordLinkineTiklar() {
+    @When("{string} Forgot Password linkine tiklar")
+    public void forgotPasswordLinkineTiklar(String rol) {
         WaitUtils.waitFor(2);
         homePage.forgotPasswordLink.click();
+        System.out.println(rol + " Forgot Password linkine tıkladı.");
     }
 
-    @Then("Kullanici sifre sifirlama sayfasina yonlendirildigini dogrular")
-    public void kullaniciSifreSifirlamaSayfasinaYonlendirildiginiDogrular() {
 
+    @Then("{string} sifre sifirlama sayfasina yonlendirildigini dogrular")
+    public void sifreSifirlamaSayfasinaYonlendirildiginiDogrular(String rol) {
         String currentUrl = Driver.getDriver().getCurrentUrl();
-        Assert.assertTrue(currentUrl.endsWith("/forgot-password"));
-        System.out.println(" Kullanici sifre sifirlama sayfasina yonlendirildi: " + currentUrl);
+
+        Assert.assertTrue("Kullanici sifre sifirlama sayfasina yonlendirilmedi!",
+                currentUrl.endsWith("/forgot-password"));
+
+        System.out.println(rol + " sifre sifirlama sayfasina yonlendirildi: " + currentUrl);
     }
+
+    @When("{string} login Email alanina {string} yazar")
+    public void loginEmailAlaninaYazar(String rol, String emailKeyOrValue) {
+        // email bilgisini config dosyasından çek veya doğrudan kullan
+        String emailValue = ConfigReader.getProperty(emailKeyOrValue);
+        emailValue = (emailValue != null && !emailValue.isEmpty()) ? emailValue : emailKeyOrValue;
+
+        // hangi rolün giriş yaptığını consola yaz
+        System.out.println(rol + " login Email alanina yazilan deger: " + emailValue);
+
+        // textbox görünene kadar bekle
+        WaitUtils.waitForVisibility(homePage.loginEmailTextBox, 5);
+
+        // textbox'i temizle ve email degerini yaz
+        homePage.loginEmailTextBox.clear();
+        homePage.loginEmailTextBox.sendKeys(emailValue);
+    }
+
+    @And("{string} login Password alanina {string} yazar")
+    public void loginPasswordAlaninaYazar(String rol, String passwordKeyOrValue) {
+        // Şifreyi config dosyasından al veya doğrudan kullan
+        String passwordValue = ConfigReader.getProperty(passwordKeyOrValue);
+        String source = "Config Dosyası";
+
+        if (passwordValue == null || passwordValue.isEmpty()) {
+            passwordValue = passwordKeyOrValue;
+            source = "Doğrudan Girdi";
+        }
+
+        // Şifre alanını görünür hale gelene kadar bekle
+        WaitUtils.waitForVisibility(homePage.loginPasswordTextBox, 5);
+
+        // Alanı temizle ve şifreyi gönder
+        homePage.loginPasswordTextBox.clear();
+        homePage.loginPasswordTextBox.sendKeys(passwordValue);
+
+        System.out.println(rol + " için login parolası gönderildi. Kaynak: " + source);
+    }
+
+    @When("{string} login Email alanini bos birakir")
+    public void loginEmailAlaniniBosBirakir(String rol) {
+        WaitUtils.waitForVisibility(homePage.loginEmailTextBox, 5);
+        homePage.loginEmailTextBox.clear();
+        System.out.println(rol + " login Email alanini bos birakti.");
+    }
+    @And("{string} login Password alanini bos birakir")
+    public void loginPasswordAlaniniBosBirakir(String rol) {
+        WaitUtils.waitForVisibility(homePage.loginPasswordTextBox, 5);
+        homePage.loginPasswordTextBox.clear();
+        System.out.println(rol + " login Password alanini bos birakti.");
+    }
+
+
 
     @And("Kullanici Email alanina olusturulan email i girer")
     public void kullaniciEmailAlaninaOlusturulanEmailIGirer() {

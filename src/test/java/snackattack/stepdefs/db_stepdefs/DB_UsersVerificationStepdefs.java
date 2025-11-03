@@ -4,6 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import snackattack.utilities.ConfigReader;
 import snackattack.utilities.DBUtils;
+import snackattack.utilities.TestData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -83,4 +84,47 @@ public class DB_UsersVerificationStepdefs {
         System.out.println("Tum email adresleri veritabaninda unique");
 
     }
+
+    @When("Kullanici TestData’daki email bilgisiyle veritabaninda kaydi sorgular")
+    public void kullaniciTestDataDakiEmailBilgisiyleVeritabanindaKaydiSorgular() {
+        String email = TestData.email;
+        String query = "SELECT * FROM snack_attack_db.users WHERE email = '" + email + "'";
+        System.out.println("Sorgu calistiriliyor = " + query);
+        rs = DBUtils.executeQuery(query);
+    }
+
+    @Then("Kullanicinin veritabanindaki bilgileri TestData’daki data ile uyusmalidir")
+    public void kullanicininVeritabanindakiBilgileriTestDataDakiDatalarlaUyusmalidir() throws SQLException {
+        assertNotNull("Resultset null dondu, sorgu calistirilmamis olabilir", rs);
+        assertTrue("Kullanici veri tabaninda bulunamadi", rs.next());
+
+        // DB'den gelen veriler
+        String actualFirstName = rs.getString("first_name");
+        String actualLastName  = rs.getString("last_name");
+        String actualUserName  = rs.getString("user_name");
+        String actualEmail     = rs.getString("email");
+        String actualPhoneRaw  = rs.getString("phone_number");
+
+        // TestData'dan gelen veriler (UI testinde oluşturulan dinamik datalar)
+        String expectedFirstName = TestData.firstName;
+        String expectedLastName  = TestData.lastName;
+        String expectedUserName  = TestData.userName;
+        String expectedEmail     = TestData.email;
+        String expectedPhone     = TestData.phoneNumber;
+
+        // Telefon numarasını normalize et (sadece rakamlar)
+        String actualPhone = actualPhoneRaw == null ? "" : actualPhoneRaw.replaceAll("\\D", "");
+        String expectedPhoneNormalized = expectedPhone == null ? "" : expectedPhone.replaceAll("\\D", "");
+
+        // Assertions
+        assertEquals("First Name uyusmuyor!", expectedFirstName, actualFirstName);
+        assertEquals("Last Name uyusmuyor!", expectedLastName, actualLastName);
+        assertEquals("User Name uyusmuyor!", expectedUserName, actualUserName);
+        assertEquals("Email uyusmuyor!", expectedEmail, actualEmail);
+        assertEquals("Telefon numarasi uyusmuyor!", expectedPhoneNormalized, actualPhone);
+
+        System.out.println("Kullanici DB'de basariyla dogrulandi = " + actualEmail);
+    }
+
+
 }

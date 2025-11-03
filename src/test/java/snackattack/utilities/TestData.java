@@ -17,7 +17,7 @@ public class TestData {
     public static String expectedEmail;
     public static int userId;
 
-    //Register verileri
+    //Register verileri //user icin
     public static String email;
     public static String lastName;
     public static String firstName;
@@ -25,6 +25,11 @@ public class TestData {
     public static String userName;
     public static String address;
     public static String phoneNumber;
+    public static String newPassword;
+
+    //private admin verileri
+    public static String adminEmail;
+    public static String adminPassword;
 
 
     //Product verileri
@@ -43,5 +48,12 @@ public class TestData {
 
     //Admin Management verileri
     public static String expectedAdminId;
+
+    //Customer Management verileri
+    public static String expectedUserId;
+
+    //Contact Message verileri
+    public static String subject;
+    public static String message;
 
 }
