@@ -1,10 +1,9 @@
 @DB_US_11_Order_Isimleri
-Feature: Siparis isimleri ve bilgileri doğrulanmali
+Feature: Sipariş isimleri ve bilgileri doğrulanmalı
   Background:
-    Given Veritabanı bağlantısı kurulur
+    Given Veritabanıyla bağlantı kurulur
 
-
-  Scenario: Siperis isimleri ve  bilgileri veritabanından doğrulanmalı
+  Scenario: Sipariş isimleri ve bilgileri veritabanından doğrulanmalı
     When Siparis tablosu veritabaninda aranir
-    Then Kategori bilgileri veritabaninda bulunmalidir
+    Then Siparis Kategori bilgileri veritabaninda bulunmalidir
     And Baglanti kapatilir

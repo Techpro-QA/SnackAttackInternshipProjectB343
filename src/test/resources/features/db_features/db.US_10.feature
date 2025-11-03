@@ -1,11 +1,10 @@
 @DB_US_10_Order_Items
-Feature: Siparisteki urunlerin isimleri ve bilgileri doğrulanmali
+Feature: Siparişe ait ürün isimleri ve bilgileri doğrulanmalı
   Background:
-    Given Veritabanı bağlantısı kurulur
+    Given Veritabanıyla bağlantı kurulur
 
-
-  Scenario: Siperisteki urunlerin isimleri ve  bilgileri veritabanından doğrulanmalı
-    When Siparisteki urunlerin tablosu veritabaninda aranir
-    Then Kategori bilgileri veritabaninda bulunmalidir
+  Scenario: Siparişe ait ürün bilgileri veritabanından doğrulanmalı
+    When Siparise ait urunlerin tablosu veritabaninda aranir
+    Then Siparise ait urunlerin kategori bilgileri veritabaninda bulunmalidir
     And Baglanti kapatilir
 
