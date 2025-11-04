@@ -16,10 +16,10 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "50" ile doldurur
     And Admin İndirim Textbox'ini "35" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
-    And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Available ve Active seceneklerini secer
+    And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Create Product butonuna tiklar
     Then Urunun eklendigi dogrulanir
     And Sayfa kapatilir
@@ -32,10 +32,10 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "50" ile doldurur
     And Admin İndirim Textbox'ini "" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
-    And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Available ve Active seceneklerini secer
+    And Admin "C:\Users\seyda\Desktop\hamburgerimg.webp" resim ekler
     And Admin Create Product butonuna tiklar
     Then Urunun eklendigi dogrulanir
     And Sayfa kapatilir
@@ -48,7 +48,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "50" ile doldurur
     And Admin İndirim Textbox'ini "35" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
@@ -63,7 +63,7 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "-10" ile doldurur
     And Admin İndirim Textbox'ini "0" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
@@ -78,12 +78,11 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "35" ile doldurur
     And Admin İndirim Textbox'ini "50" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
     Then Urun eklenememeli
-    And Sayfa kapatilir
 
   @US14_TC06
   Scenario: TC06 - Admin Categories seçmeden ürün ekleyememeli -BUG  (Negative Scenario)
@@ -98,7 +97,6 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
     Then Urun eklenememeli
-    And Sayfa kapatilir
 
   @US14_TC07
   Scenario: TC07 - Admin Image yüklemeden ürün ekleyememeli -BUG  (Negative Scenario)
@@ -108,13 +106,12 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "50" ile doldurur
     And Admin İndirim Textbox'ini "35" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     # Image yükleme adımı atlandı
     And Admin Available ve Active seceneklerini secer
     And Admin Create Product butonuna tiklar
     Then Urun eklenememeli
-    And Sayfa kapatilir
 
   @US14_TC08
   Scenario: TC08 - Admin "Available" ve "Active" secmeden ürün ekleyememeli -BUG  (Negative Scenario)
@@ -124,10 +121,9 @@ Feature: Admin yeni bir ürün ekleyebilmeli
     And Admin Fiyat Textbox'ini "50" ile doldurur
     And Admin İndirim Textbox'ini "35" ile doldurur
     And Admin submit butonuna scroll yapar
-    And Admin "HAMBURGER" kategorisini secer
+    And Admin "PIZZA" kategorisini secer
     And Admin "Soslar" Ek Kategorisini secer
     # Checkbox seçilmedi
     And Admin Available ve Active seceneklerini secmez
     And Admin Create Product butonuna tiklar
-    Then Urun eklenememeli
-    And Sayfa kapatilir
+    Then "Available" ve "Active" secilmeden ürün eklenememeli
