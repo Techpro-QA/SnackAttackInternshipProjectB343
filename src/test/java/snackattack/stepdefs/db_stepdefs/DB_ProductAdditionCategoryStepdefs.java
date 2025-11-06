@@ -78,4 +78,62 @@ public class DB_ProductAdditionCategoryStepdefs {
         Assert.assertEquals(TestData.expectedDiscountText,resultSet.getString("discount").toString());
 
     }
+
+    @Then("Urunun category idsi dogrulanir")
+    public void urununCategoryIdsiDogrulanir() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(2, resultSet.getInt("category_id"));
+
+    }
+
+    @Then("Ayni categorye sahip urunlerin benzersiz product idye sahip oldugu dogrulanir")
+    public void ayniCategoryeSahipUrunlerinBenzersizProductIdyeSahipOlduguDogrulanir() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(22, resultSet.getInt("product_id"));
+
+        resultSet.next();
+        Assert.assertEquals(21, resultSet.getInt("product_id"));
+
+        resultSet.next();
+        Assert.assertEquals(38, resultSet.getInt("product_id"));
+
+        resultSet.next();
+        Assert.assertEquals(20, resultSet.getInt("product_id"));
+
+        resultSet.next();
+        Assert.assertEquals(39, resultSet.getInt("product_id"));
+
+
+        resultSet.next();
+        Assert.assertEquals(23, resultSet.getInt("product_id"));
+
+
+        resultSet.next();
+        Assert.assertEquals(32, resultSet.getInt("product_id"));
+
+
+        resultSet.next();
+        Assert.assertEquals(40, resultSet.getInt("product_id"));
+
+
+
+    }
+
+    @Then("Urun bilgilerinin dogru oldugu kontrol edilir")
+    public void urunBilgilerininDogruOlduguKontrolEdilir() throws SQLException {
+
+        resultSet.next();
+       Assert.assertTrue(resultSet.getBoolean("active"));
+       Assert.assertTrue(resultSet.getBoolean("available"));
+       Assert.assertTrue(resultSet.getBoolean("is_popular"));
+        Assert.assertEquals(40, resultSet.getInt("price"));
+        Assert.assertEquals(35, resultSet.getInt("order_quantity"));
+        Assert.assertEquals("Seker, un", resultSet.getString("contents"));
+        Assert.assertEquals("Seker, sivi yag, un", resultSet.getString("description"));
+        Assert.assertEquals("Tatli 3333", resultSet.getString("name"));
+
+
+
+
+    }
 }
