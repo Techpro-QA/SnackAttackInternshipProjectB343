@@ -4,6 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import snackattack.utilities.DBUtils;
+import snackattack.utilities.TestData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,5 +60,22 @@ public class DB_ProductAdditionCategoryStepdefs {
     public void sorgusuYapilir(String query) {
         resultSet = DBUtils.executeQuery(query);
         Assert.assertNotNull("Sorgu sonucu null döndü, bağlantı veya sorgu hatalı olabilir.", resultSet);
+    }
+
+    @When("{string} sorgusu gonderilir")
+    public void sorgusuGonderilir(String query) {
+        resultSet = DBUtils.executeQuery(query + TestData.expectedProductId);
+        Assert.assertNotNull("Sorgu sonucu null döndü, bağlantı veya sorgu hatalı olabilir.", resultSet);
+    }
+
+    @Then("Urunun guncellendigi database'de kontrol edilir")
+    public void urununGuncellendigiDatabaseDeKontrolEdilir() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(TestData.expectedProductName,resultSet.getString("name"));
+        Assert.assertEquals(TestData.expectedContentsText,resultSet.getString("contents"));
+        Assert.assertEquals(TestData.expectedDescriptionText,resultSet.getString("description"));
+        Assert.assertEquals(TestData.expectedPriceText,resultSet.getString("price").toString());
+        Assert.assertEquals(TestData.expectedDiscountText,resultSet.getString("discount").toString());
+
     }
 }

@@ -100,6 +100,8 @@ public class ProductManagementStepdefs {
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
 
+        TestData.expectedProductId = productManagementPage.tableFirstProductID.getText();
+
         WaitUtils.waitForVisibility(productManagementPage.firstProductRow,10);
         if(productManagementPage.firstProductRow.isDisplayed()) {
             productManagementPage.firstProductRow.click();
@@ -124,29 +126,35 @@ public class ProductManagementStepdefs {
     public void adminAçıklamaTextboxIniIleDoldurur(String description) {
         productManagementPage.updateDescriptionTextbox.clear();
         productManagementPage.updateDescriptionTextbox.sendKeys(description);
+        TestData.expectedDescriptionText = description;
     }
 
     @And("Admin İçerik Textbox'ini {string} ile doldurur")
     public void adminİçerikTextboxIniIleDoldurur(String contents) {
         productManagementPage.updateContentsTextbox.clear();
         productManagementPage.updateContentsTextbox.sendKeys(contents);
+        TestData.expectedContentsText = contents;
     }
 
     @And("Admin Fiyat Textbox'ini {string} ile doldurur")
     public void adminFiyatTextboxIniIleDoldurur(String price) {
         productManagementPage.updatePriceTextbox.clear();
         productManagementPage.updatePriceTextbox.sendKeys(price);
+        TestData.expectedPriceText = price;
     }
 
     @And("Admin İndirim Textbox'ini {string} ile doldurur")
     public void adminİndirimTextboxIniIleDoldurur(String discount) {
         productManagementPage.updateDiscountTextbox.clear();
         productManagementPage.updateDiscountTextbox.sendKeys(discount);
+        TestData.expectedDiscountText = discount;
         WaitUtils.waitFor(2);
     }
 
     @And("Admin {string} kategorisini secer")
     public void adminKategorisiniSecer(String kategorilerCheckboxName) {
+
+        TestData.expectedCategoryText = kategorilerCheckboxName;
 
         for (WebElement checkbox : tumUpdateCheckboxlari) {
             if (checkbox.isSelected()) {
@@ -207,6 +215,7 @@ public class ProductManagementStepdefs {
     @And("Admin {string} Ek Kategorisini secer")
     public void adminEkKategorisiniSecer(String ekKategorilerCheckboxName) {
 
+        TestData.expectedAdditionCategoryText = ekKategorilerCheckboxName;
 
         for (WebElement checkbox : tumEkKategoriCheckboxlari) {
             if (checkbox.isSelected()) {
