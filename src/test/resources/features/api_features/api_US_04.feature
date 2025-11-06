@@ -77,3 +77,57 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
     And Response body icinde olusturulan ödeme bilgisi dogrulanmali
 
 
+
+    # GET /api/payments/{paymentId}/isRefundable
+    # Bu senaryoda belirli bir ödemenin iadesi edilebilirligi bilgisini aliyoruz
+  @RefundablePayment
+  @adminToken
+
+  Scenario:Bir Odemenin iade edilebilme bilgisini al
+    Given "PaymentIsRefundable" endpoint'ine baglanti kurulur
+    When Refundable istegi GET istegi ile alinir
+    And Status code 200 oldugu dogrulanir
+    And Response body icinde iade islemi bilgisi dogrulanmali
+
+#GET ile admin bir kullanicinin odemelerini listeleyebilmeli
+  @Payment_UserPayments
+  @adminToken
+  Scenario: Kullanıcının ödemelerini listele
+    Given "PaymentsUserById" endpoint'ine baglanti kurulur
+    When Odemeler GET istegi ile alinir
+    Then Status code 200 oldugu dogrulanir
+    And Response body icinde "message" "Payments retrieved successfully" olmali
+
+
+#GET Bir siparişe ait ödemelerin listelenmesi (dinamik)
+  @Payment_OrderPayments
+  @adminToken
+
+  Scenario Outline: <orderId> id'li siparişin ödemelerini listele
+    Given "PaymentsByOrderId" endpoint'ine baglanti kurulur
+    When Order <orderId> icin ödemeler GET istegi ile alinir
+    Then Status code <status> oldugu dogrulanir
+    And Odeme listesi "<listeDurumu>" olmali
+
+    Examples:
+      | orderId | status | listeDurumu |
+      | 3       | 200    | bos degil   |
+      | 99999   | 200    | bos         |
+      | -5      | 200    | bos         |
+
+
+# GET ile Kullanıcı ödemelerinin sayfalanmış olarak listelenmesi
+  @Payment_ListUserPayments
+  @adminToken
+
+  Scenario Outline: Kullanıcı ödemeleri sayfa bazlı listeleme testi
+    Given "ListUserPayments" endpoint'ine baglanti kurulur
+    When Kullanici ödemeleri page <page> ve size <size> parametreleri ile GET istegi ile alinir
+    Then Status code <status> oldugu dogrulanir
+    And Response body icinde basarili mesaj dogrulanmali
+    And Response body icinde pageable bilgileri kontrol edilmeli
+
+    Examples:
+      | page | size | status |
+      | 0    | 10   | 200    |
+      | 1    | 5    | 200    |

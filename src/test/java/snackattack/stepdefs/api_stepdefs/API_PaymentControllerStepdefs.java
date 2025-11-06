@@ -11,19 +11,24 @@ import snackattack.pojos.*;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static snackattack.stepdefs.Hook.spec;
 import static snackattack.stepdefs.db_stepdefs.DB_PaymentManagementStepdefs.actualDatabase;
+import static snackattack.utilities.TestData.userPaymentUserId;
 
 public class API_PaymentControllerStepdefs {
 
     Response response;
+    PaymentRefundableResponsePojo refundableResponse;
+    private List<Map<String, Object>> payments = Collections.emptyList();
+    JsonPath json;
 
 
     @When("Ödeme detaylari GET istegi ile alinir")
@@ -263,5 +268,182 @@ public class API_PaymentControllerStepdefs {
 
     }
 
+    // =========================================================
+    //  GET /api/payments/{paymentId}/isRefundable
+    // =========================================================
+
+
+
+    @When("Refundable istegi GET istegi ile alinir")
+    public void refundableIstegiGETIlegiIleAlinir() {
+
+        response = given().spec(spec)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
+
+
+        refundableResponse = response.as(PaymentRefundableResponsePojo.class);
+
+        System.out.println("Status Code: " + response.statusCode());
+        System.out.println("Body: " + refundableResponse);
+    }
+
+    @And("Response body icinde iade islemi bilgisi dogrulanmali")
+    public void responseBodyIcindeIadeIslemiBilgisiDogrulanmali() {
+
+        assertEquals(200, response.statusCode());
+        assertNotNull("Response deserialize edilemedi", refundableResponse);
+
+        assertTrue("Success bilgisi true olmali", refundableResponse.isSuccess());
+        assertEquals("OK", refundableResponse.getStatus());
+        assertTrue(refundableResponse.getMessage().toLowerCase().contains("refundable"));
+        assertNotNull("Data (refundable true/false) null olamaz", refundableResponse.getData());
+
+        System.out.println("✅ iade islemi bilgisi basariyla dogrulandi: " + refundableResponse.getData());
+    }
+
+    @When("Kullanici {int} id icin ödemeler GET istegi ile alinir")
+    public void kullaniciIdIcinOdemelerGETIstegiIleAlinir(int userId) {
+        response = given().spec(spec)
+                .pathParam("fourth", userId)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
+
+
+        JsonPath jp = response.jsonPath();
+        List<Map<String, Object>> embedded = jp.getList("_embedded.paymentResponseDTOList");
+        List<Map<String, Object>> data     = jp.getList("data");
+
+        if (embedded != null) payments = embedded;
+        else if (data != null) payments = data;
+        else payments = Collections.emptyList();
+
+        System.out.println("Status: " + response.statusCode());
+        System.out.println("Body  : " + response.asString());
+        System.out.println("Kayıt sayısı: " + payments.size());
+    }
+
+
+    @And("Odeme listesi {string} olmali")
+    public void odemeListesiOlmali(String listeDurumu) {
+        boolean bosMu = payments == null || payments.isEmpty();
+        switch (listeDurumu.toLowerCase()) {
+            case "bos":
+                assertTrue("Liste boş bekleniyordu ama dolu geldi!", bosMu);
+                break;
+            case "bos degil":
+                assertFalse("Liste dolu bekleniyordu ama boş geldi!", bosMu);
+                break;
+            default:
+                fail("listeDurumu yalnizca 'bos' veya 'bos degil' olabilir: " + listeDurumu);
+        }
+    }
+
+
+
+
+    @When("Order {int} icin ödemeler GET istegi ile alinir")
+    public void orderIcinOdemelerGETIstegiIleAlinir(int orderId) {
+        response = given().spec(spec)
+                .pathParam("fourth", orderId)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
+
+        JsonPath jp = response.jsonPath();
+
+        List<Map<String, Object>> data = jp.getList("data");
+        if (data != null) payments = data;
+        else payments = Collections.emptyList();
+
+        System.out.println("Status: " + response.statusCode());
+        System.out.println("Body  : " + response.asString());
+        System.out.println("Kayıt sayısı: " + payments.size());
+    }
+
+    //Get ile kullanicilarin odemelerin sayfalanmis olarak listelenmesi icin adimlar
+    @When("Kullanici ödemeleri page {int} ve size {int} parametreleri ile GET istegi ile alinir")
+    public void kullaniciOdemeleriPageVeSizeParametreleriIleGETIstegiIleAlinir(int page, int size) {
+        response = given().spec(spec)
+                .queryParam("page", page)
+                .queryParam("size", size)
+                .when()
+                .get("{first}/{second}/{third}");
+
+        json = response.jsonPath();
+
+        System.out.println("Status: " + response.statusCode());
+        System.out.println("Response: " + response.asPrettyString());
+    }
+
+
+    @And("Response body icinde basarili mesaj dogrulanmali")
+    public void responseBodyIcindeBasariliMesajDogrulanmali() {
+        boolean success = json.getBoolean("success");
+        String message = json.getString("message");
+
+        assertTrue("Success false dondu!", success);
+        assertEquals("Beklenen mesaj eslesmiyor!",
+                "User payments fetched successfully.", message);
+    }
+
+    @And("Response body icinde pageable bilgileri kontrol edilmeli")
+    public void responseBodyIcindePageableBilgileriKontrolEdilmeli() {
+
+        // data.pageable.pageNumber gibi nested alanlara erişim
+        int pageNumber = json.getInt("data.pageable.pageNumber");
+        int pageSize = json.getInt("data.pageable.pageSize");
+        boolean paged = json.getBoolean("data.pageable.paged");
+
+        assertNotNull("pageable bilgisi eksik!", pageNumber);
+        assertTrue("Sayfalama etkin degil!", paged);
+        assertTrue("pageSize 0'dan buyuk olmali!", pageSize > 0);
+
+        // Ekstra: boş content kontrolü
+        assertNotNull("Content array eksik!", json.get("data.content"));
+        System.out.println("✅ Pageable kontrolü basarili → page: " + pageNumber + ", size: " + pageSize);
+    }
+
+    @When("Odemeler GET istegi ile alinir")
+    public void odemelerGETIstegiIleAlinir() {
+        response = given(spec)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
+
+        System.out.println("Status code: " + response.statusCode());
+        System.out.println("Response body: " + response.asString());
+
+    }
+
+    @And("Response body icinde {string} {string} olmali")
+    public void responseBodyIcindeAlanDegeriOlmali(String key, String expectedValue) {
+
+        // JSON Path ile key'e ait değeri al
+        Object actualValue = response.jsonPath().get(key);
+
+        // Beklenen değeri uygun tipe çevir (true/false/null/sayı vs)
+        Object expected = coerceValue(expectedValue);
+
+        // Hata mesajı ile doğrulama
+        org.junit.Assert.assertEquals(
+                "Response body içinde '" + key + "' alanı beklenen değerle eşleşmiyor.",
+                expected, actualValue
+        );
+    }
+
+    private Object coerceValue(String value) {
+        if (value == null) return null;
+        String trimmed = value.trim();
+
+        if (trimmed.equalsIgnoreCase("null")) return null;
+        if (trimmed.equalsIgnoreCase("true")) return true;
+        if (trimmed.equalsIgnoreCase("false")) return false;
+
+        try {
+            if (trimmed.contains(".")) return Double.valueOf(trimmed);
+            return Long.valueOf(trimmed);
+        } catch (NumberFormatException ignored) {}
+
+        return trimmed; // default olarak string döner
+    }
 
 }

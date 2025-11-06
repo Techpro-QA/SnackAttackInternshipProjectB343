@@ -41,6 +41,7 @@ public class TestData {
     public static String expectedFirstRowUserId;
     public static String expectedFirstRowAmount;
     public static String expectedFirstRowPaymentDate;
+    public static int userPaymentUserId = 2;
 
 
     //Category Management verileri

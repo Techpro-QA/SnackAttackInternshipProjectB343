@@ -37,7 +37,8 @@ public class API_AuthenticationControllerStepdefs {
     @Given("{string} endpoint'ine baglanti kurulur")
     public void endpointIneBaglantiKurulur(String endpoint) {
         //set the url
-        if (endpoint.equalsIgnoreCase("registerAnonymous")) {
+
+         if (endpoint.equalsIgnoreCase("registerAnonymous")) {
             spec.pathParams("first", "auth", "second", "registerAnonymous");
         } else if (endpoint.equalsIgnoreCase("login")) {
             spec.pathParams("first", "auth", "second", "login");
@@ -55,11 +56,21 @@ public class API_AuthenticationControllerStepdefs {
             spec.pathParams("first", "api", "second", "payments","third",57,"fourth","transactionReference");
         }else if (endpoint.equalsIgnoreCase("PaymentsFailureReason")) {
             spec.pathParams("first", "api", "second", "payments","third",57,"fourth","failureReason");
+        }else if (endpoint.equalsIgnoreCase("PaymentIsRefundable")) {
+            spec.pathParams("first", "api", "second", "payments","third",1,"fourth","isRefundable");
+        }else if (endpoint.equalsIgnoreCase("PaymentsUserById")) {
+            spec.pathParams("first", "api", "second", "payments","third","users","fourth",TestData.userPaymentUserId);
+        }else if (endpoint.equalsIgnoreCase("PaymentsByOrderId")) {
+            spec.pathParams("first", "api", "second", "payments","third","orders");
+        }else if (endpoint.equalsIgnoreCase("ListUserPayments")) {
+            spec.pathParams("first", "api", "second", "payments","third","listUserPayments");
         }else if (endpoint.equalsIgnoreCase("Payments")) {
             spec.pathParams("first", "api", "second", "payments");
         }else if (endpoint.equalsIgnoreCase("PaymentsUpdateStatus")) {
-            spec.pathParams("first", "api", "second", "payments","third","updatePaymentStatus","fourth",57);
-        }  else {
+             spec.pathParams("first", "api", "second", "payments", "third", "updatePaymentStatus", "fourth", 57);
+        }
+
+        else {
             throw new IllegalArgumentException("Geçersiz endpoint adı: " + endpoint);
         }
 

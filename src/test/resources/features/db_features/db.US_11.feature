@@ -1,4 +1,4 @@
-@DB_US_11_Order_Isimleri
+@DB_US_11_Orders
 Feature: Sipariş isimleri ve bilgileri doğrulanmalı
   Background:
     Given Veritabanıyla bağlantı kurulur
