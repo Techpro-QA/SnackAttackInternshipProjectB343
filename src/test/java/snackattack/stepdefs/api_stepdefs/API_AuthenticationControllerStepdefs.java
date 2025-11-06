@@ -61,7 +61,7 @@ public class API_AuthenticationControllerStepdefs {
         }else if (endpoint.equalsIgnoreCase("PaymentsUserById")) {
             spec.pathParams("first", "api", "second", "payments","third","users","fourth",TestData.userPaymentUserId);
         }else if (endpoint.equalsIgnoreCase("PaymentsByOrderId")) {
-            spec.pathParams("first", "api", "second", "payments","third","orders");
+            spec.pathParams("first", "api", "second", "payments","third","orders","fourth",3);
         }else if (endpoint.equalsIgnoreCase("ListUserPayments")) {
             spec.pathParams("first", "api", "second", "payments","third","listUserPayments");
         }else if (endpoint.equalsIgnoreCase("Payments")) {

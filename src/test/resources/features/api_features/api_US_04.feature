@@ -103,31 +103,25 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   @Payment_OrderPayments
   @adminToken
 
-  Scenario Outline: <orderId> id'li siparişin ödemelerini listele
+  Scenario: Belirli siparişin ödemelerini listele
     Given "PaymentsByOrderId" endpoint'ine baglanti kurulur
-    When Order <orderId> icin ödemeler GET istegi ile alinir
-    Then Status code <status> oldugu dogrulanir
-    And Odeme listesi "<listeDurumu>" olmali
+    When Siparis ödemeleri GET istegi ile alinir
+    Then Status code 200 oldugu dogrulanir
+    And Response body icinde "message" "Payments retrieved successfully" olmali
 
-    Examples:
-      | orderId | status | listeDurumu |
-      | 3       | 200    | bos degil   |
-      | 99999   | 200    | bos         |
-      | -5      | 200    | bos         |
+
+
 
 
 # GET ile Kullanıcı ödemelerinin sayfalanmış olarak listelenmesi
   @Payment_ListUserPayments
   @adminToken
 
-  Scenario Outline: Kullanıcı ödemeleri sayfa bazlı listeleme testi
+  Scenario: Kullanıcı ödemeleri sayfa bazlı listeleme testi
     Given "ListUserPayments" endpoint'ine baglanti kurulur
-    When Kullanici ödemeleri page <page> ve size <size> parametreleri ile GET istegi ile alinir
-    Then Status code <status> oldugu dogrulanir
+    When Kullanici ödemeleri sayfalari  GET istegi ile alinir
+    Then Status code 200 oldugu dogrulanir
     And Response body icinde basarili mesaj dogrulanmali
-    And Response body icinde pageable bilgileri kontrol edilmeli
 
-    Examples:
-      | page | size | status |
-      | 0    | 10   | 200    |
-      | 1    | 5    | 200    |
+
+

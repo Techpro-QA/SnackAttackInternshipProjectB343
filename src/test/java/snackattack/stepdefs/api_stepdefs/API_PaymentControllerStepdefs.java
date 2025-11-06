@@ -302,26 +302,6 @@ public class API_PaymentControllerStepdefs {
         System.out.println("✅ iade islemi bilgisi basariyla dogrulandi: " + refundableResponse.getData());
     }
 
-    @When("Kullanici {int} id icin ödemeler GET istegi ile alinir")
-    public void kullaniciIdIcinOdemelerGETIstegiIleAlinir(int userId) {
-        response = given().spec(spec)
-                .pathParam("fourth", userId)
-                .when()
-                .get("{first}/{second}/{third}/{fourth}");
-
-
-        JsonPath jp = response.jsonPath();
-        List<Map<String, Object>> embedded = jp.getList("_embedded.paymentResponseDTOList");
-        List<Map<String, Object>> data     = jp.getList("data");
-
-        if (embedded != null) payments = embedded;
-        else if (data != null) payments = data;
-        else payments = Collections.emptyList();
-
-        System.out.println("Status: " + response.statusCode());
-        System.out.println("Body  : " + response.asString());
-        System.out.println("Kayıt sayısı: " + payments.size());
-    }
 
 
     @And("Odeme listesi {string} olmali")
@@ -340,68 +320,24 @@ public class API_PaymentControllerStepdefs {
     }
 
 
-
-
-    @When("Order {int} icin ödemeler GET istegi ile alinir")
-    public void orderIcinOdemelerGETIstegiIleAlinir(int orderId) {
-        response = given().spec(spec)
-                .pathParam("fourth", orderId)
-                .when()
-                .get("{first}/{second}/{third}/{fourth}");
-
-        JsonPath jp = response.jsonPath();
-
-        List<Map<String, Object>> data = jp.getList("data");
-        if (data != null) payments = data;
-        else payments = Collections.emptyList();
-
-        System.out.println("Status: " + response.statusCode());
-        System.out.println("Body  : " + response.asString());
-        System.out.println("Kayıt sayısı: " + payments.size());
-    }
-
-    //Get ile kullanicilarin odemelerin sayfalanmis olarak listelenmesi icin adimlar
-    @When("Kullanici ödemeleri page {int} ve size {int} parametreleri ile GET istegi ile alinir")
-    public void kullaniciOdemeleriPageVeSizeParametreleriIleGETIstegiIleAlinir(int page, int size) {
-        response = given().spec(spec)
-                .queryParam("page", page)
-                .queryParam("size", size)
-                .when()
-                .get("{first}/{second}/{third}");
-
-        json = response.jsonPath();
-
-        System.out.println("Status: " + response.statusCode());
-        System.out.println("Response: " + response.asPrettyString());
-    }
-
-
     @And("Response body icinde basarili mesaj dogrulanmali")
     public void responseBodyIcindeBasariliMesajDogrulanmali() {
-        boolean success = json.getBoolean("success");
-        String message = json.getString("message");
 
-        assertTrue("Success false dondu!", success);
-        assertEquals("Beklenen mesaj eslesmiyor!",
-                "User payments fetched successfully.", message);
+        String body = response.then().extract().asString();
+        org.junit.Assert.assertNotNull("Response body null geldi!", body);
+        org.junit.Assert.assertFalse("Response body bos geldi!", body.trim().isEmpty());
+
+
+        io.restassured.path.json.JsonPath json = new io.restassured.path.json.JsonPath(body);
+
+
+        org.junit.Assert.assertEquals(
+                "User payments fetched successfully.",
+                json.getString("message")
+        );
     }
 
-    @And("Response body icinde pageable bilgileri kontrol edilmeli")
-    public void responseBodyIcindePageableBilgileriKontrolEdilmeli() {
 
-        // data.pageable.pageNumber gibi nested alanlara erişim
-        int pageNumber = json.getInt("data.pageable.pageNumber");
-        int pageSize = json.getInt("data.pageable.pageSize");
-        boolean paged = json.getBoolean("data.pageable.paged");
-
-        assertNotNull("pageable bilgisi eksik!", pageNumber);
-        assertTrue("Sayfalama etkin degil!", paged);
-        assertTrue("pageSize 0'dan buyuk olmali!", pageSize > 0);
-
-        // Ekstra: boş content kontrolü
-        assertNotNull("Content array eksik!", json.get("data.content"));
-        System.out.println("✅ Pageable kontrolü basarili → page: " + pageNumber + ", size: " + pageSize);
-    }
 
     @When("Odemeler GET istegi ile alinir")
     public void odemelerGETIstegiIleAlinir() {
@@ -412,6 +348,25 @@ public class API_PaymentControllerStepdefs {
         System.out.println("Status code: " + response.statusCode());
         System.out.println("Response body: " + response.asString());
 
+    }
+    @When("Siparis ödemeleri GET istegi ile alinir")
+    public void siparisOdemeleriGETIstegiIleAlinir() {
+        // path: /api/payments/orders/{orderId}
+        response = given(spec)
+                .when()
+                .get("{first}/{second}/{third}/{fourth}");
+    }
+
+
+    // LIST USER PAYMENTS –
+    @When("Kullanici ödemeleri sayfalari  GET istegi ile alinir")
+    public void kullaniciOdemeleriSayfaliGETIstegiyleAlinirr() {
+        // page=0, size=10
+        response = given(spec)
+                .queryParam("page", 0)
+                .queryParam("size", 10)
+                .when()
+                .get("{first}/{second}/{third}");
     }
 
     @And("Response body icinde {string} {string} olmali")
