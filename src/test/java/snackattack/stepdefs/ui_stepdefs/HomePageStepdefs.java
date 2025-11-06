@@ -97,4 +97,5 @@ public class HomePageStepdefs {
     public void kullaniciBasariliBirSekildeGirisYaptiginiDogrular() {
         Assert.assertTrue(adminPanelPage.wellcomeToAdminPanelText.isDisplayed());
     }
+
 }

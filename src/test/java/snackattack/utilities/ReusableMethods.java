@@ -38,6 +38,7 @@ public class ReusableMethods {
     public static void alertText() {
         Driver.getDriver().switchTo().alert().getText();
     }
+    public static String alertTextString() {return Driver.getDriver().switchTo().alert().getText();}
     //Alert promptBox
     public static void alertprompt(String text) {
         Driver.getDriver().switchTo().alert().sendKeys(text);

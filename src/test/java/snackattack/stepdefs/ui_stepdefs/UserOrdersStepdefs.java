@@ -1,20 +1,26 @@
 package snackattack.stepdefs.ui_stepdefs;
 
+import io.cucumber.java.bs.A;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import snackattack.pages.userpanelpages.MyCartPage;
 import snackattack.pages.userpanelpages.MyOrdersPage;
 import snackattack.utilities.Driver;
+import snackattack.utilities.ReusableMethods;
 
 import java.time.Duration;
+
+import static snackattack.utilities.ReusableMethods.alertText;
 
 public class UserOrdersStepdefs {
 
     MyOrdersPage ordersPage = new MyOrdersPage();
     WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
+    MyCartPage myCartPage = new MyCartPage();
 
     @Then("En az bir siparis karti gorunur")
     public void enAzBirSiparisKartiGorunur() {
@@ -140,7 +146,51 @@ public class UserOrdersStepdefs {
         }
     }
 
+    @Then("Your Orders sayfasında status pending oldugu dogrulanır")
+    public void yourOrdersSayfasındaStatusPendingOlduguDogrulanır() {
+        myCartPage.okButton.click();
+        String text = myCartPage.statusElement.getText();
+        System.out.println("text = " + text);
+        Assert.assertTrue(text.contains("PENDING"));
+    }
 
+
+    @And("Your Orders sayfasında Cancel Order a tiklanir")
+    public void yourOrdersSayfasındaCancelOrderATiklanır() {
+        ordersPage.cancelOrderButton.click();
+    }
+
+    @And("Cıkan Are you sure you want to cancel this order? allertte tamama tiklanir")
+    public void cıkanAllertTeTamamATiklanır() {
+        ReusableMethods.alertWait(2);
+        ReusableMethods.alertAccept();
+    }
+
+    @And("Cıkan Order cancelled successfully yazan alertte tamama tiklanir")
+    public void cıkanOrderCancelledSuccessfullyYazanAlertteTamamaTiklanir() {
+        ReusableMethods.alertWait(3);
+        ReusableMethods.alertAccept();
+    }
+
+    @Then("Your Orders sayfasında status cancelled oldugu dogrulanır")
+    public void yourOrdersSayfasındaStatusCancelledOlduguDogrulanır() {
+        String text = myCartPage.statusElement.getText();
+        System.out.println("text = " + text);
+        Assert.assertTrue(text.contains("CANCELED"));
+    }
+
+    @And("Sayfa yenilenir")
+    public void sayfaYenilenir() {
+        Driver.getDriver().navigate().refresh();
+    }
+
+    @Then("Failed to cancel the order. alertunun acıldıgı dogrulanır")
+    public void failedToCancelTheOrderAlertununCıktığıDogrulanır() {
+        ReusableMethods.alertWait(2);
+        String actual = ReusableMethods.alertTextString();
+        System.out.println("Text = " + actual);
+        Assert.assertEquals("Failed to cancel the order.", actual);
+    }
 }
 
 

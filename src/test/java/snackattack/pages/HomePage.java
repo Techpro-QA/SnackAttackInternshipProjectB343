@@ -57,10 +57,10 @@ public class HomePage {
     @FindBy(css = "div[role='status']")
     public WebElement authLoginErrorStatus;
 
-    @FindBy(xpath = "(//button[@type='submit' and contains(.,'Register') and not(@disabled)])[1]" )
+    @FindBy(xpath = "(//button[@type='submit' and contains(.,'Register') and not(@disabled)])[1]")
     public WebElement registerSubmitButton;
 
-    @FindBy(xpath = "//div[@role='status' and @aria-live='polite' and contains(translate(., 'SUCCESS', 'success'), 'success')]" )
+    @FindBy(xpath = "//div[@role='status' and @aria-live='polite' and contains(translate(., 'SUCCESS', 'success'), 'success')]")
     public WebElement registerSuccessMessage;
 
     @FindBy(css = "p.text-red-500.text-xs")
@@ -107,10 +107,14 @@ public class HomePage {
 
 
 
+    @FindBy(xpath = "//button[.='Add to Cart']")
+    public WebElement addToCart;
 
+    @FindBy(xpath = "//div[@title='View Cart']")
+    public WebElement cartIkon;
 
-
-
+    @FindBy(xpath = "//header//div[contains(@class,'hover:cursor-pointer')][1]")
+    public WebElement userButton;
 
 
     //Header Locates
@@ -129,16 +133,6 @@ public class HomePage {
 
     @FindBy(xpath = "//div[@title='View Cart']")
     public WebElement homeViewCart;
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -36,33 +36,59 @@ public class API_AuthenticationControllerStepdefs {
 
     @Given("{string} endpoint'ine baglanti kurulur")
     public void endpointIneBaglantiKurulur(String endpoint) {
-        //set the url
-        if (endpoint.equalsIgnoreCase("registerAnonymous")) {
-            spec.pathParams("first", "auth", "second", "registerAnonymous");
-        } else if (endpoint.equalsIgnoreCase("login")) {
-            spec.pathParams("first", "auth", "second", "login");
-        } else if (endpoint.equalsIgnoreCase("user")) {
-            spec.pathParams("first", "auth", "second", "user");
-        }else if (endpoint.equalsIgnoreCase("updatePassword")) {
-            spec.pathParams("first", "auth", "second", "updatePassword");
-        }else if (endpoint.equalsIgnoreCase("PaymentsPaymentId")) {
-            spec.pathParams("first", "api", "second", "payments","third",57);}
-        else if (endpoint.equalsIgnoreCase("PaymentsLastPaymentID")) {
-            spec.pathParams("first", "api", "second", "payments","third",Integer.parseInt(TestData.expectedFirstRowPaymentId));
-        }else if (endpoint.equalsIgnoreCase("PaymentsCreatePayment")) {
-            spec.pathParams("first", "api", "second", "payments","third","createPayment");
-        }else if (endpoint.equalsIgnoreCase("PaymentsTransactionReference")) {
-            spec.pathParams("first", "api", "second", "payments","third",57,"fourth","transactionReference");
-        }else if (endpoint.equalsIgnoreCase("PaymentsFailureReason")) {
-            spec.pathParams("first", "api", "second", "payments","third",57,"fourth","failureReason");
-        }else if (endpoint.equalsIgnoreCase("Payments")) {
-            spec.pathParams("first", "api", "second", "payments");
-        }else if (endpoint.equalsIgnoreCase("PaymentsUpdateStatus")) {
-            spec.pathParams("first", "api", "second", "payments","third","updatePaymentStatus","fourth",57);
-        }  else {
-            throw new IllegalArgumentException("Geçersiz endpoint adı: " + endpoint);
-        }
+        // set the url
+        switch (endpoint.toLowerCase()) {
+            case "registeranonymous":
+                spec.pathParams("first", "auth", "second", "registerAnonymous");
+                break;
 
+            case "login":
+                spec.pathParams("first", "auth", "second", "login");
+                break;
+
+            case "user":
+                spec.pathParams("first", "auth", "second", "user");
+                break;
+
+            case "updatepassword":
+                spec.pathParams("first", "auth", "second", "updatePassword");
+                break;
+
+            case "paymentspaymentid":
+                spec.pathParams("first", "api", "second", "payments", "third", 57);
+                break;
+
+            case "paymentslastpaymentid":
+                spec.pathParams("first", "api", "second", "payments",
+                        "third", Integer.parseInt(TestData.expectedFirstRowPaymentId));
+                break;
+
+            case "paymentscreatepayment":
+                spec.pathParams("first", "api", "second", "payments", "third", "createPayment");
+                break;
+
+            case "paymentstransactionreference":
+                spec.pathParams("first", "api", "second", "payments",
+                        "third", 57, "fourth", "transactionReference");
+                break;
+
+            case "paymentsfailurereason":
+                spec.pathParams("first", "api", "second", "payments",
+                        "third", 57, "fourth", "failureReason");
+                break;
+
+            case "payments":
+                spec.pathParams("first", "api", "second", "payments");
+                break;
+
+            case "paymentsupdatestatus":
+                spec.pathParams("first", "api", "second", "payments",
+                        "third", "updatePaymentStatus", "fourth", 57);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Gecersiz endpoint adı: " + endpoint);
+        }
     }
 
     @When("Kullanici olusturmak icin POST istegi gonderilir")
