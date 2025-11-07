@@ -31,7 +31,7 @@ public class DB_ContactMessageStepdefs {
 
     @Then("Email {string} icin name {string} message {string} subject {string} olmalidir")
     public void emailIcinNameMessageSubjectOlmalidir(String email, String expectedName, String expectedMessage, String expectedSubject) {
-        actualData = new HashMap<>();
+       // actualData = new HashMap<>();
         Assert.assertEquals("Email uyuşmuyor!", email, actualData.get("email"));
         Assert.assertEquals("Name uyuşmuyor!", expectedName, actualData.get("name"));
         Assert.assertEquals("Message uyuşmuyor!", expectedMessage, actualData.get("message"));
