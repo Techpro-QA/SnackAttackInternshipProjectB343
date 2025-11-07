@@ -40,7 +40,7 @@ Feature: Product API Testleri
   @noToken
   Scenario: Admin bir ürünü güncelleyebilmeli
     Given Admin güncellenecek ürün payload'u hazırlanır
-    When Kullanıcı "PUT" isteğini "/products" endpointine gönderir
+    When Kullanıcı "PUT DYNAMIC" isteğini "/products" endpointine gönderir
     Then Status kodu 200 olmalı
     And Ürünün güncellendigi dogrulanir
 
