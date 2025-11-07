@@ -26,7 +26,7 @@ Feature: Admin herhangi bir üründe güncelleme yapabilmeli
   @US15_E2E_API
   @noToken
   Scenario: Api ürün güncelleme kontrol
-    When Kullanıcı "GET DYNAMIC" isteğini "/products/byId/" endpointine gönderir
+    When Kullanıcı "PUT DYNAMIC" isteğini "/products/byId/" endpointine gönderir
     Then Status kodu 200 olmalı
     And Update edilen urun api'da kontrol edilir
 

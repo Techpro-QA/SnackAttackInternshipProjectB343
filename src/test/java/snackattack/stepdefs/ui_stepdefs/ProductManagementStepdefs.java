@@ -461,6 +461,7 @@ public class ProductManagementStepdefs {
     @And("Admin silmek istedigi urunun Actions kismindaki çop kutusu\\(delete) icon'una tiklar")
     public void adminSilmekIstedigiUrununActionsKismindakiÇopKutusuDeleteIconUnaTiklar() {
 
+        TestData.expectedProductId = productManagementPage.tableFirstProductID.getText();
         TestData.expectedProductName = productManagementPage.firstProductName.getText();
         ReusableMethods.click(productManagementPage.productActionsDeleteButton);
         WaitUtils.waitFor(2);

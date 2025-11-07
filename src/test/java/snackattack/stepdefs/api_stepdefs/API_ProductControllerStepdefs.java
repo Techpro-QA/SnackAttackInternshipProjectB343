@@ -43,7 +43,6 @@ public class API_ProductControllerStepdefs {
                     .spec(Hook.spec)
                     .when()
                     .get(endpoint);
-
         } else if (method.equalsIgnoreCase("POST")) {
             response = given()
                     .spec(Hook.spec)
@@ -58,7 +57,7 @@ public class API_ProductControllerStepdefs {
                     .body(TestData.putPayload)
                     .when()
                     .put(endpoint);
-        } else if (method.equalsIgnoreCase("GET DYNAMIC")) {
+        } else if (method.equalsIgnoreCase("PUT DYNAMIC")) {
             response = given()
                     .spec(Hook.spec)
                     .contentType(ContentType.JSON)
@@ -71,6 +70,12 @@ public class API_ProductControllerStepdefs {
                     .contentType(ContentType.JSON)
                     .when()
                     .delete(endpoint + TestData.createdProductId);
+        }else if (method.equalsIgnoreCase("GET DYNAMIC")) {
+            response = given()
+                    .spec(Hook.spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .get(endpoint + TestData.expectedProductId);
         }
 
         System.out.println("Endpoint: " + endpoint);
@@ -246,4 +251,6 @@ public class API_ProductControllerStepdefs {
     public void urununApiUzerindeSilindigiKontrolEdilir() {
         Assert.assertTrue(response.asString().contains("Product deleted"));
     }
+
+
 }

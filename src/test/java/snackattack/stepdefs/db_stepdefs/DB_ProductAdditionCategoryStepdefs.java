@@ -136,4 +136,10 @@ public class DB_ProductAdditionCategoryStepdefs {
 
 
     }
+
+    @Then("Urunun silindigi database uzerinden kontrol edilir")
+    public void urununSilindigiDatabaseUzerindenKontrolEdilir() throws SQLException {
+        resultSet.next();
+        Assert.assertNotEquals(TestData.expectedProductName,resultSet.getString("name"));
+    }
 }
