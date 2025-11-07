@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CategoriesPojo implements Serializable {
+public class ProductCategoriesPojo implements Serializable {
 
     private int id;
     private String createdAt;
@@ -13,7 +13,7 @@ public class CategoriesPojo implements Serializable {
     private boolean active;
     private String imgUrl;
 
-    public CategoriesPojo() {}
+    public ProductCategoriesPojo() {}
 
 
     public int getId() { return id; }

@@ -14,18 +14,18 @@ public class ProductPutResponsePojo implements Serializable {
     private String contents;
     private Object price;
     private Object discount;
-    private List<CategoriesPojo> categories;
+    private List<ProductCategoriesPojo> categories;
     private boolean available;
     private boolean active;
     private Object imgBase64;
-    private List<AdditionsCategoryPojo> additionsCategory;
+    private List<ProductAdditionsCategoryPojo> additionsCategory;
     private int orderQuantity;
     private boolean popular;
 
     public ProductPutResponsePojo() {
     }
 
-    public ProductPutResponsePojo(int id, String createdAt, String updatedAt, String name, String description, String contents, Object price, Object discount, List<CategoriesPojo> categories, boolean available, boolean active, Object imgBase64, List<AdditionsCategoryPojo> additionsCategory, int orderQuantity, boolean popular) {
+    public ProductPutResponsePojo(int id, String createdAt, String updatedAt, String name, String description, String contents, Object price, Object discount, List<ProductCategoriesPojo> categories, boolean available, boolean active, Object imgBase64, List<ProductAdditionsCategoryPojo> additionsCategory, int orderQuantity, boolean popular) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -107,11 +107,11 @@ public class ProductPutResponsePojo implements Serializable {
         return discount;
     }
 
-    public void setCategories(List<CategoriesPojo> categories){
+    public void setCategories(List<ProductCategoriesPojo> categories){
         this.categories = categories;
     }
 
-    public List<CategoriesPojo> getCategories(){
+    public List<ProductCategoriesPojo> getCategories(){
         return categories;
     }
 
@@ -139,11 +139,11 @@ public class ProductPutResponsePojo implements Serializable {
         return imgBase64;
     }
 
-    public void setAdditionsCategory(List<AdditionsCategoryPojo> additionsCategory){
+    public void setAdditionsCategory(List<ProductAdditionsCategoryPojo> additionsCategory){
         this.additionsCategory = additionsCategory;
     }
 
-    public List<AdditionsCategoryPojo> getAdditionsCategory(){
+    public List<ProductAdditionsCategoryPojo> getAdditionsCategory(){
         return additionsCategory;
     }
 
