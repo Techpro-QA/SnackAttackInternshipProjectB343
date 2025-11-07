@@ -20,6 +20,10 @@ public class ProductManagementPage {
     @FindBy(xpath = "//tbody/tr[1]")
     public WebElement firstProductRow;
 
+    // Ürün listesi (Tablodaki ilk ürünün id'si)
+    @FindBy(xpath = "//tbody/tr[1]/td[1]")
+    public WebElement tableFirstProductID;
+
     // Tüm ürün satırları
     @FindBy(xpath = "//tbody/tr")
     public List<WebElement> allProductRows;

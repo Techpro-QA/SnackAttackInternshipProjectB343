@@ -43,5 +43,11 @@ Feature: Admin can add a new product and end-to-end verification
     Then Kategori bilgileri veritabaninda bulunmalidir
     And Baglanti kapatilir
 
+  @noToken
+  Scenario: Admin bir ürünü güncelleyebilmeli
+    When Kullanıcı "DELETE" isteğini "/products/" endpointine gönderir
+    Then Status kodu 200 olmalı
+    And Urunun api uzerinde silindigi kontrol edilir
+
 
 

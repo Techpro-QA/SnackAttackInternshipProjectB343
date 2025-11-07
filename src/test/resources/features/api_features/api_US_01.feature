@@ -35,10 +35,9 @@ Feature: Product API Testleri
     Then Status kodu 200 olmalı
     And Filtreli ürün listesi dönmeli
 
-
     #Mustafa
   @ProductPut
-  @adminToken
+  @noToken
   Scenario: Admin bir ürünü güncelleyebilmeli
     Given Admin güncellenecek ürün payload'u hazırlanır
     When Kullanıcı "PUT" isteğini "/products" endpointine gönderir
@@ -56,14 +55,15 @@ Feature: Product API Testleri
   @noToken
   Scenario: Admin bir ürünü güncelleyebilmeli
     When Kullanıcı "GET" isteğini "/products/allProduct-client?page=1&size=1&category=1&search=1" endpointine gönderir
-    And Status kodu 200 olmalı
-
+    Then Status kodu 200 olmalı
+    And Filtreli ürün listesi dönmeli
 
   @ProductDelete
   @noToken
   Scenario: Admin bir ürünü güncelleyebilmeli
-    When Kullanıcı "GET" isteğini "/products/15" endpointine gönderir
+    When Kullanıcı "DELETE" isteğini "/products/" endpointine gönderir
     Then Status kodu 200 olmalı
+    And Urunun api uzerinde silindigi kontrol edilir
 
 
 

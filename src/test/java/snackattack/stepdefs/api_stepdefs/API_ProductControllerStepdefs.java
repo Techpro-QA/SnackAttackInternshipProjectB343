@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import snackattack.pojos.*;
 import snackattack.stepdefs.Hook;
+import snackattack.utilities.TestData;
 
 import java.util.*;
 
@@ -23,6 +24,9 @@ public class API_ProductControllerStepdefs {
     private long category;
     private String search;
 
+
+    //createdProductId = response.jsonPath().getInt("data.id");
+    //olusturulan ıd alınıp TestData.createdProductId varıablına assıgın edecegğz
 
     @Given("API base url {string}")
     public void api_base_url(String url) {
@@ -51,9 +55,22 @@ public class API_ProductControllerStepdefs {
             response = given()
                     .spec(Hook.spec)
                     .contentType(ContentType.JSON)
-                    .body(productRequestPojo)
+                    .body(TestData.putPayload)
                     .when()
                     .put(endpoint);
+        } else if (method.equalsIgnoreCase("GET DYNAMIC")) {
+            response = given()
+                    .spec(Hook.spec)
+                    .contentType(ContentType.JSON)
+                    .body(productRequestPojo)
+                    .when()
+                    .put(endpoint + TestData.expectedProductId);
+        }else if (method.equalsIgnoreCase("DELETE")) {
+            response = given()
+                    .spec(Hook.spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .delete(endpoint + TestData.createdProductId);
         }
 
         System.out.println("Endpoint: " + endpoint);
@@ -81,19 +98,20 @@ public class API_ProductControllerStepdefs {
         response.then().contentType(ContentType.JSON);
         String body = response.getBody().asString();
         Assert.assertTrue(body.contains("id"));
+        TestData.createdProductId = response.jsonPath().getInt("data.id");
     }
 
     //POST /products — Yeni ürün oluştur
     @Given("Yeni bir ürün payload hazırlanır")
     public void yeni_bir_urun_payload_hazirlanir() {
         // Category örneği
-        CategoriesPojo category = new CategoriesPojo();
+        ProductCategoriesPojo category = new ProductCategoriesPojo();
         category.setId(1);
         category.setName("İçecek");
         category.setActive(true);
 
         // Additions Category örneği
-        AdditionsCategoryPojo addition = new AdditionsCategoryPojo();
+        ProductAdditionsCategoryPojo addition = new ProductAdditionsCategoryPojo();
         addition.setId(1);
         addition.setName("Ekstra Şeker");
         addition.setActive(true);
@@ -128,6 +146,7 @@ public class API_ProductControllerStepdefs {
         Assert.assertFalse("Ürün ismi boş olamaz!", productName.isEmpty());
 
         System.out.println("Ürün başarıyla oluşturuldu: " + productName);
+        TestData.createdProductId = response.jsonPath().getInt("data.id");
     }
 
     // GET /products/byId/{id}
@@ -177,50 +196,24 @@ public class API_ProductControllerStepdefs {
     @Given("Admin güncellenecek ürün payload'u hazırlanır")
     public void adminGüncellenecekÜrünPayloadUHazırlanır() {
 
-        // Category örneği
-        CategoriesPojo category = new CategoriesPojo();
-        category.setId(6);
-        category.setName("SALATALAR");
-        category.setActive(true);
-
-        // Additions Category örneği
-        AdditionsCategoryPojo addition = new AdditionsCategoryPojo();
-        addition.setId(2);
-        addition.setName("Salata Soslari");
-        addition.setActive(true);
-
-        // Product Request oluştur
-        productRequestPojo = new ProductRequestPojo();
-        productRequestPojo.setName("Sezarcik Salata " + System.currentTimeMillis());
-        productRequestPojo.setDescription("Lezzetli bebeksi salata");
-        productRequestPojo.setContents("Ceviz, Marul, sogan");
-        productRequestPojo.setPrice(35);
-        productRequestPojo.setDiscount(5);
-        productRequestPojo.setAvailable(true);
-        productRequestPojo.setActive(true);
-        productRequestPojo.setImgBase64("imgBase64Example");
-        productRequestPojo.setOrderQuantity(35);
-        productRequestPojo.setPopular(true);
-        productRequestPojo.setCategories(Collections.singletonList(category));
-        productRequestPojo.setAdditionsCategory(Collections.singletonList(addition));
-        productRequestPojo.setCreatedAt("2025-08-28T13:39:52.204291");
-        productRequestPojo.setUpdatedAt("2025-10-22T11:42:54.312581");
-
-        System.out.println("Güncellenen ürün payload hazırlandı: " + productRequestPojo.getName());
+        TestData.putPayload = new HashMap<>();
+        TestData.putPayload.put("id", TestData.createdProductId);
+        TestData.putPayload.put("name", "Caciki");
+        TestData.putPayload.put("description", "soğuk meze");
+        TestData.putPayload.put("contents", "salatalik,yogurt");
 
     }
 
     @And("Ürünün güncellendigi dogrulanir")
     public void ürününGüncellendigiDogrulanir() {
-        ProductPutResponsePojo productPutResponsePojo = response.as(ProductPutResponsePojo.class);
+        CreateProductResponsePojo actualData = response.as(CreateProductResponsePojo.class);
 
         response.prettyPrint();
 
-        Assert.assertEquals(productPutResponsePojo.getName(),productRequestPojo.getName());
-        Assert.assertEquals(productPutResponsePojo.getPrice(),productRequestPojo.getPrice());
-        Assert.assertEquals(productPutResponsePojo.getDescription(),productRequestPojo.getDescription());
-        Assert.assertEquals(productPutResponsePojo.getContents(),productRequestPojo.getContents());
-        Assert.assertEquals(productPutResponsePojo.getDiscount(),productRequestPojo.getDiscount());
+        Assert.assertEquals(TestData.putPayload.get("name"),actualData.getData().getName());
+        Assert.assertEquals(TestData.putPayload.get("description"),actualData.getData().getDescription());
+        Assert.assertEquals(TestData.putPayload.get("contents"),actualData.getData().getContents());
+
 
     }
 
@@ -234,5 +227,23 @@ public class API_ProductControllerStepdefs {
         Assert.assertEquals(1,productPopulerListPojo.getPageable().getPageNumber());
         Assert.assertEquals("Hamburger",productPopulerListPojo.getContent().get(0).getName());
 
+    }
+
+    @And("Update edilen urun api'da kontrol edilir")
+    public void updateEdilenUrunApiDaKontrolEdilir() {
+        ProductPopulerListPojo productPopulerListPojo = response.as(ProductPopulerListPojo.class);
+
+        Assert.assertEquals(TestData.expectedProductName,productPopulerListPojo.getContent().get(0).getName());
+        Assert.assertEquals(TestData.expectedDescriptionText,productPopulerListPojo.getContent().get(0).getDescription());
+        Assert.assertEquals(TestData.expectedContentsText,productPopulerListPojo.getContent().get(0).getContents());
+        Assert.assertEquals(TestData.expectedPriceText,productPopulerListPojo.getContent().get(0).getPrice());
+        Assert.assertEquals(TestData.expectedDiscountText,productPopulerListPojo.getContent().get(0).getDiscount());
+
+
+    }
+
+    @And("Urunun api uzerinde silindigi kontrol edilir")
+    public void urununApiUzerindeSilindigiKontrolEdilir() {
+        Assert.assertTrue(response.asString().contains("Product deleted"));
     }
 }
