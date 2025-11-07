@@ -4,21 +4,21 @@ Feature: User sepete ekli ürünü/ürünleri sipariş verebilmeli/iptal edebilm
   Background:
     Given Sayfaya gidilir
     And Kullanici loginRegister'a tiklar
-    And Kullanici registerButon'a tiklar
-    And Kullanici First Name alanina gecerli data girer
-    And Kullanici Last Name alanina gecerli data girer
-    And Kullanici Email alanina "random" yazar
-    And Kullanici User Name alanina gecerli data girer
-    And Kullanici Password alanina gecerli password yazar
-    And Kullanici Confirm Password alanina gecerli password yazar
-    And Kullanici Address alanina gecerli data girer
-    And Kullanici Country Code select alanindan "TR" secer
+    And "kullanici" registerButon'a tiklar
+    And "kullanici" First Name alanina gecerli data girer
+    And "kullanici" Last Name alanina gecerli data girer
+    And "kullanici" Email alanina "random" yazar
+    And "kullanici" User Name alanina gecerli data girer
+    And "kullanici" Password alanina "random" yazar
+    And "kullanici" Confirm Password alanina Password ile ayni degeri girer
+    And "kullanici" Address alanina gecerli data girer
+    And "kullanici" Country Code select alanindan "TR" secer
     And Kullanici Phone Number alanina tr kuralina uygun 10 haneli numara girer
-    And Kullanici register butonuna tiklar
-    And Kullanici login sayfasina yonlenir ve URL "/login" olarak devam eder
+    And "kullanici" register butonuna tiklar
+    And "kullanici" login sayfasina yonlenir ve URL "/login" olarak devam eder
     And Kullanici Email alanina olusturulan email i girer
-    And Kullanici Password alanina gecerli password yazar
-    And Kullanici loginButton'a tiklar
+    And Kullanici Password alanina olusturulan password u girer
+    And "kullanici" loginButton'a tiklar
     And Kullanici 2 saniye bekler
     And Kullanici Products'a tiklar
     And Kullanici sol ustteki ilk urune tiklar

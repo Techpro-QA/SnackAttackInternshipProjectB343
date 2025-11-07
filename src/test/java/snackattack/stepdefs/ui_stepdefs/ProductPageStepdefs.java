@@ -174,6 +174,7 @@ public class ProductPageStepdefs {
     public void solÜstKöşedekiSepetIkonunaTiklanir() {
         String text1 = productsPage.firstProduct.getText();
         TestData.expectedProductName = text1;
+        WaitUtils.waitForVisibility(homePage.cartIkon, 5);
         WaitUtils.waitForClickablility(homePage.cartIkon, 5);
         homePage.cartIkon.click();
     }

@@ -16,7 +16,6 @@ Feature: User sepete ekli ürünü/ürünleri sipariş verebilmeli/iptal edebilm
     And Sayfa kapatilir
 
 
-
   @US_08_TC_03
     Scenario:
     And Cart Management Paneldeki sag ust kosedeki sepet ikonuna tiklanir
