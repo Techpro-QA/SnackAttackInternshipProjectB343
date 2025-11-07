@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         },
         features = "src/test/resources/features",
         glue = {"snackattack/stepdefs"},
-        tags = "@DB_US_16_product_category",
+        tags = "@DB_US_O7",
 
         dryRun = false
 )

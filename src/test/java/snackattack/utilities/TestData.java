@@ -55,5 +55,6 @@ public class TestData {
     //Contact Message verileri
     public static String subject;
     public static String message;
+    public static String createdMessageId;
 
 }

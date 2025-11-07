@@ -33,8 +33,9 @@ import static snackattack.stepdefs.Hook.spec;
 public class API_ContactMessageStepdefs {
 
     public static Response response;
-    public static int contactMessageId;
-
+    LocalDate beginDate;
+    LocalDate endDate;
+    int lastId;
 
     //============POST REQUEST=====================
 
@@ -79,13 +80,10 @@ public class API_ContactMessageStepdefs {
         Object actualValue = response.jsonPath().get(alan);
 
         if (actualValue instanceof java.util.List) {
-            // Eğer değer bir listeyse → örn: [Malıyet, Malıyet]
             response.then().body(alan, hasItem(beklenenDeger));
         } else if (actualValue != null) {
-            // Eğer tek bir string veya değer ise → örn: "CREATED"
             response.then().body(alan, containsString(beklenenDeger));
         } else {
-            // Alan null ise fail
             throw new AssertionError("Response içinde '" + alan + "' alanı bulunamadı.");
         }
     }
@@ -157,10 +155,15 @@ public class API_ContactMessageStepdefs {
 
 
     @When("Kullanici {string} ile {string} tarihleri arasindaki verileri ister")
-    public void kullaniciIleTarihleriArasindakiVerileriIster(String time1, String time2) {
+    public void kullaniciIleTarihleriArasindakiVerileriIster(String start, String end) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        beginDate = LocalDate.parse(start, formatter);
+        endDate = LocalDate.parse(end, formatter);
+
         response = given(spec)
-                .queryParam("beginDate", time1)
-                .queryParam("endDate", time2)
+                .queryParam("beginDate", start)
+                .queryParam("endDate", end)
                 .when()
                 .get("/{first}/{second}");
 
@@ -171,30 +174,20 @@ public class API_ContactMessageStepdefs {
     @And("Response body içinde gelen bilgiler verilen gun aralığına uygun olmalı")
     public void responseBodyIçindeGelenBilgilerVerilenGunAralığınaUygunOlmalı() {
 
-        // API response'taki dateTime alanlarını al
         List<String> dateTimes = response.jsonPath().getList("dateTime", String.class);
-
-        // Testte kullandığın aralık (Swagger'da kullandığınla aynı olmalı)
-        LocalDate beginDate = LocalDate.of(2025, 10, 1);
-        LocalDate endDate = LocalDate.of(2025, 10, 5);
-
-        // API'nin tarih formatı: "dd-MM-yyyy HH:mm"
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
         for (String dt : dateTimes) {
             assertNotNull("dateTime alanı null geldi!", dt);
 
-            // String'i LocalDateTime yerine sadece LocalDate olarak parse ediyoruz
             LocalDate currentDate = LocalDate.parse(dt.substring(0, 10), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-            // Doğrulama: currentDate belirtilen aralıkta olmalı
             assertTrue(
                     "Tarih beklenen aralıkta değil: " + currentDate,
                     !currentDate.isBefore(beginDate) && !currentDate.isAfter(endDate)
             );
         }
     }
-
 
     //============GetByContactMessageId REQUEST=====================
 
@@ -248,28 +241,37 @@ public class API_ContactMessageStepdefs {
 
     //============DeleteByContactMessageId REQUEST====================
 
-    @Given("{string} contact message id'si {int} olarak enpoint ayarlanır")
-    public void contactMessageIdSiOlarakEnpointAyarlanır(String st, int idsi) {
-        spec.pathParams("first", "contactMessages", "second", "deleteById", "third", idsi);
+    @And("Son olusturulan id ye ait bilgiler silinir")
+    public void sonOlusturulanIdYeAitBilgilerSilinir() {
+
+        Response getResponse = given(spec)
+                .when()
+                .get("/contactMessages/getAll");
+        getResponse.then().statusCode(200);
+
+        List<Map<String, Object>> messages = getResponse.jsonPath().getList("content");
+        Map<String, Object> lastMessage = messages.get(messages.size() - 1);
+        lastId = (Integer) lastMessage.get("id");
+
+
+        spec.pathParams("first", "contactMessages", "second", "deleteById", "third", lastId);
+        System.out.println("Silinecek son ID: " + lastId);
     }
 
     @When("DELETE isteği gönderilir")
     public void deleteIstegiGonder() {
-
-        response = given(spec).when().delete("{first}/{second}/{third}");
+        response = given(spec)
+                .when()
+                .delete("{first}/{second}/{third}");
         response.prettyPrint();
     }
 
-    @And("Contact Message with id {string} is DELETED Successfully mesajı doğrulanır")
-    public void contactMessageWithIdIsDELETEDSuccessfullyMesajıDoğrulanır(String idsi) {
-        String expectedMessage = "Contact Message with id " + idsi + " is DELETED Successfully";
+    @And("DELETED Successfully mesajı doğrulanır")
+    public void deletedSuccessfullyMesajiDogrulanir() {
         String actualMessage = response.jsonPath().getString("message");
+        String expectedMessage = "Contact Message with id " + lastId + " is DELETED Successfully";
         assertEquals(expectedMessage, actualMessage);
-
     }
-
-
-
 
 }
 
@@ -326,63 +328,5 @@ public class API_ContactMessageStepdefs {
 
 
 
-
-
-    //ContactMessage_GetRequest_SearchBySubject
-
-
-
-  // @When("\"([^\"]*)\" olarak {string} bilgisi gönderilir")
-  // public void fieldOlarakBilgisiGönderilir(String field, String value) {
-  //     // Dinamik olarak query parametreleri eklenir
-  //     spec.queryParam(field, value)
-  //             .queryParam("page", 0)
-  //             .queryParam("size", 10)
-  //             .queryParam("sort", "dateTime")
-  //             .queryParam("type", "desc");
-
-  //     // GET isteği atılır
-  //     response = given(spec)
-  //             .when()
-  //             .get("/{first}/{second}");
-
-  //     // Yanıtı konsola bastır (debug amaçlı)
-  //     response.prettyPrint();
-  // }
-
-   //@When("Subject olarak {string} bilgisi gönderilir")
-   //public void subjectOlarakBilgisiGönderilir(String subject) {
-
-
-
-     // // Dinamik olarak query parametreleri eklenir
-     // spec.queryParam("subject", subject)
-     //         .queryParam("page", 0)
-     //         .queryParam("size", 10)
-     //         .queryParam("sort", "dateTime")
-     //         .queryParam("type", "desc");
-
-     // // GET isteği atılır
-     // response = given(spec)
-     //         .when()
-     //         .get("/{first}/{second}");
-
-     // // Yanıtı konsola bastır (debug amaçlı)
-     // response.prettyPrint();
-   // }
-
-
-
-    // @And("Response içinde {string} alanının {string} icerdigi dogrulanır")
-  // public void responseIçindeAlanıIçermeli(String jsonPath, String expectedValue) {
-  //     response.then().body(jsonPath, hasItem(equalToIgnoringCase(expectedValue)));
-  // }
-
-
-  // @Then("Response içinde {string} alanının {string} icerdigi dogrulanır")
-  // public void response_icerigini_dogrula(String field, String expectedValue) {
-  //     String actualValue = response.jsonPath().getString(field);
-  //     Assert.assertEquals(actualValue, expectedValue);
-  // }
 
 
