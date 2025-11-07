@@ -1,6 +1,8 @@
 package snackattack.pages.userpanelpages;
 
+import io.cucumber.java.en.Then;
 import org.apache.poi.xdgf.usermodel.XDGFPage;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -16,58 +18,43 @@ public class MyOrdersPage {
     //MyOrders page locates
 
     //butun siparis kartlari
-    @FindBy (xpath = "//div[@class='p-4']")
-    public List<WebElement> myOrdersMenu ;
+    @FindBy(xpath = "//div[@class='p-4']")
+    public List<WebElement> myOrdersMenu;
 
 
     //Delivered durumundaki order in numarasi
-    @FindBy (xpath = "(//h2[@class='text-xl text-left font-semibold'])[1]")
-    public WebElement ordersNumberStatusCanceled ;
+    @FindBy(xpath = "(//h2[@class='text-xl text-left font-semibold'])[1]")
+    public WebElement ordersNumberStatusCanceled;
 
     //Canceled durumundaki order in numarasi
-    @FindBy (xpath = "(//h2[@class='text-xl text-left font-semibold'])[2]")
-    public WebElement ordersNumberStatusPending ;
+    @FindBy(xpath = "(//h2[@class='text-xl text-left font-semibold'])[2]")
+    public WebElement ordersNumberStatusPending;
 
     //Confirmed durumundaki order in numarasi
-    @FindBy (xpath = "(//h2[@class='text-xl text-left font-semibold'])[3]")
-    public WebElement ordersNumberStatusConfirmed ;
+    @FindBy(xpath = "(//h2[@class='text-xl text-left font-semibold'])[3]")
+    public WebElement ordersNumberStatusConfirmed;
 
     //Pending durumundaki order in numarasi
-    @FindBy (xpath = "(//h2[@class='text-xl text-left font-semibold'])[4]")
-    public WebElement ordersNumberStatusDelivered ;
+    @FindBy(xpath = "(//h2[@class='text-xl text-left font-semibold'])[4]")
+    public WebElement ordersNumberStatusDelivered;
 
     //Siparislerin Status Durumlari
-    @FindBy (xpath = "(//span[@class='text-orange-600'])[1]")
-    public WebElement statusCanceled ;
+    @FindBy(xpath = "(//span[@class='text-orange-600'])[1]")
+    public WebElement statusCanceled;
 
-    @FindBy (xpath = "(//span[@class='text-orange-600'])[2]")
-    public WebElement statusPending ;
+    @FindBy(xpath = "(//span[@class='text-orange-600'])[2]")
+    public WebElement statusPending;
 
-    @FindBy (xpath = "(//span[@class='text-orange-600'])[3]")
-    public WebElement statusConfirmed ;
+    @FindBy(xpath = "(//span[@class='text-orange-600'])[3]")
+    public WebElement statusConfirmed;
 
-    @FindBy (xpath = "(//span[@class='text-orange-600'])[4]")
-    public WebElement statusDelivered ;
-
-
+    @FindBy(xpath = "(//span[@class='text-orange-600'])[4]")
+    public WebElement statusDelivered;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //sipariş iptal
+    @FindBy(xpath = "(//button[.='Cancel Order'])[1]")
+    public WebElement cancelOrderButton;
 
 
 }
