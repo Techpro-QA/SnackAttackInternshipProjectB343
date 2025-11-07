@@ -6,7 +6,7 @@ Feature: Contact_message isimlerinin ve bilgilerinin dogrulanması
 
   Scenario Outline: Contact_message tablosunda belirli email adresleri ve bilgileri dogrulanmali
     When "<email>" email adresine ait kayit sorgulanir
-    Then Email "<email>" icin name "<name>" message "<message>" subject "<subject>" olmalidir
+    Then Email "<email>" icin name "<name>" message "<message>" subject "<subject>" olmalidır
     And Baglanti kapatilir
     Examples:
       | email                    | name    | message                 | subject   |
