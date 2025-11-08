@@ -59,6 +59,7 @@ public class TestData {
 
     //Category Management verileri
     public static String expextedCategoryName;
+    public static Integer createdCategoryId;
 
     //Admin Management verileri
     public static String expectedAdminId;
