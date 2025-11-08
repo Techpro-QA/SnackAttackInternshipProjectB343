@@ -1,9 +1,11 @@
 package snackattack.stepdefs.ui_stepdefs;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 import snackattack.pages.AdminPanelPage;
 import snackattack.pages.HomePage;
 import snackattack.pages.adminpanelpages.CustomerManagementPage;
@@ -11,7 +13,8 @@ import snackattack.utilities.*;
 
 public class CustomerManagementStepDef {
 
-
+    HomePage homePage = new HomePage();
+    AdminPanelPage adminPanelPage = new AdminPanelPage();
     CustomerManagementPage customerManagementPage = new CustomerManagementPage();
     WebDriver driver = Driver.getDriver();
 

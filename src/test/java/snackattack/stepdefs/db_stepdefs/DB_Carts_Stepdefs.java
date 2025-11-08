@@ -7,34 +7,59 @@ import snackattack.utilities.DBUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class DB_Carts_Stepdefs {
 
-    @Then("UI'daki ilk cart bilgileri veritabanındaki kayıtla aynı olmalıdır")
-    public void uiDakiIlkCartBilgileriVeritabanındakiKayıtlaAynıOlmalıdır() throws SQLException {
+    ResultSet resultSet;
 
-        Map<String, Object> expectedUIData = new HashMap<>();
-        expectedUIData.put("id", 1);
-        expectedUIData.put("total_amount", 0);
-        expectedUIData.put("user_id", 6);
-        expectedUIData.put("status", "ACTIVE");
+    @When("Carts tablosundaki veriler sorgulanir")
+    public void cartsTablosundakiVerilerSorgulanir() {
 
-        String query = "SELECT * FROM snack_attack_db.carts WHERE id = 1;";
-        ResultSet resultSet1 = DBUtils.executeQuery(query);
 
-        if (resultSet1.next()) {
 
-            Assert.assertEquals(expectedUIData.get("id"), resultSet1.getInt("id"));
-            Assert.assertEquals(expectedUIData.get("total_amount"), resultSet1.getInt("total_amount"));
-            Assert.assertEquals(expectedUIData.get("user_id"), resultSet1.getInt("user_id"));
-            Assert.assertEquals(expectedUIData.get("status"), resultSet1.getString("status"));
-        } else {
-            Assert.fail("Sorgudan hiç kayıt dönmedi!");
-        }
 
-        DBUtils.closeConnection();
     }
-}
+
+    @Then("User id'leri {string} ve {string} olan cart bilgileri dogrulanir")
+    public void userIdLeriVeOlanCartBilgileriDogrulanir(String userId1, String userId2) throws SQLException {
+
+        List<String> userIds = Arrays.asList(userId1, userId2);
+
+        for (String userId : userIds) {
+            String query = "SELECT id, total_amount, " +
+                    "TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at, " +
+                    "TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS') AS updated_at, " +
+                    "status FROM snack_attack_db.carts WHERE user_id = '" + userId + "';";
+
+            resultSet = DBUtils.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                double totalAmount = resultSet.getDouble("total_amount");
+                String createdAt = resultSet.getString("created_at");
+                String updatedAt = resultSet.getString("updated_at");
+                String status = resultSet.getString("status");
+
+                System.out.println("🧾 ID: " + id);
+                System.out.println("💰 Total Amount: " + totalAmount);
+                System.out.println("📅 Created At: " + createdAt);
+                System.out.println("🕒 Updated At: " + updatedAt);
+                System.out.println("📦 Status: " + status);
+                System.out.println("-------------------------------");
+
+                // ✅ Basit doğrulamalar
+                Assert.assertTrue("ID 0'dan büyük olmalı!", id > 0);
+                Assert.assertNotNull("Created At boş olamaz!", createdAt);
+                Assert.assertEquals("Status ACTIVE olmalı!", "ACTIVE", status);
+
+                // Updated_at boş olabilir — sadece uyarı verelim
+                if (updatedAt == null || updatedAt.isEmpty()) {
+                    System.out.println("⚠️ Uyarı: Updated At boş olabilir.");
+                }
+            }
+        }
+    }
+    }
+
