@@ -2,6 +2,8 @@ package snackattack.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Map;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserRegisterPojo {
     private String firstName;
@@ -115,4 +117,6 @@ public class UserRegisterPojo {
                 ", built_In=" + built_In +
                 '}';
     }
+
+
 }

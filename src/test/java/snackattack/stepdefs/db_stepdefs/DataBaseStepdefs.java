@@ -10,8 +10,11 @@ public class DataBaseStepdefs {
     public void veritabanıBağlantısıKurulur() {
         DBUtils.createConnection();
     }
+
     @And("Baglanti kapatilir")
     public void baglantiKapatilir() {
         DBUtils.closeConnection();
     }
+
+
 }
