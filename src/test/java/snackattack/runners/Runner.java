@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = {"snackattack/stepdefs"},
 
-        tags = "@DB_US_O7",
+        tags = "@E2E_Contact_Message",
 
         dryRun = false
 )

@@ -5,6 +5,7 @@ Feature: Contact_message isimlerinin ve bilgilerinin dogrulanması
     Given Veritabanı bağlantısı kurulur
 
   Scenario Outline: Contact_message tablosunda belirli email adresleri ve bilgileri dogrulanmali
+
     When "<email>" email adresine ait kayit sorgulanır
     Then Email "<email>" icin name "<name>" message "<message>" subject "<subject>" olmalidir
     And Baglanti kapatilir
