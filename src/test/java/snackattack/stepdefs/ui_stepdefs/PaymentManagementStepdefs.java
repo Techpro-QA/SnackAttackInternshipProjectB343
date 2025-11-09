@@ -75,34 +75,33 @@ public class PaymentManagementStepdefs {
 
     }
 
-    @When("Eger ikinci sayfa aktifse Admin ikinci sayfaya gider ve ödeme detaylarını görüntüler")
-    public void egerIkinciSayfaAktifseAdminIkinciSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
+@When("Eger ikinci sayfa aktifse Admin ikinci sayfaya gider ve ödeme detaylarını görüntüler")
+public void egerIkinciSayfaAktifseAdminIkinciSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
+    ReusableMethods.visibleWait(paymentManagementPage.secondPageButton, 10);
 
+    if (paymentManagementPage.secondPageButton.isDisplayed()) {
+        paymentManagementPage.secondPageButton.click();
         ReusableMethods.visibleWait(paymentManagementPage.secondPageButton, 10);
 
-        // ikinci sayfa varsa
-        if (paymentManagementPage.secondPageButton.isDisplayed()) {
-            paymentManagementPage.secondPageButton.click();
-            ReusableMethods.visibleWait(paymentManagementPage.secondPageButton,10);
+        List<WebElement> rows = Driver.getDriver().findElements(By.xpath("//table//tbody//tr"));
+        for (int i = 0; i < rows.size(); i++) {
+            // her tıklamada row'u yeniden locate ediyoruz
+            WebElement row = Driver.getDriver().findElements(By.xpath("//table//tbody//tr")).get(i);
+            row.click();
+            ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
 
-            for (WebElement row : paymentManagementPage.tableRows) {
+            assertTrue(paymentManagementPage.orderCodeText.isDisplayed());
+            assertTrue(paymentManagementPage.addressText.isDisplayed());
+            assertTrue(paymentManagementPage.paymentMethodText.isDisplayed());
+            assertTrue(paymentManagementPage.statusText.isDisplayed());
 
-                row.click();
-                ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-                assertTrue(paymentManagementPage.orderCodeText.isDisplayed());
-                ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-                assertTrue(paymentManagementPage.addressText.isDisplayed());
-                ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-                assertTrue(paymentManagementPage.paymentMethodText.isDisplayed());
-                ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-                assertTrue(paymentManagementPage.statusText.isDisplayed());
-                ReusableMethods.visibleWait(paymentManagementPage.orderDetailsText, 10);
-                paymentManagementPage.closeButton.click();
-            }
-        }else {
-            System.out.println("All Payment sadece bir sayfadan ibaretdir");
+            paymentManagementPage.closeButton.click();
         }
+    } else {
+        System.out.println("All Payment sadece bir sayfadan ibaretdir");
     }
+}
+
     @And("Eger ücüncü sayfa aktifse Admin ücüncü sayfaya gider ve ödeme detaylarını görüntüler")
     public void egerÜcüncüSayfaAktifseAdminÜcüncüSayfayaGiderVeÖdemeDetaylarınıGörüntüler() {
         ReusableMethods.visibleWait(paymentManagementPage.thirdPageButton, 10);
