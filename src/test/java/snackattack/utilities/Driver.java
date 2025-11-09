@@ -45,7 +45,7 @@ public class Driver {
        return driverPool.get();
    }
 
-   private Driver() {
+   public Driver() {
        // Singleton pattern
    }
 

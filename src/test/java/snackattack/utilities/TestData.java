@@ -74,4 +74,6 @@ public class TestData {
 
 
 
+    //Additon Category Dataları
+    public static Integer createdAdditonCategoryId;
 }
