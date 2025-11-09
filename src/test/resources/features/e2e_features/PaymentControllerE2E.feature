@@ -1,11 +1,18 @@
-@E2E_Payment_Chain
-@adminToken
-Feature: Yeni ödeme oluşturma, veritabanında doğrulama ve admin panelinde görüntüleme
+@paymentE2E
+Feature: Yeni ödeme olusturma, veritabanında dogrulama ve admin panelinde görüntüleme
 
 
-  Scenario: Yeni ödeme oluşturma ve doğrulama (API → DB → UI)
+        #  API ASAMASI
+  @userOrderToken
+  Scenario: Yeni ödeme olusturma (API)
+    Given "paymentscreatepayment" endpoint'ine baglanti kurulur
+    When Yeni ödeme olusturmak icin POST istegi gonderilir
+    Then Status code 200 oldugu dogrulanir
+    And Response body icinde olusturulan ödeme bilgisi dogrulanmali
 
-       # UI ASAMASI
+
+        #  UI ASAMASI
+  Scenario: Admin panelinde ödeme görüntüleme (UI)
     Given Sayfaya gidilir
     And Kullanici loginRegister'a tiklar
     And Kullanici "admin" olarak giriş yapar
@@ -14,16 +21,8 @@ Feature: Yeni ödeme oluşturma, veritabanında doğrulama ve admin panelinde g�
     And Sayfa kapatilir
 
 
-
-      #  DB ASAMASI
+        #  DB ASAMASI
+  Scenario: Veritabanında ödeme kaydının dogrulanması (DB)
     Given Veritabanı bağlantısı kurulur
     When Payments tablosundaki son ödeme bilgileri veritabaninda aranir
     Then DB’deki ödeme bilgileri UI’den dönen bilgilerle tutarlı olmalı
-
-
-
-      #  API ASAMASI
-    Given "PaymentsLastPaymentID" endpoint'ine baglanti kurulur
-    When Admin son ödeme bilgilerini almak icin GET istegi gonderir
-    Then Status code 200 oldugu dogrulanir
-    And DB’deki son ödeme bilgileri API’den dönen bilgilerle tutarlı olmalı

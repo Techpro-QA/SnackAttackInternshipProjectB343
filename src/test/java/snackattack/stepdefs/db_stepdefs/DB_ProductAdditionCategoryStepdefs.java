@@ -142,4 +142,28 @@ public class DB_ProductAdditionCategoryStepdefs {
         resultSet.next();
         Assert.assertNotEquals(TestData.expectedProductName,resultSet.getString("name"));
     }
+
+    @When("Olusturulan Category icin {string} sorgusu yapilir")
+    public void olusturulanCategoryIcinSorgusuYapilir(String query) {
+        resultSet = DBUtils.executeQuery(query +"'"+ TestData.expectedCategoryName+"'");
+        Assert.assertNotNull("Sorgu sonucu null döndü, bağlantı veya sorgu hatalı olabilir.", resultSet);
+
+
+    }
+
+    @Then("Olusturulan categorynin database uzerinde gorunurlugu dogrulanir")
+    public void olusturulanCategoryninDatabaseUzerindeGorunurluguDogrulanir() throws SQLException {
+       resultSet.next();
+       Assert.assertEquals(TestData.expectedCategoryName, resultSet.getString("name"));
+
+
+    }
+
+    @Then("Olusturulan categorynin database uzerinde silindigi dogrulanir")
+    public void olusturulanCategoryninDatabaseUzerindeSilindigiDogrulanir() throws SQLException {
+        resultSet.next();
+        Assert.assertNotEquals(TestData.expectedCategoryName, resultSet.getString("name"));
+
+
+    }
 }

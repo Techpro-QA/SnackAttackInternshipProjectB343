@@ -28,7 +28,7 @@ public class CategoryManagementStepdefs {
     @And("Admin Name textbox'ini {string} ile doldurur")
     public void adminNameTextboxIniIleDoldurur(String categoryName) {
         categoryManagementPage.createCategoryNameTextBox.sendKeys(categoryName);
-        TestData.expextedCategoryName= categoryName;
+        TestData.expectedCategoryName= categoryName;
 
     }
 
@@ -61,7 +61,7 @@ public class CategoryManagementStepdefs {
         }
 
 
-        Assert.assertTrue(actualNames.contains(TestData.expextedCategoryName));
+        Assert.assertTrue(actualNames.contains(TestData.expectedCategoryName));
 
 
 
@@ -76,7 +76,7 @@ public class CategoryManagementStepdefs {
     @When("Admin silinmesi hedeflenilen kategorinin action bolumundeki delete icon'ina tiklar")
     public void adminSilinmesiHedeflenilenKategorininActionBolumundekiDeleteIconInaTiklar() {
 
-        TestData.expextedCategoryName= categoryManagementPage.firstRowCategoryName.getText();
+        TestData.expectedCategoryName= categoryManagementPage.firstRowCategoryName.getText();
         categoryManagementPage.firstRowDeleteButton.click();
     }
 
@@ -87,7 +87,7 @@ public class CategoryManagementStepdefs {
 
     @Then("Kategorinin silindigi kontrol edilir")
     public void kategorininSilindigiKontrolEdilir() {
-        Assert.assertNotEquals(categoryManagementPage.firstRowCategoryName.getText(), TestData.expextedCategoryName);
+        Assert.assertNotEquals(categoryManagementPage.firstRowCategoryName.getText(), TestData.expectedCategoryName);
 
     }
 
@@ -105,7 +105,7 @@ public class CategoryManagementStepdefs {
 
     @Then("Kategorinin silinmedigi kontrol edilir")
     public void kategorininSilinmedigiKontrolEdilir() {
-        Assert.assertEquals(categoryManagementPage.firstRowCategoryName.getText(), TestData.expextedCategoryName);
+        Assert.assertEquals(categoryManagementPage.firstRowCategoryName.getText(), TestData.expectedCategoryName);
     }
 
     @Then("Aktif sutunun goruntulendigi kontrol edilir")

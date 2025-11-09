@@ -151,7 +151,7 @@ public class API_PaymentControllerStepdefs {
     @When("Yeni ödeme olusturmak icin POST istegi gonderilir")
     public void yeniÖdemeOlusturmakIcinPOSTIstegiGonderilir() {
 
-        PaymentCreatePaymentPojo payload = new PaymentCreatePaymentPojo(80, 40.00, "CREDIT_CARD", "2025-10-30T22:50:00.000Z", "USD", "STRIPE", "Test payment for order 77", "2025-10-30T22:50:00.000Z", "2025-10-30T22:50:00.000Z", null);
+        PaymentCreatePaymentPojo payload = new PaymentCreatePaymentPojo(80, 575757.00, "CREDIT_CARD", "2025-10-30T22:50:00.000Z", "USD", "STRIPE", "Test payment for order 77", "2025-10-30T22:50:00.000Z", "2025-10-30T22:50:00.000Z", null);
         response = given(spec)
                 .body(payload)
                 .when()
@@ -163,7 +163,7 @@ public class API_PaymentControllerStepdefs {
     @And("Response body icinde olusturulan ödeme bilgisi dogrulanmali")
     public void responseBodyIcindeOlusturulanÖdemeBilgisiDogrulanmali() {
 
-        PaymentCreatePostDataPojo postDataPojo = new PaymentCreatePostDataPojo(72, 80, 167, "2025-10-30T22:50:00", 40.00, "CREDIT_CARD", "5519b7f8-1db6-466f-b1c5-23b4f3f03893", "Ödeme başarısız", true, "USD", "STRIPE");
+        PaymentCreatePostDataPojo postDataPojo = new PaymentCreatePostDataPojo(72, 80, 167, "2025-10-30T22:50:00", 575757.00, "CREDIT_CARD", "5519b7f8-1db6-466f-b1c5-23b4f3f03893", "Ödeme başarısız", true, "USD", "STRIPE");
         PaymentCreatePostResponsePojo expectedData = new PaymentCreatePostResponsePojo(true, "Payment details retrieved successfully", postDataPojo, null, "OK", "2025-10-31T19:10:12.478739066");
 
         PaymentCreatePostResponsePojo actualData = response.as(PaymentCreatePostResponsePojo.class);
