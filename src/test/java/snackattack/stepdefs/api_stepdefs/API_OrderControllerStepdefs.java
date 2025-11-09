@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import snackattack.stepdefs.Hook;
+import snackattack.utilities.TestData;
 
 import static io.restassured.RestAssured.given;
 
@@ -20,6 +21,12 @@ public class API_OrderControllerStepdefs {
                     .spec(Hook.spec)
                     .when()
                     .get(endpoint);
+        }else if (method.equalsIgnoreCase("DELETE")) {
+            response = given()
+                    .spec(Hook.spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .delete(endpoint);
         }
 
         System.out.println("Endpoint: " + endpoint);
@@ -53,5 +60,10 @@ public class API_OrderControllerStepdefs {
         response.prettyPrint();
         String body = response.getBody().asString();
         Assert.assertNotNull(body);
+    }
+
+    @And("Order'in silindigi kontrol edilir")
+    public void orderInSilindigiKontrolEdilir() {
+        Assert.assertTrue(response.asString().contains("Order successfully canceled"));
     }
 }
