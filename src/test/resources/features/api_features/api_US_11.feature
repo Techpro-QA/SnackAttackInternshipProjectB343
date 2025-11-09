@@ -9,9 +9,6 @@
       Then Status code 200 olmalı
       And Response body içinde güncellenmiş kullanıcı bilgileri doğrulanmalı
 
-
-
-    Feature: Kullanıcı bilgilerini token ile görüntüleme
     @getUser
     @withToken
     Scenario: Kullanıcı geçerli token ile kendi bilgilerini görüntüleyebilmelidir
@@ -20,9 +17,6 @@
       Then Status code 200 olmalı
       And Response body içinde kullanıcı email, isim ve adres bilgileri doğrulanmalı
 
-
-
-      Feature: Kullanıcının sipariş geçmişini görüntüleme
       @getOrders
       @withToken
       Scenario: Kullanıcı geçerli token ile sipariş geçmişini görüntüleyebilmelidir

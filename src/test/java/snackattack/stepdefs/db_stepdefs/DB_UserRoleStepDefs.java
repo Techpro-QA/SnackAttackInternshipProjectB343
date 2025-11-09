@@ -19,17 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 public class DB_UserRoleStepDefs {
-    public static Connection connection;
-    public static Statement statement;
     public static ResultSet resultSet;
     boolean hasDuplicate = false;
-
-
-
-    @Given("Veritabanı bağlantısı kurulur")
-    public void veritabanıBağlantısıKurulur() {
-        DBUtils.createConnection();
-    }
 
     @When("Kullanici {string}tablosundaki tüm kayıtları sorgular")
     public void kullaniciTablosundakiTümKayıtlarıSorgular(String user_roles) {
@@ -57,10 +48,6 @@ public class DB_UserRoleStepDefs {
         Assert.assertEquals("Role tablosu beklenen verileri içermiyor!", expectedData, actualData);
     }
 
-
-    @And("Bağlantı kapatılır")
-    public void bağlantıKapatılır() {
-    }
 
 
 
@@ -101,11 +88,6 @@ public class DB_UserRoleStepDefs {
     public void herRole_typeYalnızcaBirKezBulunmalıdır() {
         Assert.assertFalse("Yinelenen role_type bulundu!", hasDuplicate);
 
-    }
-
-    @And("Baglanti kapatilir")
-    public void baglantiKapatilir() {
-        DBUtils.closeConnection();
     }
 
 

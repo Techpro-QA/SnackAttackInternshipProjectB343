@@ -12,14 +12,14 @@
         | 2  | MEMBER    | Customers  |
         | 3  | EMPLOYEE  | Employees  |
         | 4  | ANONYMOUS | Anonymous  |
-       And Bağlantı kapatılır
+       And Baglanti kapatilir
 
     Scenario: Role tablosunda olmayan role_type sorgulandığında kayıt bulunmamalıdır
       When Kullanıcı kayıtlı olmayan "MANAGER" role_type değerine sahip kaydı sorgular
       Then Herhangi bir kayıt dönmemelidir
-      And Bağlantı kapatılır
+      And Baglanti kapatilir
 
     Scenario: Role tablosunda yinelenen (duplicate) role_type olmamalıdır
       When Kullanıcı role_type değerlerini sorgular
       Then Her role_type yalnızca bir kez bulunmalıdır
-      And Bağlantı kapatılır
+      And Baglanti kapatilir
