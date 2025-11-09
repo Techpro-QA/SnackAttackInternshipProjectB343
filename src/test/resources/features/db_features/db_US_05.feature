@@ -6,4 +6,6 @@ Feature: Carts tablosundaki veriler dogrulanabilmeli
 
   @US_Carts_TC01
   Scenario: UI'daki cart bilgileri veritabanındaki kayıtlarla aynı olmalıdır
-    Then UI'daki ilk cart bilgileri veritabanındaki kayıtla aynı olmalıdır
+
+    When Carts tablosundaki veriler sorgulanir
+    Then User id'leri "6" ve "10" olan cart bilgileri dogrulanir
