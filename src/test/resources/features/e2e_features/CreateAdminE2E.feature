@@ -19,6 +19,12 @@ Feature:
     Then Yeni Admin kaydının başarılı olduğu dogrulanir
     And Sayfa kapatilir
 
+  @adminToken
+  Scenario: Api ürün güncelleme kontrol
+    When Kullanıcı "ADMIN GET" isteğini "/user/getUserById/" endpointine gönderir
+    Then Status kodu 200 olmalı
+    And Adminin olusturuldugu api uzerinde kontrol edilir
+
   Scenario: Database ürün güncelleme kontrol
     Given Veritabanı bağlantısı kurulur
     When Olusturulan admin icin "select * from snack_attack_db.users where user_name=" sorgusu gonderilir

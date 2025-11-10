@@ -130,6 +130,7 @@ public class AdminManagementStepdef {
     @Then("Yeni Admin kaydının başarılı olduğu dogrulanir")
     public void adminKaydınınBaşarılıOlduğuDogrulanir() {
 
+        TestData.createdAdminId = adminManagementPage.firstRowAdminId.getText();
 
         Assert.assertTrue(adminManagementPage.registerSuccesfulMessageText.isDisplayed());
         String actualTitle = adminManagementPage.registerSuccesfulMessageText.getText();
