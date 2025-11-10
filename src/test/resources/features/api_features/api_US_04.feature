@@ -84,7 +84,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   @adminToken
 
   Scenario:Bir Odemenin iade edilebilme bilgisini al
-    Given "PaymentIsRefundable" endpoint'ine baglanti kurulur
+    Given "paymentIsRefundable" endpoint'ine baglanti kurulur
     When Refundable istegi GET istegi ile alinir
     And Status code 200 oldugu dogrulanir
     And Response body icinde iade islemi bilgisi dogrulanmali
@@ -93,7 +93,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   @Payment_UserPayments
   @adminToken
   Scenario: Kullanıcının ödemelerini listele
-    Given "PaymentsUserById" endpoint'ine baglanti kurulur
+    Given "paymentsUserById" endpoint'ine baglanti kurulur
     When Odemeler GET istegi ile alinir
     Then Status code 200 oldugu dogrulanir
     And Response body icinde "message" "Payments retrieved successfully" olmali
@@ -104,7 +104,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   @adminToken
 
   Scenario: Belirli siparişin ödemelerini listele
-    Given "PaymentsByOrderId" endpoint'ine baglanti kurulur
+    Given "paymentsByOrderId" endpoint'ine baglanti kurulur
     When Siparis ödemeleri GET istegi ile alinir
     Then Status code 200 oldugu dogrulanir
     And Response body icinde "message" "Payments retrieved successfully" olmali
@@ -118,7 +118,7 @@ Feature: Payment Controller API'sindeki temel islemlerin sırasıyla test edilme
   @adminToken
 
   Scenario: Kullanıcı ödemeleri sayfa bazlı listeleme testi
-    Given "ListUserPayments" endpoint'ine baglanti kurulur
+    Given "listUserPayments" endpoint'ine baglanti kurulur
     When Kullanici ödemeleri sayfalari  GET istegi ile alinir
     Then Status code 200 oldugu dogrulanir
     And Response body icinde basarili mesaj dogrulanmali
