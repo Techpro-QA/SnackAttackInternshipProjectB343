@@ -1,3 +1,4 @@
+@AdminCreate_E2E
 Feature: New Admin E2E testi
 
   Scenario: Gecerli datalar ile Yeni Admin kaydı yapabilmelidir.
