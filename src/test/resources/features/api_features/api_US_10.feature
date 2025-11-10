@@ -34,8 +34,6 @@
       Then Status code 200 olmali
       And Response body icinde private admin token bilgisi dogrulanmali
 
-
-
     @patchPassword
     @privateAdminToken
     Scenario: Kullanici password bilgilerini guncelleyebilmeli

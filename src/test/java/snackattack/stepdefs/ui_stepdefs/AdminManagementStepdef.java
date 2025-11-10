@@ -26,9 +26,6 @@ public class AdminManagementStepdef {
         adminManagementPage.adminManagementNewButton.click();
     }
 
-    @Then("Admin register panel'ine yönlenmis olmali")
-    public void adminRegisterPanelIneYönlenmisOlmali() {
-    }
 
     @And("Admin First Name alanina gecerli data girer")
     public void adminFirstNameAlaninaGecerliDataGirer() {
@@ -285,5 +282,6 @@ public class AdminManagementStepdef {
         ReusableMethods.click(adminManagementPage.tableSecondPageButton);
         ReusableMethods.waitForSecond(2);
     }
+
 }
 
