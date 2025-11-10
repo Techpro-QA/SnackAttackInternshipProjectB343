@@ -2,8 +2,7 @@
 Feature: User sayfadan mesaj gonderebilmeli
 
   Background:
-
-  Given Sayfaya gidilir
+    Given Sayfaya gidilir
     And  Kullanici Contact'a tiklar
 
   @US_20_TC01

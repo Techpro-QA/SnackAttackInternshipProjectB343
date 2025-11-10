@@ -19,8 +19,8 @@ public class ProductRequestPojo implements Serializable {
     private String imgBase64;
     private int orderQuantity;
     private boolean popular;
-    private List<CategoriesPojo> categories;
-    private List<AdditionsCategoryPojo> additionsCategory;
+    private List<ProductCategoriesPojo> categories;
+    private List<ProductAdditionsCategoryPojo> additionsCategory;
 
     public ProductRequestPojo() {}
 
@@ -61,11 +61,11 @@ public class ProductRequestPojo implements Serializable {
     public boolean isPopular() { return popular; }
     public void setPopular(boolean popular) { this.popular = popular; }
 
-    public List<CategoriesPojo> getCategories() { return categories; }
-    public void setCategories(List<CategoriesPojo> categories) { this.categories = categories; }
+    public List<ProductCategoriesPojo> getCategories() { return categories; }
+    public void setCategories(List<ProductCategoriesPojo> categories) { this.categories = categories; }
 
-    public List<AdditionsCategoryPojo> getAdditionsCategory() { return additionsCategory; }
-    public void setAdditionsCategory(List<AdditionsCategoryPojo> additionsCategory) { this.additionsCategory = additionsCategory; }
+    public List<ProductAdditionsCategoryPojo> getAdditionsCategory() { return additionsCategory; }
+    public void setAdditionsCategory(List<ProductAdditionsCategoryPojo> additionsCategory) { this.additionsCategory = additionsCategory; }
 
     @Override
     public String toString() {

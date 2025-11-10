@@ -29,14 +29,12 @@ public class ProductManagementStepdefs {
             productManagementPage.updatePIZZACheckbox,
             productManagementPage.updateIceceklerCheckbox,
             productManagementPage.updateAtistirmaliklarCheckbox,
-            productManagementPage.updatePİZZACheckbox,
             productManagementPage.updateTATLILARCheckbox,
-            productManagementPage.updatepizzaCheckbox,
             productManagementPage.updateMEZELERCheckbox,
             productManagementPage.updateSALATALARCheckbox,
             productManagementPage.updateDenemeCheckbox,
             productManagementPage.updateDONERCheckbox,
-            productManagementPage.updateHAMBURGERCheckbox
+            productManagementPage.updateStringCheckbox
     );
 
     List<WebElement> tumEkKategoriCheckboxlari = Arrays.asList(
@@ -102,6 +100,8 @@ public class ProductManagementStepdefs {
     @And("Admin güncelleyeceği urunune tiklar")
     public void adminGüncelleyeceğiUrununeTiklar() {
 
+        TestData.expectedProductId = productManagementPage.tableFirstProductID.getText();
+
         WaitUtils.waitForVisibility(productManagementPage.firstProductRow,10);
         if(productManagementPage.firstProductRow.isDisplayed()) {
             productManagementPage.firstProductRow.click();
@@ -126,29 +126,35 @@ public class ProductManagementStepdefs {
     public void adminAçıklamaTextboxIniIleDoldurur(String description) {
         productManagementPage.updateDescriptionTextbox.clear();
         productManagementPage.updateDescriptionTextbox.sendKeys(description);
+        TestData.expectedDescriptionText = description;
     }
 
     @And("Admin İçerik Textbox'ini {string} ile doldurur")
     public void adminİçerikTextboxIniIleDoldurur(String contents) {
         productManagementPage.updateContentsTextbox.clear();
         productManagementPage.updateContentsTextbox.sendKeys(contents);
+        TestData.expectedContentsText = contents;
     }
 
     @And("Admin Fiyat Textbox'ini {string} ile doldurur")
     public void adminFiyatTextboxIniIleDoldurur(String price) {
         productManagementPage.updatePriceTextbox.clear();
         productManagementPage.updatePriceTextbox.sendKeys(price);
+        TestData.expectedPriceText = price;
     }
 
     @And("Admin İndirim Textbox'ini {string} ile doldurur")
     public void adminİndirimTextboxIniIleDoldurur(String discount) {
         productManagementPage.updateDiscountTextbox.clear();
         productManagementPage.updateDiscountTextbox.sendKeys(discount);
+        TestData.expectedDiscountText = discount;
         WaitUtils.waitFor(2);
     }
 
     @And("Admin {string} kategorisini secer")
     public void adminKategorisiniSecer(String kategorilerCheckboxName) {
+
+        TestData.expectedCategoryText = kategorilerCheckboxName;
 
         for (WebElement checkbox : tumUpdateCheckboxlari) {
             if (checkbox.isSelected()) {
@@ -172,19 +178,14 @@ public class ProductManagementStepdefs {
                     ReusableMethods.click(productManagementPage.updateAtistirmaliklarCheckbox);
                 }
                 break;
-            case "PİZZA":
-                if (!productManagementPage.updatePİZZACheckbox.isSelected()){
-                    ReusableMethods.click(productManagementPage.updatePİZZACheckbox);
+            case "string":
+                if (!productManagementPage.updateStringCheckbox.isSelected()){
+                    ReusableMethods.click(productManagementPage.updateStringCheckbox);
                 }
                 break;
             case "TATLILAR":
                 if (!productManagementPage.updateTATLILARCheckbox.isSelected()){
                     ReusableMethods.click(productManagementPage.updateTATLILARCheckbox);
-                }
-                break;
-            case "pizza":
-                if (!productManagementPage.updatepizzaCheckbox.isSelected()){
-                    ReusableMethods.click(productManagementPage.updatepizzaCheckbox);
                 }
                 break;
             case "MEZELER":
@@ -207,11 +208,6 @@ public class ProductManagementStepdefs {
                     ReusableMethods.click(productManagementPage.updateDONERCheckbox);
                 }
                 break;
-            case "HAMBURGER":
-                if (!productManagementPage.updateHAMBURGERCheckbox.isSelected()){
-                    ReusableMethods.click(productManagementPage.updateHAMBURGERCheckbox);
-                }
-                break;
         }
 
     }
@@ -219,6 +215,7 @@ public class ProductManagementStepdefs {
     @And("Admin {string} Ek Kategorisini secer")
     public void adminEkKategorisiniSecer(String ekKategorilerCheckboxName) {
 
+        TestData.expectedAdditionCategoryText = ekKategorilerCheckboxName;
 
         for (WebElement checkbox : tumEkKategoriCheckboxlari) {
             if (checkbox.isSelected()) {
@@ -305,8 +302,7 @@ public class ProductManagementStepdefs {
 
     @And("Admin submit butonuna scroll yapar")
     public void adminSubmitButonunaScrollYapar() {
-        JSUtils.JSscrollIntoView(productManagementPage.moveToButton);
-        WaitUtils.waitFor(4);
+        ReusableMethods.scrollEnd();
     }
 
     @Then("Gecersiz ürün adiyla arama sonucu bulunamamali")
@@ -438,10 +434,34 @@ public class ProductManagementStepdefs {
         }
     }
 
+    @Then("{string} ve {string} secilmeden ürün eklenememeli")
+    public void veSecilmedenÜrünEklenememeli(String arg0, String arg1) {
+
+        WaitUtils.waitFor(2);
+
+        try {
+            Alert alert = Driver.getDriver().switchTo().alert();
+            String alertText = alert.getText();
+            System.out.println("Gelen Alert Mesajı: " + alertText);
+
+            // Eğer başarı mesajı geldiyse, bu bir bug!
+            if (alertText.contains("başarıyla oluşturuldu")) {
+                alert.accept();
+                Assert.fail("BUG: Available ve Active seçmeden ürün eklendi!");
+            } else {
+                alert.accept(); // Diğer alert'leri kapat
+            }
+
+        } catch (NoAlertPresentException e) {
+            System.out.println("Alert çıkmadı, bu doğru davranış.");
+        }
+    }
+
 
     @And("Admin silmek istedigi urunun Actions kismindaki çop kutusu\\(delete) icon'una tiklar")
     public void adminSilmekIstedigiUrununActionsKismindakiÇopKutusuDeleteIconUnaTiklar() {
 
+        TestData.expectedProductId = productManagementPage.tableFirstProductID.getText();
         TestData.expectedProductName = productManagementPage.firstProductName.getText();
         ReusableMethods.click(productManagementPage.productActionsDeleteButton);
         WaitUtils.waitFor(2);

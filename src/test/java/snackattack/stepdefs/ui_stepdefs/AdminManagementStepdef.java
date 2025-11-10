@@ -26,9 +26,6 @@ public class AdminManagementStepdef {
         adminManagementPage.adminManagementNewButton.click();
     }
 
-    @Then("Admin register panel'ine yönlenmis olmali")
-    public void adminRegisterPanelIneYönlenmisOlmali() {
-    }
 
     @And("Admin First Name alanina gecerli data girer")
     public void adminFirstNameAlaninaGecerliDataGirer() {
@@ -133,6 +130,7 @@ public class AdminManagementStepdef {
     @Then("Yeni Admin kaydının başarılı olduğu dogrulanir")
     public void adminKaydınınBaşarılıOlduğuDogrulanir() {
 
+        TestData.createdAdminId = adminManagementPage.firstRowAdminId.getText();
 
         Assert.assertTrue(adminManagementPage.registerSuccesfulMessageText.isDisplayed());
         String actualTitle = adminManagementPage.registerSuccesfulMessageText.getText();
@@ -285,5 +283,6 @@ public class AdminManagementStepdef {
         ReusableMethods.click(adminManagementPage.tableSecondPageButton);
         ReusableMethods.waitForSecond(2);
     }
+
 }
 

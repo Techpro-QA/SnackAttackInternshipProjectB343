@@ -102,4 +102,21 @@ public class Hook {
                 .build();
 
     }
+
+    // 🔸 Guest token gerektiren testler
+    @Before("@guestToken")
+    public void setUpGuestToken() {
+        spec = new RequestSpecBuilder()
+                .setBaseUri(ConfigReader.getProperty("snackUrlApi"))
+                .setContentType(ContentType.JSON)
+                .build();
+
+        System.out.println("✅ Guest token ile test başlatıldı (Token header istekte gönderilecek).");
+    }
+
+    @After("@closePage")
+    public void tearDownForPaymentScenario() {
+        Driver.closeDriver();
+    }
+
 }

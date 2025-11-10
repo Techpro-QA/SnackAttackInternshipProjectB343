@@ -1,19 +1,13 @@
 package snackattack.stepdefs.ui_stepdefs;
-
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import snackattack.pages.ContactPage;
-import snackattack.pages.HomePage;
 import snackattack.utilities.*;
 
-import static snackattack.utilities.TestData.message;
 
 public class ContactPageStepdefs {
 
@@ -21,33 +15,6 @@ public class ContactPageStepdefs {
     Faker faker = new Faker();
 
 
-   //@And("Acilan pencerede Name icin gecerli bir data girilir")
-   //public void acilanPenceredeNameIcinGecerliBirDataGirilir() {
-
-   //    contactPage.nameTextBox.sendKeys(ConfigReader.getProperty("memoryFirstName"));
-   //}
-
-   //@And("Email  icin gecerli bir data girilir")
-   //public void emailIcinGecerliBirDataGirilir() {
-
-   //    contactPage.emailTextBox.sendKeys(ConfigReader.getProperty("memoryEmail"));
-   //}
-   //
-   //@And("Subject alani {string} doldurulur")
-   //public void subjectAlaniDoldurulur(String subject) {
-
-   //    String subjectText = subject.equals("random") ? faker.lorem().sentence(6) : subject;
-   //    contactPage.subjectTextBox.sendKeys(subjectText);
-
-
-   //}
-   //
-   //@And("Message alani en az {int} karakter ile {string} doldurulur.")
-   //public void messageAlaniEnAzKarakterIleDoldurulur(int number, String message) {
-
-   //    String messageText = message.equals("random") ? faker.lorem().sentence(12) : message;
-   //    contactPage.messageTextBox.sendKeys(messageText);
-   //}
 
     @And("Acilan pencerede Name icin gecerli bir data girilir")
     public void acilanPenceredeNameIcinGecerliBirDataGirilir() {
@@ -71,23 +38,12 @@ public class ContactPageStepdefs {
         contactPage.subjectTextBox.sendKeys(TestData.subject);
     }
 
-  //  @And("Message alani en az {int} karakter ile {string} doldurulur")
-  //  public void messageAlaniEnAzKarakterIleDoldurulur(int number, String message) {
-  //      TestData.message = message.equalsIgnoreCase("random")
-  //              ? faker.lorem().sentence(8)
-  //              : message;
-  //      contactPage.messageTextBox.sendKeys(TestData.message);
-  //  }
-
 
     @And("Message alani en az {int} karakter ile {string} doldurulur.")
     public void messageAlaniEnAzKarakterIleDoldurulur(int number, String message) {
-       // TestData.message = message.equalsIgnoreCase("random")? faker.lorem().sentence(8)  : message;
-       // contactPage.messageTextBox.sendKeys(TestData.message);
 
         TestData.message = message.equalsIgnoreCase("random") ? faker.lorem().sentence(8) : message;
         contactPage.messageTextBox.sendKeys(TestData.message);
-
 
     }
 

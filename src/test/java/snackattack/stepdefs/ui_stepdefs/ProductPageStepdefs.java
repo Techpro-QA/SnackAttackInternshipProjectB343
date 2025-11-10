@@ -1,17 +1,17 @@
 package snackattack.stepdefs.ui_stepdefs;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Assert;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import snackattack.pages.ProductsPage;
-import snackattack.utilities.ActionsUtils;
-import snackattack.utilities.Driver;
+import snackattack.pages.userpanelpages.MyCartPage;
+import snackattack.utilities.*;
 import snackattack.pages.HomePage;
 
 import java.time.Duration;
@@ -21,8 +21,11 @@ public class ProductPageStepdefs {
 
     HomePage homePage = new HomePage();
     ProductsPage productsPage = new ProductsPage();
+    MyCartPage myCartPage = new MyCartPage();
     WebDriver driver = Driver.getDriver();
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
 
     // ======================
     // TC_01
@@ -75,7 +78,10 @@ public class ProductPageStepdefs {
 
     // ===== Helper'lar =====
     private void goToBottom() {
-        try { ActionsUtils.scrollEnd(); } catch (Exception ignore) {} // :contentReference[oaicite:1]{index=1}
+        try {
+            ActionsUtils.scrollEnd();
+        } catch (Exception ignore) {
+        } // :contentReference[oaicite:1]{index=1}
     }
 
     private void clickNextSafely() {
@@ -148,5 +154,145 @@ public class ProductPageStepdefs {
                     name != null && name.toLowerCase().contains(q)
             );
         }
+    }
+
+
+    @And("Kullanici sol ustteki ilk urune tiklar")
+    public void kullaniciIlkUruneTiklar() {
+        String text1 = productsPage.firstProduct.getText();
+        TestData.expectedProductName = text1;
+
+        productsPage.firstProduct.click();
+    }
+
+    @And("Kullanici Add to Cart'a tiklar")
+    public void kullaniciAddToCartATiklar() {
+        homePage.addToCart.click();
+    }
+
+    @Given("Sag ust kosedeki sepet ikonuna tiklanir")
+    public void solÜstKöşedekiSepetIkonunaTiklanir() {
+        String text1 = productsPage.firstProduct.getText();
+        TestData.expectedProductName = text1;
+        WaitUtils.waitForVisibility(homePage.cartIkon, 5);
+        WaitUtils.waitForClickablility(homePage.cartIkon, 5);
+        homePage.cartIkon.click();
+    }
+
+    @Then("Kullanicinin seçtigi urunun sepetindeki urun ile aynı urun oldugu dogrulanir")
+    public void kullanicininSeçtigiUrununSepetindekiUrunIleAynıUrunOlduguDogrulanir() {
+
+        String text2 = myCartPage.selectedProduct.getText();
+        String newText2 = text2.split(" -")[0].trim();//alınan ürün bilgisi sadece ürün adı kalacak şekilde kesilir
+        System.out.println("newText2 = " + newText2);
+        System.out.println("TestData.expectedProductName = " + TestData.expectedProductName);
+        Assert.assertTrue(TestData.expectedProductName.contains(newText2));
+
+
+    }
+
+    @Given("Kullanici sag ustteki ismine tiklar")
+    public void kullaniciSagUsttekiIsmineTiklar() {
+
+        WaitUtils.waitForClickablility(myCartPage.userIcon, 5);
+        myCartPage.userIcon.click();
+    }
+
+    @When("Kullanici dropdown menüdeki dashboard a tiklar")
+    public void kullaniciDropdownMenüdekiDashboardATiklar() {
+        WaitUtils.waitForVisibility(myCartPage.dashboard, 10);
+        WaitUtils.waitForClickablility(myCartPage.dashboard, 10);
+        myCartPage.dashboard.click();
+    }
+
+    @Then("Kullanicinin seçtigi urunun sepetindeki urun ile aynı urun oldugu ikinci yol ile dogrulanir")
+    public void kullanicininSeçtigiUrununSepetindekiUrunIleAynıUrunOlduguIkinciYolIleDogrulanir() {
+
+        String text2 = myCartPage.selectedProductSecondWay.getText();
+        System.out.println(text2);
+        System.out.println("TestData.expectedProductName = " + TestData.expectedProductName);
+        Assert.assertTrue(TestData.expectedProductName.contains(text2));
+
+    }
+
+    @And("Kullanici Clear Cart a tiklar")
+    public void kullaniciClearCartATiklar() {
+        myCartPage.clearCartButton.click();
+    }
+
+    @And("Kullanici acılan pop up ta Clear Cart a tiklar")
+    public void kullaniciAcılanPopUpTaClearCartATiklar() {
+        WaitUtils.waitForClickablility(myCartPage.confirmClearCartButton, 5);
+        js.executeScript("arguments[0].click();", myCartPage.confirmClearCartButton);
+    }
+
+    @And("Cart Management Paneldeki sag ust kosedeki sepet ikonuna tiklanir")
+    public void cartManagementPaneldekiSagUstKosedekiSepetIkonunaTiklanir() {
+        WaitUtils.waitForClickablility(myCartPage.cartManagementPanelCartIkon, 3);
+        myCartPage.cartManagementPanelCartIkon.click();
+    }
+
+    @Then("Sepetin bos oldugu dogrulanır")
+    public void sepetinBosOlduguDogrulanır() {
+        String actualText = myCartPage.confirmClearSuccessful.getText();
+        String expectedText = "Your cart is empty.";
+        Assert.assertEquals(expectedText, actualText);
+    }
+
+
+    @And("Kullanici artı sembolune tıklar")
+    public void kullaniciArtıSemboluneTıklar() {
+        myCartPage.plusIkon.click();
+    }
+
+    @Then("Sepetteki urun miktarının arttıgı oldugu dogrulanır")
+    public void sepettekiUrunMiktarınınIkiOlduguDogrulanır() {
+        WaitUtils.waitForVisibility(myCartPage.quantityUpdatedConfirmation, 5);
+        String actualText = myCartPage.quantityUpdatedConfirmation.getText();
+        System.out.println(actualText);
+        String expectedText = "Item added successfully.";
+        Assert.assertEquals(expectedText, actualText);
+    }
+
+    @And("Kullanici eksi sembolune tiklar")
+    public void kullaniciEksiSemboluneTiklar() {
+        myCartPage.minusIkon.click();
+    }
+
+    @Then("Sepetteki urun miktarının azaldıgı oldugu dogrulanır")
+    public void sepettekiUrunMiktarınınAzaldıgıOlduguDogrulanır() {
+        WaitUtils.waitForVisibility(myCartPage.quantityUpdatedConfirmation, 5);
+        String actualText = myCartPage.quantityUpdatedConfirmation.getText();
+        System.out.println(actualText);
+        String expectedText = "Quantity updated.";
+        Assert.assertEquals(expectedText, actualText);
+    }
+
+    @Then("Kullanici Checkout a tiklar")
+    public void kullaniciCheckoutATiklar() {
+        myCartPage.checkoutButton.click();
+    }
+
+    @And("Kullanici Create Order a tiklar")
+    public void kullaniciCreateOrderATiklar() {
+        myCartPage.createOrderButton.click();
+    }
+
+    @And("Acılan pop up tan CREDIT_CARD secilerek Ödeme Yap a tiklanır")
+    public void acılanPopUpTanCREDIT_CARDSecilerekÖdemeYapATiklanır() {
+        ReusableMethods.ddmVisibleText(myCartPage.ddmKartlaOdeme,"CREDIT_CARD");
+        myCartPage.odemeYap.click();
+    }
+
+    @And("Acılan odeme sayfasına kredi kartı bilgileri girilir")
+    public void ödemeSayfasınaKrediKartıBilgileriGirilir() {
+       Assert.assertFalse(myCartPage.creditCardTextBox.isEmpty());
+    }
+
+
+    @And("Acılan pop up tan Cash secilerek Ödeme Yap a tiklanır")
+    public void acılanPopUpTanCashSecilerekÖdemeYapATiklanır() {
+        ReusableMethods.ddmVisibleText(myCartPage.ddmKartlaOdeme,"CASH");
+        myCartPage.odemeYap.click();
     }
 }
