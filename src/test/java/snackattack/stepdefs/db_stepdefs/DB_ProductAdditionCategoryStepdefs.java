@@ -176,4 +176,53 @@ public class DB_ProductAdditionCategoryStepdefs {
         resultSet.next();
         Assert.assertEquals(TestData.userName,resultSet.getString("user_name"));
     }
+
+    @Then("Order_item_additions tablosundaki veriler doğrulanır")
+    public void order_item_additionsTablosundakiVerilerDoğrulanır() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(1,resultSet.getInt("addition_id"));
+        Assert.assertEquals(31,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(1,resultSet.getInt("addition_id"));
+        Assert.assertEquals(294,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(1,resultSet.getInt("addition_id"));
+        Assert.assertEquals(69,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(1,resultSet.getInt("addition_id"));
+        Assert.assertEquals(13,resultSet.getInt("order_item_id"));
+    }
+
+    @Then("Order_item_additions tablosundaki farkli id'ye sahip veriler doğrulanır")
+    public void order_item_additionsTablosundakiFarkliIdYeSahipVerilerDoğrulanır() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(3,resultSet.getInt("addition_id"));
+        Assert.assertEquals(32,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(3,resultSet.getInt("addition_id"));
+        Assert.assertEquals(35,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(3,resultSet.getInt("addition_id"));
+        Assert.assertEquals(70,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(3,resultSet.getInt("addition_id"));
+        Assert.assertEquals(73,resultSet.getInt("order_item_id"));
+
+    }
+
+    @Then("Order_item_additions tablosundaki order_item_id verileri doğrulanır")
+    public void order_item_additionsTablosundakiOrder_item_idVerileriDoğrulanır() throws SQLException {
+        resultSet.next();
+        Assert.assertEquals(3,resultSet.getInt("addition_id"));
+        Assert.assertEquals(86,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(1,resultSet.getInt("addition_id"));
+        Assert.assertEquals(86,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(5,resultSet.getInt("addition_id"));
+        Assert.assertEquals(86,resultSet.getInt("order_item_id"));
+        resultSet.next();
+        Assert.assertEquals(2,resultSet.getInt("addition_id"));
+        Assert.assertEquals(86,resultSet.getInt("order_item_id"));
+    }
 }

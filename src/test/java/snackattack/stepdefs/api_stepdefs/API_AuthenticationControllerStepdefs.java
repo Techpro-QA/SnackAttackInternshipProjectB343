@@ -66,7 +66,18 @@ public class API_AuthenticationControllerStepdefs {
             case "paymentscreatepayment":
                 spec.pathParams("first", "api", "second", "payments", "third", "createPayment");
                 break;
-
+            case "paymentIsRefundable":
+                spec.pathParams("first", "api", "second", "payments", "third", 3,"fourth","isRefundable");
+                break;
+            case "paymentsUserById":
+                spec.pathParams("first", "api", "second", "payments", "third", "user" , "fourth" ,3 );
+                break;
+            case "paymentsByOrderId":
+                spec.pathParams("first", "api", "second", "payments", "third", "orders",3);
+                break;
+            case "listUserPayments":
+                spec.pathParams("first", "api", "second", "payments", "third", "listUserPayments");
+                break;
             case "paymentstransactionreference":
                 spec.pathParams("first", "api", "second", "payments",
                         "third", 57, "fourth", "transactionReference");
