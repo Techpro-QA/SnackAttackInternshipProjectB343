@@ -27,3 +27,4 @@ Feature: Ürün seçme ve sepete ekleme Testi
     Then Sepetteki ürünler doğrulanır
     And Kullanici Craete Order sekmesine tiklar
     And Odeme sayfasına yönlendirildiği doğrulanır
+    And Sayfa kapatilir
