@@ -1,6 +1,6 @@
-Feature:
+Feature: New Admin E2E testi
 
-  Scenario: TC_01-Gecerli datalar ile Yeni Admin kaydı yapabilmelidir.
+  Scenario: Gecerli datalar ile Yeni Admin kaydı yapabilmelidir.
     Given Sayfaya gidilir
     When Kullanici loginRegister'a tiklar
     And Kullanici "admin" olarak giriş yapar
@@ -20,12 +20,12 @@ Feature:
     And Sayfa kapatilir
 
   @adminToken
-  Scenario: Api ürün güncelleme kontrol
+  Scenario: Api admin olusturulma kontrol
     When Kullanıcı "ADMIN GET" isteğini "/user/getUserById/" endpointine gönderir
     Then Status kodu 200 olmalı
     And Adminin olusturuldugu api uzerinde kontrol edilir
 
-  Scenario: Database ürün güncelleme kontrol
+  Scenario: Database admin olusturulma kontrol
     Given Veritabanı bağlantısı kurulur
     When Olusturulan admin icin "select * from snack_attack_db.users where user_name=" sorgusu gonderilir
     Then adminin olusturuldugu database'de kontrol edilir
