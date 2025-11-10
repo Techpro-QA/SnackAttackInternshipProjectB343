@@ -76,6 +76,12 @@ public class API_ProductControllerStepdefs {
                     .contentType(ContentType.JSON)
                     .when()
                     .get(endpoint + TestData.expectedProductId);
+        }else if (method.equalsIgnoreCase("ADMIN GET")) {
+            response = given()
+                    .spec(Hook.spec)
+                    .contentType(ContentType.JSON)
+                    .when()
+                    .get(endpoint + TestData.createdAdminId);
         }
 
         System.out.println("Endpoint: " + endpoint);
@@ -253,4 +259,15 @@ public class API_ProductControllerStepdefs {
     }
 
 
+    @And("Adminin olusturuldugu api uzerinde kontrol edilir")
+    public void admininOlusturulduguApiUzerindeKontrolEdilir() {
+        AdminGetResponsePojo actualData = response.as(AdminGetResponsePojo.class);
+
+        Assert.assertEquals(TestData.firstName,actualData.getObject().getFirstName());
+        Assert.assertEquals(TestData.lastName,actualData.getObject().getLastName());
+        Assert.assertEquals(TestData.email,actualData.getObject().getEmail());
+        Assert.assertEquals(TestData.address,actualData.getObject().getAddress());
+
+
+    }
 }

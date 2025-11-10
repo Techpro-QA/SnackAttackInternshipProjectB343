@@ -30,6 +30,7 @@ public class TestData {
     public static String address;
     public static String phoneNumber;
     public static String newPassword;
+    public static String createdAdminId;
 
     //private admin verileri
     public static String adminEmail;
