@@ -1,4 +1,8 @@
 package snackattack.utilities;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class TestData {
     // URL verisi
     public static final String SPEEDYLI_URL = "https://www.speedyli.com/";
@@ -33,7 +37,17 @@ public class TestData {
 
 
     //Product verileri
+    public static String expectedProductId;
     public static String expectedProductName;
+    public static String expectedDescriptionText;
+    public static String expectedContentsText;
+    public static String expectedPriceText;
+    public static String expectedDiscountText;
+    public static String expectedCategoryText;
+    public static String expectedAdditionCategoryText;
+    public static Integer createdProductId;
+    public static Map<String, Object> putPayload;
+
 
     //Payment verileri
     public static String expectedFirstRowPaymentId;
@@ -44,7 +58,8 @@ public class TestData {
 
 
     //Category Management verileri
-    public static String expextedCategoryName;
+    public static String expectedCategoryName;
+    public static Integer createdCategoryId;
 
     //Admin Management verileri
     public static String expectedAdminId;
@@ -55,5 +70,10 @@ public class TestData {
     //Contact Message verileri
     public static String subject;
     public static String message;
+    public static String createdMessageId;
 
+
+
+    //Additon Category Dataları
+    public static Integer createdAdditonCategoryId;
 }
