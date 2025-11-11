@@ -16,7 +16,7 @@ public class API_SseServiceStepdefs {
         token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0djVAdGVzdHY1LmNvbSIsImlhdCI6MTc2MjQ2NDMyMywiZXhwIjoxNzcxMTA0MzIzfQ.Dzl8El1AOrWIRPLW_aNsrnZupj55AkCKCySZUDdCOQY73-kc3-krKpC2qNLWmlM3mXLMBr2pbRM-rgqgg73L5g";
     }
 
-    @When("/sse-service/subscribe endpoint'ine GET isteği gönderirim")
+    @When("sse-service subscribe endpoint'ine GET isteği gönderirim")
     public void sse_service_subscribe_endpoint_ine_get_istegi_gonderirim() {
         response = given()
                 .header("Authorization", "Bearer " + token)
@@ -31,7 +31,7 @@ public class API_SseServiceStepdefs {
         response.then().statusCode(anyOf(equalTo(200), equalTo(204)));
     }
 
-    @Then("herhangi bir 401 Unauthorized hatası dönmemelidir")
+    @Then("herhangi bir Unauthorized hatası dönmemelidir")
     public void herhangi_bir_unauthorized_hatasi_donmemelidir() {
         response.then().statusCode(not(401));
     }
